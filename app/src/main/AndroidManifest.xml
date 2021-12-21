@@ -25,11 +25,9 @@
         <service
             android:name=".Notification.ChatMessagesService"
             android:enabled="true"
-            android:exported="false"
-            android:permission="com.google.c2dm.permission.SEND">
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
 

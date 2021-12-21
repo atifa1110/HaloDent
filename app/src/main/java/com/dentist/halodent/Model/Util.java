@@ -8,10 +8,10 @@ import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.dentist.halodent.Notification.Api;
 import com.dentist.halodent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,16 +23,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Util {
 
@@ -67,51 +77,36 @@ public class Util {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 if(snapshot.child(NodeNames.DEVICE_TOKEN).getValue()!=null){
                     String deviceToken = snapshot.child(NodeNames.DEVICE_TOKEN).getValue().toString();
-                    JSONObject notification = new JSONObject();
-                    JSONObject notificationData = new JSONObject();
-                    try {
-                        notificationData.put(Constant.NOTIFICATION_TITLE,title);
-                        notificationData.put(Constant.NOTIFICATION_MESSAGE,message);
 
-                        notification.put(Constant.NOTIFICATION_TO,deviceToken);
-                        notification.put(Constant.NOTIFICATION_DATA,notificationData);
+                    String Url = "https://halo-dent.web.app/api/";
 
-                        String fcmApiUrl = "https://fcm.googleapis.com/v1/projects/notification-bbf34/messages:send";
-                        String contentType = "application/jcon";
+                    Gson gson = new GsonBuilder()
+                            .setLenient()
+                            .create();
 
-                        Response.Listener successListener = new Response.Listener() {
-                            @Override
-                            public void onResponse(Object response) {
-                                Toast.makeText(context,"Notification Sent",Toast.LENGTH_SHORT).show();
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(Url)
+                            .addConverterFactory(GsonConverterFactory.create(gson))
+                            .build();
+
+
+                    Api api = retrofit.create(Api.class);
+                    Call<ResponseBody> call = api.sendNotification(deviceToken,title,message);
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try{
+                                Toast.makeText(context.getApplicationContext(), response.body().string(),Toast.LENGTH_SHORT).show();
+                            }catch (IOException e){
+                                e.printStackTrace();
                             }
-                        };
+                        }
 
-                        Response.ErrorListener errorListener = new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(context,context.getString(R.string.failed_to_send_notification,error.getMessage()),Toast.LENGTH_SHORT).show();
-                            }
-                        };
-
-                        //using volley to make web api
-                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(fcmApiUrl,notification,successListener,errorListener){
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                Map<String,String> params = new HashMap<>();
-                                params.put("Authorization","key="+Constant.FIREBASE_KEY);
-                                params.put("Sender", "ID=" +Constant.SENDER_ID);
-                                params.put("Content-Type",contentType);
-
-                                return params;
-                            }
-                        };
-
-                        RequestQueue requestQueue = Volley.newRequestQueue(context);
-                        requestQueue.add(jsonObjectRequest);
-
-                    } catch (JSONException e) {
-                        Toast.makeText(context,context.getString(R.string.failed_to_send_notification,e.getMessage()),Toast.LENGTH_SHORT).show();
-                    }
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Toast.makeText(context.getApplicationContext(), t.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
             @Override

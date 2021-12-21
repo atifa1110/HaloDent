@@ -231,7 +231,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-
     private void showImageImportDialog(){
         //option to display
         String[] Options = {"Camera","Gallery"};
@@ -402,7 +401,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
         //add to db
         databaseReferenceGroups.child(groupId).child("Messages").child(timestamp)
-                .setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .setValue(messageModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 //message sent
@@ -468,84 +467,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         };
         messageQuery.addChildEventListener(childEventListener);
     }
-
-    public void downloadImage(String messageId, String messageType, boolean isShare){
-        //check permission to external storage
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-        } else {
-            String folderName = "message_images";
-            String fileName = messageId + ".jpg";
-
-            StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(folderName).child(fileName);
-            String localFilePath = getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
-
-            File localFile = new File(localFilePath);
-
-            try{
-                if(localFile.exists() || localFile.createNewFile()){
-                    FileDownloadTask downloadTask = fileRef.getFile(localFile);
-
-                    //llProgress.addView(view);
-                    //tvProgress.setText(getString(R.string.download_progress, messageType, "0"));
-
-                    downloadTask.addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                            //pbProgress.setProgress((int) progress);
-                            //tvProgress.setText(getString(R.string.download_progress, messageType, String.valueOf(pbProgress.getProgress())));
-                        }
-                    });
-
-                    downloadTask.addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
-                            //llProgress.removeView(view);
-                            if (task.isSuccessful()) {
-                                if (isShare) {
-                                    Intent intentShare = new Intent();
-                                    intentShare.setAction(Intent.ACTION_SEND);
-                                    intentShare.putExtra(Intent.EXTRA_STREAM, Uri.parse(localFilePath));
-                                    if (messageType.equals(Constant.MESSAGE_TYPE_IMAGE))
-                                        intentShare.setType("image/jpg");
-                                    startActivity(Intent.createChooser(intentShare, getString(R.string.share_with)));
-
-                                } else {
-                                    Snackbar snackbar = Snackbar.make(llProgress, getString(R.string.file_downloaded_successfully)
-                                            , Snackbar.LENGTH_INDEFINITE);
-
-                                    snackbar.setAction(R.string.view, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            Uri uri = Uri.parse(localFilePath);
-                                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                            if (messageType.equals(Constant.MESSAGE_TYPE_IMAGE))
-                                                intent.setDataAndType(uri, "image/jpg");
-
-                                            startActivity(intent);
-                                        }
-                                    });
-                                    snackbar.show();
-                                }
-                            }
-                        }
-                    });
-
-                    downloadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ChatActivity.this, getString(R.string.failed_to_download, e.getMessage()), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-
-            }catch (Exception e){
-                Toast.makeText(this,R.string.failed_to_download,Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
 
     private void setActionBar(){
         ActionBar actionBar = getSupportActionBar();

@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class ChatMessagesService extends FirebaseMessagingService {
 
-    private static final String CHANNEL_ID = "chat_channel";
+    private static final String CHANNEL_ID = "channel";
     String img_url = null;
     Bitmap image_bitmap = null;
 
