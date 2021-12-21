@@ -1,0 +1,2 @@
+rootProject.name = "HaloDent"
+include ':app'
