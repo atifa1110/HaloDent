@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="2dp"
-    tools:context=".Chat.ChatFragment">
+    tools:context=".Chat.GroupFragment">
 
     <include
         android:id="@+id/ll_search_view"

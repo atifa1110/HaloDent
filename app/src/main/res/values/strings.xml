@@ -141,8 +141,8 @@
 
     <string name="judul">Survey Kuesioner Karies</string>
     <string name="penjelasan">Dengan mengisi kuesioner ini kami dapat membantu anda mengukur seberapa tinggi karies gigi anda</string>
-    <string name="karies_rendah">Rendah.</string>
-    <string name="karies_sedang">Sedang.</string>
+    <string name="karies_rendah">Rendah</string>
+    <string name="karies_sedang">Sedang</string>
     <string name="karies_tinggi">Tinggi</string>
 
     <string name="menjaga_karies">Berdasarkan survey yang telah di ambil untuk menjaga kondisi rongga mulut tetap sehat sebaiknya melakukan : </string>

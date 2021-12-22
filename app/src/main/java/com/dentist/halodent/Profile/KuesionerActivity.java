@@ -39,8 +39,8 @@ public class KuesionerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(KuesionerActivity.this,MainQuizActivity.class);
-                startActivity(intent);
                 Preference.setKeyButtonClick(getApplicationContext(),true);
+                startActivity(intent);
             }
         });
     }

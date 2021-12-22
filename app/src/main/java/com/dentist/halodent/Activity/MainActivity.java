@@ -11,7 +11,7 @@ import android.view.MenuItem;
 
 import com.dentist.halodent.Model.NodeNames;
 import com.dentist.halodent.R;
-import com.dentist.halodent.Chat.ChatFragment;
+import com.dentist.halodent.Chat.GroupFragment;
 import com.dentist.halodent.Home.HomeFragment;
 import com.dentist.halodent.Info.InfoFragment;
 import com.dentist.halodent.Profile.ProfileFragment;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.menu_chat:
                     actionBar.setTitle("Chat");
-                    fragment = new ChatFragment();
+                    fragment = new GroupFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.menu_info:

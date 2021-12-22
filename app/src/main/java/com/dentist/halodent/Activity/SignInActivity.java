@@ -14,10 +14,8 @@ import android.widget.Toast;
 
 import com.dentist.halodent.Model.Util;
 import com.dentist.halodent.R;
-import com.dentist.halodent.SignUp.SignUpActivity;
 import com.dentist.halodent.SignUp.Step1Activity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;

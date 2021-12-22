@@ -38,22 +38,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_welcome" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_profile_home"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/ic_user"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile_home"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_user"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/ll_blm_isi"
-        layout="@layout/layout_belum_isi_kuesioner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_profile_home">
+
+            <include
+                android:id="@+id/ll_blm_isi"
+                layout="@layout/layout_belum_isi_kuesioner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
 
     <TextView
         android:id="@+id/tv_avail_konselor"
@@ -66,7 +75,7 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_blm_isi" />
+        app:layout_constraintTop_toBottomOf="@+id/layout" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_available_konselor"
@@ -91,7 +100,7 @@
             app:iconTint="@color/grey"
             app:layout_constraintBottom_toTopOf="@+id/rv_available_konselor"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_blm_isi" />
+            app:layout_constraintTop_toBottomOf="@+id/layout" />
 
         <TextView
             android:id="@+id/tv_topik_hangat"

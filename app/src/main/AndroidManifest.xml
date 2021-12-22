@@ -39,7 +39,7 @@
             android:name=".Profile.KuesionerActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".Activity.ListKonselorActivity" />
-        <activity android:name=".Chat.ChatActivity" />
+        <activity android:name=".Chat.GroupActivity" />
         <activity
             android:theme="@style/AppTheme"
             android:name=".Activity.DetailKonselorActivity" />

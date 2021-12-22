@@ -15,11 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.dentist.halodent.Chat.ChatActivity;
+import com.dentist.halodent.Chat.GroupActivity;
 import com.dentist.halodent.Chat.GroupModel;
 import com.dentist.halodent.Model.DokterModel;
 import com.dentist.halodent.Model.Extras;
-import com.dentist.halodent.Model.Jadwal;
 import com.dentist.halodent.Model.KonselorModel;
 import com.dentist.halodent.Model.Preference;
 import com.dentist.halodent.Model.UserModel;
@@ -60,7 +59,6 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
     private DatabaseReference databaseReferenceDokter,databaseReferenceGroup,databaseReferenceJadwal;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private DokterModel dokterModel;
     private KonselorModel konselor;
 
     DateFormat dateFormat = new SimpleDateFormat("H:mm");
@@ -123,7 +121,7 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
         switch (v.getId()){
             case R.id.btn_chat:
                 createGroupChat();
-                Intent group = new Intent(DetailKonselorActivity.this, ChatActivity.class);
+                Intent group = new Intent(DetailKonselorActivity.this, GroupActivity.class);
                 startActivity(group);
                 break;
             case R.id.card_view_dokter:
@@ -145,11 +143,10 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
             e.printStackTrace();
         }
         long now = d.getTime();
+        Log.d("jam_now",String.valueOf(now));
 
-        if(now==timeMulai){
-            btn_chat.setEnabled(true);
-        }else if(now==timeSelesai){
-            btn_chat.setEnabled(false);
+        if(now>=timeMulai && timeSelesai>=now){
+            btn_chat.setEnabled(now>=timeMulai && timeSelesai>=now);
         }else{
             btn_chat.setEnabled(false);
         }
@@ -164,8 +161,8 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
 
         GroupModel group = new GroupModel(timestamp,"Group","",timestamp,"");
 
-        Preference.setKeyGroupId(getApplicationContext(),timestamp);
-        Preference.setKeyGroupName(getApplicationContext(),"Group");
+        Preference.setKeyGroupId(getApplicationContext(),group.getGroupId());
+        Preference.setKeyGroupName(getApplicationContext(),group.getGroupTitle());
 
         databaseReferenceGroup.child(timestamp).setValue(group).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -175,7 +172,7 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
                 UserModel kons = new UserModel(konselor.getId(),timestamp,"Konselor");
                 UserModel dokter = new UserModel(dokterId,timestamp,"Dokter Pengawas");
 
-                HashMap <String,Object> partisipant = new HashMap();
+                HashMap partisipant = new HashMap();
                 partisipant.put(currentUser.getUid(),pasien);
                 partisipant.put(konselor.getId(),kons);
                 partisipant.put(dokterId,dokter);
@@ -184,9 +181,9 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
                     @Override
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(DetailKonselorActivity.this,"Partisipan Berhasil ditambahkan",Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(DetailKonselorActivity.this,"Partisipan Berhasil ditambahkan",Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(DetailKonselorActivity.this,"Partisipan Gagal ditambahkan",Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(DetailKonselorActivity.this,"Partisipan Gagal ditambahkan",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -215,6 +212,8 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
                     try {
                         m = dateFormat.parse(mulai);
                         s = dateFormat.parse(selesai);
+                        Log.d("jam_mulai",String.valueOf(m.getTime()));
+                        Log.d("jam_selesai",String.valueOf(s.getTime()));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

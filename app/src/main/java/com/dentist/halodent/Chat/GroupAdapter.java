@@ -67,7 +67,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,ChatActivity.class);
+                Intent intent = new Intent(context, GroupActivity.class);
                 Preference.setKeyGroupId(context,groupId);
                 Preference.setKeyGroupName(context,groupModel.getGroupTitle());
                 Preference.setKeyGroupPhoto(context,groupModel.getGroupIcon());

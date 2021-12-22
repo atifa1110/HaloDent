@@ -281,6 +281,7 @@
         android:background="@drawable/background_btn_selected"
         android:fontFamily="@font/opensans_regular"
         android:text="@string/chat_sekarang"
+        android:enabled="false"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

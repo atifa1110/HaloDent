@@ -21,12 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 public class MainQuizActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView number,question;
-    private Button btn_next, btn_previous;
+    private Button btn_selesai;
     private Button btn_a,btn_b,btn_c,btn_d;
     private LinearProgressIndicator progressBar;
     private ImageButton btn_back;
 
-    private DatabaseReference databaseUsers;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
@@ -38,12 +37,13 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // when this activity is about to be launch we need to check if its opened before or not
-//        if (Preference.getKeyQuizOpen(getApplicationContext())) {
-//            Intent mainActivity = new Intent(getApplicationContext(), ScoreActivity.class);
-//            startActivity(mainActivity);
-//            finish();
-//        }
+
+        //when this activity is about to be launch we need to check if its opened before or not
+        if (Preference.getKeyQuizOpen(getApplicationContext())) {
+            Intent mainActivity = new Intent(getApplicationContext(), ScoreActivity.class);
+            startActivity(mainActivity);
+            finish();
+        }
 
         Preference.removeQuizData(getApplicationContext());
         umur = Preference.getKeyUserAge(getApplicationContext());
@@ -56,8 +56,7 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
         question = findViewById(R.id.question);
         progressBar = findViewById(R.id.progress);
         btn_back = findViewById(R.id.imageButton);
-        btn_next = findViewById(R.id.btn_next);
-        btn_previous = findViewById(R.id.btn_previous);
+        btn_selesai = findViewById(R.id.btn_selesai);
 
         btn_a = findViewById(R.id.btn1);
         btn_b = findViewById(R.id.btn2);
@@ -69,8 +68,6 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
         btn_c.setOnClickListener(this);
         btn_d.setOnClickListener(this);
         btn_back.setOnClickListener(this);
-        btn_next.setOnClickListener(this);
-        btn_previous.setOnClickListener(this);
 
         //show question
         updateAddQuestion();
@@ -99,10 +96,6 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btn4:
                 score = 3;
-                break;
-            case R.id.btn_next:
-                break;
-            case R.id.btn_previous:
                 break;
             default:
                 break;
@@ -144,14 +137,23 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
             mQuestionNum++;
             number.setText("Question "+mQuestionNum+"/"+mQuestionLibrary.getLength());
             progressBar.setProgress(mQuestionNum);
-
         }else{
             //Toast.makeText(MainActivity.this,"It was the last question!",Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainQuizActivity.this,ScoreActivity.class);
-            Log.d("Total_Score",String.valueOf(mScore));
-            startActivity(intent);
-            //Preference.setKeyQuizOpen(getApplicationContext(),true);
-            Preference.setKeyQuizScore(getApplicationContext(),mScore);
+            btn_a.setEnabled(false);
+            btn_b.setEnabled(false);
+            btn_c.setEnabled(false);
+            btn_d.setEnabled(false);
+            btn_selesai.setVisibility(View.VISIBLE);
+            btn_selesai.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainQuizActivity.this,ScoreActivity.class);
+                    startActivity(intent);
+                    Preference.setKeyQuizOpen(getApplicationContext(),true);
+                    Log.d("Total_Score",String.valueOf(mScore));
+                    Preference.setKeyQuizScore(getApplicationContext(),mScore);
+                }
+            });
         }
     }
 

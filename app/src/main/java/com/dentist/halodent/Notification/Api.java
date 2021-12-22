@@ -11,7 +11,7 @@ public interface Api {
     @FormUrlEncoded
     @POST("send")
     Call<ResponseBody> sendNotification(
-            @Field("token") String token,
+            @Field("topic") String topic,
             @Field("title") String title,
             @Field("body") String body
     );

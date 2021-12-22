@@ -38,11 +38,9 @@ import com.dentist.halodent.Model.NodeNames;
 import com.dentist.halodent.Model.Util;
 import com.dentist.halodent.Model.Preference;
 import com.dentist.halodent.R;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -53,25 +51,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class ChatActivity extends AppCompatActivity implements View.OnClickListener {
+public class GroupActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView ivSend,ivAttachment, ivProfile;
-    private TextView tvUserName,tvUserStatus;
+    private TextView tvUserName;
     private TextInputEditText etMessage;
     private LinearLayout llProgress;
 
@@ -108,7 +102,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_group);
         setActionBar();
 
         //init required permission
@@ -140,7 +134,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         rv_message = findViewById(R.id.rvMessages);
         rv_message.setLayoutManager(new LinearLayoutManager(this));
         messageList = new ArrayList<>();
-        messageAdapter = new MessageAdapter(ChatActivity.this,messageList);
+        messageAdapter = new MessageAdapter(GroupActivity.this,messageList);
         rv_message.setAdapter(messageAdapter);
 
         //click button
@@ -177,7 +171,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         session();
-
     }
 
     @Override
@@ -188,7 +181,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 //validate if it's empty
                 if(TextUtils.isEmpty(message)){
                     //empty? dont sent
-                    Toast.makeText(ChatActivity.this,"Can't send empty message...",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GroupActivity.this,"Can't send empty message...",Toast.LENGTH_SHORT).show();
                 }else{
                     //send message
                     sendMessage(message,Constant.MESSAGE_TYPE_TEXT);
@@ -209,7 +202,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     String status = snapshot.child(NodeNames.STATUS).getValue().toString();
 
                     if(status.equals("selesai")){
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChatActivity.this);
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GroupActivity.this);
                         alertDialogBuilder.setMessage("Sesi chat ini sudah berakhir")
                                 .setCancelable(false)
                                 .setNegativeButton("Keluar", new DialogInterface.OnClickListener() {
@@ -311,14 +304,14 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 try{
                     sendImageMessage(image_uri);
                 }catch (IOException e){
-                    Toast.makeText(ChatActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GroupActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }else if (requestCode == IMAGE_PICK_CAMERA_CODE){
                 //picked from camera
                 try{
                     sendImageMessage(image_uri);
                 }catch (IOException e){
-                    Toast.makeText(ChatActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GroupActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -329,17 +322,17 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(ChatActivity.this, "Camera Permission Granted", Toast.LENGTH_SHORT) .show();
+                Toast.makeText(GroupActivity.this, "Camera Permission Granted", Toast.LENGTH_SHORT) .show();
             }
             else {
-                Toast.makeText(ChatActivity.this, "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
+                Toast.makeText(GroupActivity.this, "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
             }
         }
         else if (requestCode == STORAGE_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(ChatActivity.this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupActivity.this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(ChatActivity.this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupActivity.this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -381,7 +374,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull @NotNull Exception e) {
-                Toast.makeText(ChatActivity.this,"Gagal mengirim",Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupActivity.this,"Gagal mengirim",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -389,13 +382,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private void sendMessage(String message, String msgType){
         //timestamp
         String timestamp = ""+System.currentTimeMillis();
-
-        //hashmap
-//        HashMap <String,Object> hashMap = new HashMap();
-//        hashMap.put("message",""+message);
-//        hashMap.put("messageFrom",""+currentUser.getUid());
-//        hashMap.put("messageTime",""+timestamp);
-//        hashMap.put("messageType",msgType);
 
         MessageModel messageModel = new MessageModel(message,currentUser.getUid(),timestamp,msgType);
 
@@ -405,7 +391,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onSuccess(Void unused) {
                 //message sent
-                Toast.makeText(ChatActivity.this,"Pesan berhasil terkirim",Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupActivity.this,"Pesan berhasil terkirim",Toast.LENGTH_SHORT).show();
                 etMessage.setText("");
 
                 String title="";
@@ -415,13 +401,13 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     title = "New Image";
                 }
 
-                Util.sendNotification(ChatActivity.this,title,message,currentUser.getUid());
+                Util.sendNotification(GroupActivity.this,title,message,currentUser.getUid());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull @NotNull Exception e) {
                 //message sent failed
-                Toast.makeText(ChatActivity.this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupActivity.this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -498,7 +484,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 this.finish();
                 return true;
             case R.id.menu_info:
-                Intent intent = new Intent(ChatActivity.this, GroupInfoActivity.class);
+                Intent intent = new Intent(GroupActivity.this, GroupInfoActivity.class);
                 intent.putExtra("groupId",groupId);
                 startActivity(intent);
                 break;
