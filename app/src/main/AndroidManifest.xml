@@ -16,11 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HaloDent">
         <activity
-            android:theme="@style/AppTheme"
-            android:name=".Profile.ScoreActivity"></activity>
+            android:name=".Profile.ScoreActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".Profile.KuesionerActivity"
+            android:theme="@style/AppTheme" />
+
         <activity
             android:name=".Profile.MainQuizActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
 
         <service
             android:name=".Notification.ChatMessagesService"
@@ -33,36 +38,33 @@
 
         <activity android:name=".Chat.GroupInfoActivity" />
         <activity
-            android:configChanges="orientation|screenSize"
-            android:name=".Activity.DetailTopikActivity" />
-        <activity
-            android:name=".Profile.KuesionerActivity"
-            android:theme="@style/AppTheme" />
+            android:name=".Activity.DetailTopikActivity"
+            android:configChanges="orientation|screenSize" />
+
         <activity android:name=".Activity.ListKonselorActivity" />
         <activity android:name=".Chat.GroupActivity" />
         <activity
-            android:theme="@style/AppTheme"
-            android:name=".Activity.DetailKonselorActivity" />
+            android:name=".Activity.DetailKonselorActivity"
+            android:theme="@style/AppTheme" />
         <activity android:name=".Profile.EditProfileActivity" />
         <activity
             android:name=".Activity.LupaPasswordActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:theme="@style/AppTheme"
-            android:name=".SignUp.Step4Activity" />
+            android:name=".SignUp.Step4Activity"
+            android:theme="@style/AppTheme" />
         <activity
-            android:theme="@style/AppTheme"
-            android:name=".SignUp.Step3Activity" />
+            android:name=".SignUp.Step3Activity"
+            android:theme="@style/AppTheme" />
         <activity
-            android:theme="@style/AppTheme"
-            android:name=".SignUp.Step2Activity" />
+            android:name=".SignUp.Step2Activity"
+            android:theme="@style/AppTheme" />
         <activity
-            android:theme="@style/AppTheme"
-            android:name=".SignUp.Step1Activity" />
+            android:name=".SignUp.Step1Activity"
+            android:theme="@style/AppTheme" />
         <activity
-            android:theme="@style/AppTheme"
-            android:name=".SignUp.SignUpActivity" />
+            android:name=".SignUp.SignUpActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.SignInActivity"
             android:screenOrientation="portrait"

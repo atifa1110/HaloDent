@@ -6,6 +6,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparent"
     tools:context=".SignUp.SignUpActivity">
 
     <include
@@ -19,103 +20,80 @@
 
     <TextView
         android:id="@+id/tv_selamat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/opensans_bold"
+        style="@style/Text.BoldBlack"
         android:text="@string/sign_up_to_halo"
-        android:textColor="@color/black"
-        android:textSize="20sp"
         android:onClick="signUp"
         android:layout_below="@id/appbar"/>
 
     <TextView
         android:id="@+id/tv_sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Text"
         android:layout_marginStart="25dp"
         android:layout_marginTop="5dp"
-        android:fontFamily="@font/opensans_regular"
         android:text="@string/masukkan_data"
-        android:textColor="@color/grey"
-        android:textSize="14sp"
         android:layout_below="@id/tv_selamat"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_email_password"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
+        style="@style/TextInputLayout.clear"
         android:layout_marginTop="20dp"
+
         app:startIconDrawable="@drawable/ic_email"
         android:layout_below="@id/tv_sign_in">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_email_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/opensans_regular"
-            android:hint="@string/email_address"
-            android:inputType="textEmailAddress" />
+            style="@style/TextInputEditText.inputEmail"
+            android:hint="@string/email_address" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_nama"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
+        style="@style/TextInputLayout.clear"
         android:layout_marginTop="5dp"
         app:startIconDrawable="@drawable/ic_person"
         android:layout_below="@id/til_email_password">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_nama_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/opensans_regular"
-            android:hint="@string/nama"
-            android:inputType="text"/>
+            style="@style/TextInputEditText.inputText"
+            android:hint="@string/nama"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_usia"
+        style="@style/TextInputLayout.clear"
+        android:layout_marginTop="5dp"
+        app:startIconDrawable="@drawable/ic_cake"
+        android:layout_below="@id/til_nama">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_usia_profile"
+            style="@style/TextInputEditText.inputText"
+            android:hint="@string/usia"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_password"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
+        style="@style/TextInputLayout"
         android:layout_marginTop="5dp"
         app:startIconDrawable="@drawable/ic_password"
-        android:layout_below="@id/til_nama"
+        android:layout_below="@id/til_usia"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_pass_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/opensans_regular"
-            android:hint="@string/password"
-            android:inputType="textPassword"/>
+            style="@style/TextInputEditText.inputPassword"
+            android:hint="@string/password"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_confirm_password"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
+        style="@style/TextInputLayout"
         android:layout_marginTop="5dp"
         app:startIconDrawable="@drawable/ic_password"
         android:layout_below="@id/til_password"
@@ -123,72 +101,37 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_confirmpass_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/opensans_regular"
-            android:hint="@string/password_confirm"
-            android:inputType="textPassword"/>
+            style="@style/TextInputEditText.inputPassword"
+            android:hint="@string/password_confirm"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_nomor_ponsel"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginTop="5dp"
-        app:prefixText="+62"
-        app:prefixTextColor="@color/blue"
-        app:startIconDrawable="@drawable/ic_phone"
-        android:layout_below="@id/til_confirm_password">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_nomor_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/opensans_regular"
-            android:hint="@string/nomer_ponsel"
-            android:inputType="phone"/>
-    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_daftar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Button.Green"
         android:layout_marginTop="30dp"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
-        android:background="@drawable/background_btn_green"
-        android:fontFamily="@font/opensans_regular"
         android:text="@string/daftar"
-        android:textColor="@color/white"
-        android:layout_below="@id/til_nomor_ponsel"/>
+        android:layout_below="@id/til_confirm_password"/>
 
     <TextView
         android:id="@+id/tv_belum_punya"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Text"
         android:layout_marginStart="85dp"
         android:layout_marginTop="18dp"
-        android:fontFamily="@font/opensans_regular"
-        android:text="@string/belum_punya_akun"
-        android:textColor="@color/grey"
+        android:text="@string/sudah_punya_akun"
         android:layout_below="@id/btn_daftar"/>
 
     <TextView
         android:id="@+id/tv_masuk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Text.Semibold"
         android:layout_below="@id/btn_daftar"
         android:layout_marginTop="18dp"
         android:layout_marginStart="4dp"
+        android:textColor="@color/blue"
         android:layout_toEndOf="@+id/tv_belum_punya"
-        android:fontFamily="@font/opensans_semibold"
-        android:text="@string/sign_in"
-        android:textColor="@color/blue" />
+        android:text="@string/sign_in"/>
 
 </RelativeLayout>

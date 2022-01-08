@@ -8,10 +8,6 @@
     tools:context=".Info.InfoFragment">
 
     <include
-        android:id="@+id/ll_search_view"
-        layout="@layout/layout_search_view" />
-
-    <include
         android:id="@+id/progress_bar"
         layout="@layout/custom_progress_bar"
         android:visibility="gone"/>
@@ -19,8 +15,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_below="@id/ll_search_view">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_info"

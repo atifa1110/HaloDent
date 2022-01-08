@@ -4,14 +4,20 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -43,8 +49,6 @@ public class GroupFragment extends Fragment {
     private View emptyChat;
     private View progress_bar;
 
-    private TextInputEditText search;
-
     private DatabaseReference databaseReferenceGroups,databaseReferenceKonselors;
     private FirebaseUser currentUser;
 
@@ -69,7 +73,6 @@ public class GroupFragment extends Fragment {
         rvChat = view.findViewById(R.id.rv_chats);
         emptyChat = view.findViewById(R.id.ll_empty_chat);
         progress_bar = view.findViewById(R.id.progress_bar);
-        search = view.findViewById(R.id.searchView);
 
         ////set array list
         userIds = new ArrayList<>();
@@ -83,35 +86,10 @@ public class GroupFragment extends Fragment {
         rvChat.setLayoutManager(linearLayout);
         rvChat.setAdapter(groupAdapter);
 
-        search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.toString().isEmpty()){
-                    rvChat.setAdapter(groupAdapter);
-                    groupAdapter.notifyDataSetChanged();
-                }else{
-                    searchGroupChat(s.toString());
-                }
-            }
-        });
-
         //inisialisasi database
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReferenceKonselors = FirebaseDatabase.getInstance().getReference().child(NodeNames.KONSELORS);
         databaseReferenceGroups = FirebaseDatabase.getInstance().getReference().child(NodeNames.GROUPS);
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(item);
-        itemTouchHelper.attachToRecyclerView(rvChat);
 
         //set query dengan diurutkan dengan waktu kirim
         query = databaseReferenceGroups.orderByChild(NodeNames.TIME_STAMP);
@@ -144,36 +122,6 @@ public class GroupFragment extends Fragment {
         query.addChildEventListener(childEventListener);
         emptyChat.setVisibility(View.VISIBLE);
         progress_bar.setVisibility(View.VISIBLE);
-    }
-
-    ItemTouchHelper.SimpleCallback item = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull @NotNull RecyclerView recyclerView, @NonNull @NotNull RecyclerView.ViewHolder viewHolder, @NonNull @NotNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull @NotNull RecyclerView.ViewHolder viewHolder, int direction) {
-            GroupModel deletedChat = groupList.get(viewHolder.getAdapterPosition());
-            String groupId = deletedChat.groupId;
-
-            // below line is to remove item from our array list.
-            groupList.remove(viewHolder.getAdapterPosition());
-
-            // below line is to notify our item is removed from adapter.
-            groupAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
-
-            deleteChat(groupId);
-        }
-    };
-
-    private void deleteChat(String groupId){
-        databaseReferenceGroups.child(groupId).child("Participants").child(currentUser.getUid()).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<Void> task) {
-
-            }
-        });
     }
 
     private void loadGroupChat(DataSnapshot snapshot,boolean isNew,String groupId){
@@ -226,36 +174,35 @@ public class GroupFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+        inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_action_bar, menu);
+        MenuItem info = menu.findItem(R.id.menu_info);
+        info.setVisible(false);
+        MenuItem search = menu.findItem(R.id.menu_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //called when submit text
+                if(!TextUtils.isEmpty(query.trim())){
+                    searchGroupChat(query);
+                }
+                return false;
+            }
 
-//    @Override
-//    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
-//        inflater = getActivity().getMenuInflater();
-//        inflater.inflate(R.menu.menu_action_bar, menu);
-//        MenuItem info = menu.findItem(R.id.menu_info);
-//        info.setVisible(false);
-//        MenuItem search = menu.findItem(R.id.menu_search);
-//        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                //called when submit text
-//                if(!TextUtils.isEmpty(query.trim())){
-//                    searchGroupChat(query);
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                //called when typing text
-//                if(!TextUtils.isEmpty(newText.trim())){
-//                    searchGroupChat(newText);
-//                }
-//                return false;
-//            }
-//        });
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //called when typing text
+                if(!TextUtils.isEmpty(newText.trim())){
+                    searchGroupChat(newText);
+                }
+                return false;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
     @Override
     public void onDestroy() {

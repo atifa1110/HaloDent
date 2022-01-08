@@ -13,18 +13,13 @@
 
     <TextView
         android:id="@+id/tv_step2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/opensans_bold"
+        style="@style/Text.BoldBlack"
         android:text="@string/step2"
-        android:textColor="@color/black"
-        android:textSize="20sp"
         android:layout_below="@+id/appbar"/>
 
     <TextView
         android:id="@+id/tv_quest"
+        style="@style/Text.Black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -36,40 +31,25 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_isian"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        style="@style/TextInputLayout.clear"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="25dp"
         app:helperText="@string/required"
         app:helperTextTextColor="@color/red"
-        app:endIconMode="clear_text"
         android:layout_below="@+id/tv_quest">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_isian_step2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/opensans_regular"
+            style="@style/TextInputEditText.inputTextMulti"
             android:hint="@string/isi"
-            android:inputType="text|textMultiLine"
-            android:maxLines="10"
             android:scrollbars="vertical"/>
-
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Button.Blue"
         android:layout_marginStart="25dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
-        android:background="@drawable/background_btn_blue"
-        android:text="@string/btn_next"
-        android:textColor="@color/white"
+        android:text="@string/next"
         android:layout_below="@id/til_isian"/>
-
 </RelativeLayout>

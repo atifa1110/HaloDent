@@ -57,7 +57,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private Button btn_simpan;
     private ImageView ivProfile;
     private String id,email,nama,usia,kelamin,photo,alamat,ponsel,status,role;
-    private ArrayAdapter<String>jenisAdapter;
+    private ArrayAdapter<String> jenisAdapter;
 
     private PasienModel pasien;
     private ProgressDialog progress;
@@ -135,17 +135,19 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             case R.id.iv_profile_profile:
                 changeImage();
                 break;
-            case R.id.remove:
+            case R.id.delete:
                 removePhoto();
                 break;
             case R.id.choose:
                 chooseGallery();
                 break;
+            default:
+                break;
         }
     }
 
     private void changeImage(){
-        LinearLayout remove = bottomSheetDialog.findViewById(R.id.remove);
+        LinearLayout remove = bottomSheetDialog.findViewById(R.id.delete);
         LinearLayout choose = bottomSheetDialog.findViewById(R.id.choose);
 
         remove.setOnClickListener(this);
@@ -288,7 +290,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                                             @Override
                                             public void onComplete(@NonNull @NotNull Task<Void> task) {
                                                 progress.dismiss();
-                                                Toast.makeText(EditProfileActivity.this, R.string.data_berhasil_disimpan, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(EditProfileActivity.this, R.string.update_successful, Toast.LENGTH_SHORT).show();
                                                 finish();
                                             }
                                         });
@@ -341,7 +343,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                                         if(task.isSuccessful()){
                                             progress.dismiss();
-                                            Toast.makeText(EditProfileActivity.this, R.string.data_berhasil_disimpan, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(EditProfileActivity.this, R.string.update_successful, Toast.LENGTH_SHORT).show();
                                             finish();
                                         }else{
                                             Toast.makeText(EditProfileActivity.this,
@@ -359,7 +361,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
                             if(task.isSuccessful()){
                                 progress.dismiss();
-                                Toast.makeText(EditProfileActivity.this, R.string.data_berhasil_disimpan, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EditProfileActivity.this, R.string.update_successful, Toast.LENGTH_SHORT).show();
                                 finish();
                             }else{
                                 Toast.makeText(EditProfileActivity.this,

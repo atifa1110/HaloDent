@@ -25,8 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,7 +42,7 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
     @NotNull
     @Override
     public ParticipantViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_participant_list,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_user_list,parent,false);
         return new ParticipantViewHolder(view);
     }
 
@@ -60,6 +58,7 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
             setDokterName(user,holder);
         }
 
+        holder.imageView.setVisibility(View.GONE);
         holder.roleParticipant.setText(user.getRole());
     }
 
@@ -147,15 +146,17 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
     public class ParticipantViewHolder extends RecyclerView.ViewHolder{
 
         private CircleImageView photoUser;
+        private ImageView imageView;
         private TextView userName,userOnline,roleParticipant;
 
         public ParticipantViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
-            photoUser = itemView.findViewById(R.id.iv_profile_participant);
-            userName = itemView.findViewById(R.id.tv_nama_participant);
+            photoUser = itemView.findViewById(R.id.iv_profile_user);
+            imageView = itemView.findViewById(R.id.iv_circle);
+            userName = itemView.findViewById(R.id.tv_nama_user);
             userOnline = itemView.findViewById(R.id.tv_online);
-            roleParticipant = itemView.findViewById(R.id.tv_role_participant);
+            roleParticipant = itemView.findViewById(R.id.tv_role);
         }
     }
 }

@@ -24,23 +24,9 @@
 
         <TextView
             android:id="@+id/tv_userName_action"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/opensans_bold"
+            style="@style/Text.SemiboldWhite"
             android:singleLine="true"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
             tools:text="User Name"/>
-
-<!--        <TextView-->
-<!--            android:id="@+id/tv_userStatus_action"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="@font/opensans_regular"-->
-<!--            android:layout_marginTop="4dp"-->
-<!--            android:textColor="@android:color/white"-->
-<!--            android:textSize="10sp"-->
-<!--            tools:text="Online"/>-->
 
     </LinearLayout>
 </LinearLayout>

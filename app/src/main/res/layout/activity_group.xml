@@ -36,11 +36,10 @@
             android:layout_weight="1"
             android:background="@drawable/background_enter_message"
             android:ems="10"
-            android:maxLines="4"
             android:hint="@string/enter_message"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:padding="8dp"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <ImageView
             android:id="@+id/ivAttachment"

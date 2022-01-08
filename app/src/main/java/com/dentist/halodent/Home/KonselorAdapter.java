@@ -36,7 +36,7 @@ public class KonselorAdapter extends RecyclerView.Adapter<KonselorAdapter.Konsel
     @NotNull
     @Override
     public KonselorViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_konselor_list,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_user_list,parent,false);
         return new KonselorViewHolder(view);
     }
 
@@ -89,9 +89,9 @@ public class KonselorAdapter extends RecyclerView.Adapter<KonselorAdapter.Konsel
 
         public KonselorViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
-            ivProfileKonselor = itemView.findViewById(R.id.iv_profile_konselor);
+            ivProfileKonselor = itemView.findViewById(R.id.iv_profile_user);
             ivCircle = itemView.findViewById(R.id.iv_circle);
-            tvNamaKonselor = itemView.findViewById(R.id.tv_nama_konselor);
+            tvNamaKonselor = itemView.findViewById(R.id.tv_nama_user);
             tvOnline = itemView.findViewById(R.id.tv_online);
         }
     }

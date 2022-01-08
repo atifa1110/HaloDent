@@ -235,7 +235,7 @@ public class Preference {
     public static void removeQuizData(Context context){
         SharedPreferences.Editor editor = getSharedPreference(context).edit();
         editor.remove(KEY_QUIZ_OPEN);
-        editor.remove(KEY_QUIZ_SCORE);
+        //editor.remove(KEY_QUIZ_SCORE);
         editor.apply();
     }
 }

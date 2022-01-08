@@ -12,13 +12,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/hasil_survey"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Button.TextButtonWhite"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/opensans_semibold"
         android:text="WELL DONE! SELAMAT"
-        android:textColor="@color/white"
         android:textSize="18sp"
         app:icon="@drawable/ic_done"
         app:iconTint="@color/green"
@@ -37,13 +33,9 @@
 
     <TextView
         android:id="@+id/kategori"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Text.BoldWhite"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/opensans_bold"
         android:text="Kategori Karies Anda : "
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_thumb" />
 
@@ -62,13 +54,13 @@
             android:layout_marginBottom="8dp">
 
             <TextView
-                style="@style/TextSpec.Field"
-                android:text="Karies"
+                style="@style/Text.White"
+                android:text="Karies  : "
                 android:textColor="@color/white"/>
 
             <TextView
                 android:id="@+id/tv_kategori"
-                style="@style/TextSpec.Value"
+                style="@style/Text.White"
                 android:text="Rendah"
                 android:textColor="@color/white" />
         </TableRow>
@@ -79,13 +71,13 @@
             android:layout_marginBottom="8dp">
 
             <TextView
-                style="@style/TextSpec.Field"
-                android:text="Nilai"
+                style="@style/Text.White"
+                android:text="Nilai     : "
                 android:textColor="@color/white"/>
 
             <TextView
                 android:id="@+id/tv_nilai"
-                style="@style/TextSpec.Value"
+                style="@style/Text.White"
                 android:text="20/20"
                 android:textColor="@color/white"/>
 
@@ -95,42 +87,31 @@
 
     <TextView
         android:id="@+id/menjaga_karies"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Text.White"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/opensans_regular"
         android:justificationMode="inter_word"
         android:text="@string/menjaga_karies"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab_layout_kategori" />
 
     <TextView
         android:id="@+id/cara_jaga"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Text.White"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/opensans_regular"
         android:justificationMode="inter_word"
-        android:maxLines="8"
         android:text="@string/cara_jaga_karies_rendah"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menjaga_karies" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_lanjutkan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/background_btn_green"
-        android:fontFamily="@font/opensans_regular"
+        style="@style/Button.Green"
         android:text="Tutup"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cara_jaga" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

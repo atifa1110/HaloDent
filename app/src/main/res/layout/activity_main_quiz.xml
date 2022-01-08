@@ -4,35 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
     android:background="@color/blue"
     tools:context=".Profile.MainQuizActivity">
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_arrow_back_white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/custom_action_layout"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Text.White"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/opensans_regular"
-        android:text="Question 1/9"
-        android:textColor="@color/white"
+        android:text="@string/question"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+        app:layout_constraintTop_toBottomOf="@+id/appbar" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
         app:indicatorColor="@color/yellow"
         android:max="11"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +41,10 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_marginTop="30dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
         app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progress">
@@ -53,115 +52,64 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="20dp"
-            android:paddingBottom="25dp">
+            android:padding="20dp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/question"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="fill"
-                android:lines="2"
-                android:layout_marginRight="20dp"
-                android:text="Berapa kali anak anda menggosok gigi dalam sehari?"
-                android:textColor="@color/black"
+                style="@style/Text.Semibold"
+                android:text="@string/contoh_pertanyaan"
                 android:textSize="16sp"
-                android:fontFamily="@font/opensans_semibold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_btn_answer"
-                android:text="A"
-                android:fontFamily="@font/opensans_regular"
-                android:textAllCaps="false"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="20dp"
+                style="@style/Button.Answer"
+                android:text="@string/option_a"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/question" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Button.Answer"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/background_btn_answer"
-                android:text="B"
-                android:textAllCaps="false"
-                android:fontFamily="@font/opensans_regular"
-                android:layout_marginRight="20dp"
+                android:text="@string/option_b"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn1" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Button.Answer"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/background_btn_answer"
-                android:text="C"
-                android:textAllCaps="false"
-                android:fontFamily="@font/opensans_regular"
-                android:layout_marginRight="20dp"
+                android:text="@string/option_c"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn2" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Button.Answer"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/background_btn_answer"
-                android:fontFamily="@font/opensans_regular"
-                android:text="D"
-                android:textAllCaps="false"
+                android:text="@string/option_d"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn3" />
-
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/btn_previous"-->
-<!--                style="@style/Widget.MaterialComponents.Button.TextButton"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                app:icon="@drawable/ic_rewind"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/btn4" />-->
-
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/btn_next"-->
-<!--                style="@style/Widget.MaterialComponents.Button.TextButton"-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:layout_marginEnd="20dp"-->
-<!--                app:icon="@drawable/ic_fast_forward"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/btn4" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_selesai"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Button.Green"
         android:layout_marginTop="30dp"
-        android:background="@drawable/background_btn_green"
-        android:fontFamily="@font/opensans_regular"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
         android:text="selesai"
         android:visibility="gone"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardview" />

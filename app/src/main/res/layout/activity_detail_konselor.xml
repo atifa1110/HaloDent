@@ -7,112 +7,67 @@
     android:layout_height="match_parent"
     tools:context=".Activity.DetailKonselorActivity">
 
-    <View
-        android:id="@+id/view3"
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/custom_action_layout" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_photo_detail_konselor"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:background="@color/blue"
+        android:layout_height="75dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appbar" />
 
-    <ImageButton
-        android:id="@+id/btn_back_detail_konselor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/ic_arrow_back_white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        app:cardCornerRadius="20dp"
+    <TextView
+        android:id="@+id/tv_nama_detail_konselor"
+        style="@style/Text.Semibold"
+        android:layout_marginTop="5dp"
+        android:textSize="16sp"
+        android:gravity="center"
+        tools:text="@string/contoh_nama"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_back_detail_konselor">
+        app:layout_constraintTop_toBottomOf="@+id/iv_photo_detail_konselor"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_email_detail_konselor"
+        style="@style/Text"
+        android:gravity="center"
+        tools:text="@string/email_contoh"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nama_detail_konselor" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_photo_detail_konselor"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_user"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_konselor_detail"
+        style="@style/Text.Black"
+        android:layout_marginTop="5dp"
+        android:text="@string/konselor"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_email_detail_konselor" />
 
-            <TextView
-                android:id="@+id/tv_nama_detail_konselor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/opensans_semibold"
-                android:gravity="center"
-                tools:text="@string/contoh_nama"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_photo_detail_konselor" />
-
-            <TextView
-                android:id="@+id/tv_email_detail_konselor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:fontFamily="@font/opensans_regular"
-                android:gravity="center"
-                tools:text="@string/email_contoh"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_nama_detail_konselor" />
-
-            <TextView
-                android:id="@+id/tv_konselor_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/opensans_regular"
-                android:gravity="center"
-                android:text="@string/konselor"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_email_detail_konselor" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardview">
+        app:layout_constraintTop_toBottomOf="@+id/tv_konselor_detail">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="15dp">
+            android:padding="20dp">
 
             <TextView
                 android:id="@+id/tv_about"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/opensans_semibold"
-                android:text="About"
-                android:textColor="@color/black"
+                style="@style/Text.Semibold"
+                android:text="@string/about"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -131,13 +86,13 @@
                     android:layout_marginBottom="8dp">
 
                     <TextView
-                        style="@style/TextSpec.Field"
+                        style="@style/Text"
                         android:text="@string/nim" />
 
                     <TextView
                         android:id="@+id/tv_nim_konselor"
-                        style="@style/TextSpec.Value"
-                        tools:text="@string/tv_nim" />
+                        style="@style/Text.Black"
+                        tools:text="@string/contoh_nim" />
                 </TableRow>
 
                 <TableRow
@@ -146,13 +101,13 @@
                     android:layout_marginBottom="8dp">
 
                     <TextView
-                        style="@style/TextSpec.Field"
-                        android:text="@string/angkatanProfesi" />
+                        style="@style/Text"
+                        android:text="@string/angkatan" />
 
                     <TextView
                         android:id="@+id/tv_angkatan_konselor"
-                        style="@style/TextSpec.Value"
-                        tools:text="@string/tahun_konselor" />
+                        style="@style/Text.Black"
+                        tools:text="@string/contoh_angkatan" />
 
                 </TableRow>
 
@@ -161,13 +116,13 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        style="@style/TextSpec.Field"
+                        style="@style/Text"
                         android:text="@string/jenis_kelamin" />
 
                     <TextView
                         android:id="@+id/tv_jenisKel_konselor"
-                        style="@style/TextSpec.Value"
-                        tools:text="@string/perempuan" />
+                        style="@style/Text.Black"
+                        tools:text="@string/contoh_kelamin" />
 
                 </TableRow>
 
@@ -175,12 +130,9 @@
 
             <TextView
                 android:id="@+id/tv_pengawas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/opensans_semibold"
-                android:text="Diawasi oleh"
-                android:textColor="@color/black"
+                style="@style/Text.Semibold"
+                android:layout_marginTop="15dp"
+                android:text="@string/diawasi_oleh"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tab_layout_detail" />
 
@@ -189,13 +141,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="10dp"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_pengawas">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="10dp">
@@ -204,87 +156,60 @@
                         android:id="@+id/iv_photo_detail_dokter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_user"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:src="@drawable/ic_user" />
 
                     <TextView
                         android:id="@+id/tv_nama_dokter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/Text.Semibold"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:fontFamily="@font/opensans_semibold"
-                        tools:text="@string/dokter_contoh"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        app:layout_constraintStart_toEndOf="@+id/iv_photo_detail_dokter"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_toEndOf="@+id/iv_photo_detail_dokter"
+                        tools:text="@string/contoh_dokter" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        style="@style/Text.Semibold"
+                        android:layout_below="@id/tv_nama_dokter"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:fontFamily="@font/opensans_semibold"
-                        android:text="Dokter Gigi Umum"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@+id/iv_photo_detail_dokter"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_nama_dokter" />
+                        android:layout_toEndOf="@+id/iv_photo_detail_dokter"
+                        android:text="@string/jenis_dokter"
+                        android:textSize="12sp" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/tv_jadwal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/opensans_semibold"
-                android:text="Jadwal Chat Online"
-                android:textColor="@color/black"
+                style="@style/Text.Semibold"
+                android:layout_marginTop="15dp"
+                android:text="@string/jadwal_chat_online"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_dokter" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_jadwal"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="false"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/blue"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_jadwal">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_jadwal"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    app:chipBackgroundColor="@color/blue"
-                    android:textColor="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    tools:text="@string/jadwal_1" />
-
-            </com.google.android.material.chip.ChipGroup>
-
+                app:layout_constraintTop_toBottomOf="@+id/tv_jadwal"
+                tools:text="@string/contoh_jadwal" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_chat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:background="@drawable/background_btn_selected"
-        android:fontFamily="@font/opensans_regular"
+        style="@style/Button.Selected"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:text="@string/chat_sekarang"
-        android:enabled="false"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

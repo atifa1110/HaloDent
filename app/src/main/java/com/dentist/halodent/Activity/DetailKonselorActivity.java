@@ -22,6 +22,7 @@ import com.dentist.halodent.Model.Extras;
 import com.dentist.halodent.Model.KonselorModel;
 import com.dentist.halodent.Model.Preference;
 import com.dentist.halodent.Model.UserModel;
+import com.dentist.halodent.Profile.EditProfileActivity;
 import com.dentist.halodent.R;
 import com.dentist.halodent.Model.NodeNames;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -82,7 +83,7 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
         card_dokter = findViewById(R.id.card_view_dokter);
         chip_jadwal= findViewById(R.id.chip_jadwal);
         btn_chat = findViewById(R.id.btn_chat);
-        btn_back = findViewById(R.id.btn_back_detail_konselor);
+        //btn_back = findViewById(R.id.btn_back_detail_konselor);
 
         if(konselor.getPhoto()!=null){
             Glide.with(getApplicationContext())
@@ -109,7 +110,7 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
 
         //initialization click button
         btn_chat.setOnClickListener(this);
-        btn_back.setOnClickListener(this);
+        //btn_back.setOnClickListener(this);
         card_dokter.setOnClickListener(this);
 
         //read database
@@ -126,9 +127,6 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.card_view_dokter:
                 showPopUp();
-                break;
-            case R.id.btn_back_detail_konselor:
-                onBackPressed();
                 break;
         }
     }
@@ -254,12 +252,15 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
 
                     tv_nama_dokter.setText("Drg."+ dokterNama);
 
+                }else{
+                    Toast.makeText(DetailKonselorActivity.this,"Data not exist",Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
+                Toast.makeText(DetailKonselorActivity.this,
+                        getString(R.string.failed_to_update, error.getMessage()), Toast.LENGTH_SHORT).show();
             }
         });
     }

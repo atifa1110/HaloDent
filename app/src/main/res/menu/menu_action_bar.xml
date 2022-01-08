@@ -13,5 +13,4 @@
         android:icon="@drawable/ic_info"
         android:title="@string/info"
         app:showAsAction="always" />
-
 </menu>

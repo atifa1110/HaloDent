@@ -64,7 +64,7 @@ public class Step4Activity extends AppCompatActivity {
         });
     }
 
-    public void selecItem(View view) {
+    public void selectItem(View view) {
         boolean check = ((CheckBox) view).isChecked();
 
         switch (view.getId()) {

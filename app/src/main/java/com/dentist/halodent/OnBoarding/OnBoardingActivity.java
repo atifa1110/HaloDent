@@ -26,7 +26,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     private ViewPager2 screenPager;
     private TabLayout tabIndicator;
     private OnBoardingViewPagerAdapter onBoardingViewPagerAdapter;
-    private Button btnNext, btnMulai , btnSkip;
+    private Button btnNext, btnMulai;
     private TextView tvSkip;
 
     private Animation btnAnim ;
@@ -89,7 +89,7 @@ public class OnBoardingActivity extends AppCompatActivity {
                     screenPager.setCurrentItem(position);
                 }
                 if (position == mList.size()-1) { // when we rech to the last screen
-                    // TODO : show the GETSTARTED Button and hide the indicator and the next button
+                    //TODO : show the GETSTARTED Button and hide the indicator and the next button
                     loaddLastScreen();
                 }
             }

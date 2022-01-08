@@ -35,10 +35,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private TextInputEditText etEmail, etName, etPassword, etConfirmPassword, etNomor;
+    private TextInputEditText etEmail, etName, etPassword, etConfirmPassword, etUsia;
     private Button btn_daftar;
     private View progressBar;
-    private String email,nama,password,confirmPassword,ponsel;
+    private String email,nama,password,confirmPassword,usia;
     private Toolbar toolbar;
 
     private FirebaseUser firebaseUser;
@@ -56,7 +56,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         etName = findViewById(R.id.et_nama_signup);
         etPassword = findViewById(R.id.et_pass_signup);
         etConfirmPassword = findViewById(R.id.et_confirmpass_signup);
-        etNomor = findViewById(R.id.et_nomor_signup);
+        etUsia = findViewById(R.id.et_usia_profile);
         btn_daftar = findViewById(R.id.btn_daftar);
         progressBar = findViewById(R.id.progressBar);
 
@@ -106,10 +106,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     databaseReferenceUser = FirebaseDatabase.getInstance().getReference().child(NodeNames.USERS);
                     databaseReferenceSurvey = FirebaseDatabase.getInstance().getReference().child(NodeNames.SURVEY);
 
-                    nama = etName.getText().toString();
-                    ponsel = etNomor.getText().toString();
-
-                    PasienModel userModel = new PasienModel(id,nama,email,"",ponsel,"","","","","");
+                    PasienModel userModel = new PasienModel(id,etName.getText().toString(),email,"","","","",etUsia.getText().toString(),"","");
                     Interview interview = new Interview(step1,step2,step3,step4);
 
                     progressBar.setVisibility(View.VISIBLE);
@@ -130,7 +127,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                     }
                                 });
                             }else{
-                                Toast.makeText(SignUpActivity.this, "gagal menambahkan", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this, R.string.failed_to_update, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -169,7 +166,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         nama = etName.getText().toString().trim();
         password =etPassword.getText().toString().trim();
         confirmPassword = etConfirmPassword.getText().toString().trim();
-        ponsel = etNomor.getText().toString().trim();
+        usia = etUsia.getText().toString().trim();
 
         if(email.isEmpty()){
             res =false;
@@ -183,9 +180,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }else if(confirmPassword.isEmpty()){
             res = false;
             etConfirmPassword.setError("Silahkan isi field");
-        }else if(ponsel.isEmpty()){
+        }else if(usia.isEmpty()){
             res = false;
-            etNomor.setError("Silahkan isi field");
+            etUsia.setError("Silahkan isi field");
         }else if(!password.equals(confirmPassword)){
             res = false;
             etConfirmPassword.setError("Password tidak cocok");

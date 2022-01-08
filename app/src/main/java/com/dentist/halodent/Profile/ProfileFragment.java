@@ -103,7 +103,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         .setPositiveButton("iya", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                               logout(v);
+                               logout();
                             }
                         }).setNegativeButton("tidak", new DialogInterface.OnClickListener() {
                     @Override
@@ -117,7 +117,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void logout(View view){
+    public void logout(){
         final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
         databaseReferenceUser.child(NodeNames.ONLINE).setValue("Offline");

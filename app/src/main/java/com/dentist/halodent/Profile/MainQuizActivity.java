@@ -1,22 +1,30 @@
 package com.dentist.halodent.Profile;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.dentist.halodent.Model.NodeNames;
 import com.dentist.halodent.Model.Preference;
 import com.dentist.halodent.Model.Question;
 import com.dentist.halodent.R;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 public class MainQuizActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,14 +32,12 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
     private Button btn_selesai;
     private Button btn_a,btn_b,btn_c,btn_d;
     private LinearProgressIndicator progressBar;
-    private ImageButton btn_back;
+    private Toolbar toolbar;
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+    private final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    private DatabaseReference databaseReferenceSurvey = FirebaseDatabase.getInstance().getReference().child(NodeNames.SURVEY).child(currentUser.getUid()).child("karies");
 
-    private int mScore=0;
-    private int mQuestionNum=0;
-    private int umur=0;
+    private int mScore,mQuestionNum,umur;
     private Question mQuestionLibrary;
 
     @Override
@@ -45,7 +51,8 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
             finish();
         }
 
-        Preference.removeQuizData(getApplicationContext());
+        //Preference.removeQuizData(getApplicationContext());
+
         umur = Preference.getKeyUserAge(getApplicationContext());
         Log.d("umur",String.valueOf(umur));
         mQuestionLibrary = new Question(umur);
@@ -55,7 +62,10 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
         number = findViewById(R.id.number);
         question = findViewById(R.id.question);
         progressBar = findViewById(R.id.progress);
-        btn_back = findViewById(R.id.imageButton);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+
         btn_selesai = findViewById(R.id.btn_selesai);
 
         btn_a = findViewById(R.id.btn1);
@@ -67,7 +77,13 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
         btn_b.setOnClickListener(this);
         btn_c.setOnClickListener(this);
         btn_d.setOnClickListener(this);
-        btn_back.setOnClickListener(this);
+        btn_selesai.setOnClickListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         //show question
         updateAddQuestion();
@@ -79,9 +95,6 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         int score=0;
         switch (v.getId()){
-            case R.id.imageButton:
-                onBackPressed();
-                break;
             case R.id.btn1:
                 score = 1;
                 if(mQuestionNum == 4){
@@ -96,6 +109,14 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btn4:
                 score = 3;
+                break;
+            case R.id.btn_selesai:
+                Intent intent = new Intent(MainQuizActivity.this,ScoreActivity.class);
+                startActivity(intent);
+                Preference.setKeyQuizOpen(getApplicationContext(),true);
+                Log.d("Total_Score",String.valueOf(mScore));
+                databaseReferenceSurvey.child("score").setValue(mScore);
+                Preference.setKeyQuizScore(getApplicationContext(),mScore);
                 break;
             default:
                 break;
@@ -144,19 +165,25 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
             btn_c.setEnabled(false);
             btn_d.setEnabled(false);
             btn_selesai.setVisibility(View.VISIBLE);
-            btn_selesai.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainQuizActivity.this,ScoreActivity.class);
-                    startActivity(intent);
-                    Preference.setKeyQuizOpen(getApplicationContext(),true);
-                    Log.d("Total_Score",String.valueOf(mScore));
-                    Preference.setKeyQuizScore(getApplicationContext(),mScore);
-                }
-            });
         }
     }
 
+//    private Integer umur(){
+//        DatabaseReference databaseReferenceUser = FirebaseDatabase.getInstance().getReference().child(NodeNames.USERS).child(currentUser.getUid());
+//        databaseReferenceUser.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+//                int us = Integer.parseInt(snapshot.child(NodeNames.USIA).getValue().toString());
+//                umur = us;
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+//
+//            }
+//        });
+//        return umur;
+//    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();

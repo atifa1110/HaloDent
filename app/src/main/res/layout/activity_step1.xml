@@ -13,49 +13,35 @@
 
     <TextView
         android:id="@+id/tv_step1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/opensans_bold"
+        style="@style/Text.BoldBlack"
         android:layout_below="@id/appbar"
-        android:text="@string/step1"
-        android:textColor="@color/black"
-        android:textSize="20sp"/>
+        android:text="@string/step1" />
 
     <TextView
         android:id="@+id/tv_quest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Text.Black"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
         android:layout_marginTop="16dp"
-        android:textColor="@color/black"
         android:text="@string/apakah_anda_pernah"
         android:layout_below="@+id/tv_step1"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_iya"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Button.Green"
         android:layout_marginStart="25dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
-        android:background="@drawable/background_btn_green"
         android:text="@string/iya"
-        android:textColor="@color/white"
         android:layout_below="@id/tv_quest"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_tidak"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Button.Red"
         android:layout_marginStart="25dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
-        android:background="@drawable/background_btn_red"
         android:text="@string/tidak"
-        android:textColor="@color/white"
         android:layout_below="@id/btn_iya"/>
 
 </RelativeLayout>

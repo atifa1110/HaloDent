@@ -7,30 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".Activity.DetailDokterFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:elevation="0dp"
-        android:background="@color/white"
+    <include
         android:id="@+id/appbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:paddingStart="6dp"
-        android:paddingEnd="16dp"
-        app:contentInsetStartWithNavigation="0dp"
-        app:navigationIcon="@drawable/ic_close" />
-    </com.google.android.material.appbar.AppBarLayout>
+        layout="@layout/custom_action_layout"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_photo_detail_dokter"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_user"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,13 +23,10 @@
 
     <TextView
         android:id="@+id/tv_nama_detail_dokter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Text.Semibold"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/opensans_semibold"
         android:gravity="center"
         tools:text="@string/contoh_nama"
-        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,10 +34,8 @@
 
     <TextView
         android:id="@+id/tv_email_detail_dokter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Text"
         android:layout_marginBottom="20dp"
-        android:fontFamily="@font/opensans_regular"
         android:gravity="center"
         tools:text="@string/email_contoh"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,14 +44,10 @@
 
     <TextView
         android:id="@+id/tv_about"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Text.Semibold"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
-        android:fontFamily="@font/opensans_bold"
-        android:text="About"
-        android:textColor="@color/black"
-        android:textSize="14sp"
+        android:text="@string/about"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_email_detail_dokter" />
 
@@ -93,13 +68,13 @@
             android:layout_marginBottom="8dp">
 
             <TextView
-                style="@style/TextSpec.Field"
+                style="@style/Text"
                 android:text="@string/nip" />
 
             <TextView
                 android:id="@+id/tv_nip"
-                style="@style/TextSpec.Value"
-                tools:text="@string/tv_nip" />
+                style="@style/Text.Black"
+                tools:text="@string/contoh_nip" />
         </TableRow>
 
         <TableRow
@@ -108,12 +83,12 @@
             android:layout_marginBottom="8dp">
 
             <TextView
-                style="@style/TextSpec.Field"
-                android:text="@string/nomor_sip" />
+                style="@style/Text"
+                android:text="@string/sip"/>
 
             <TextView
                 android:id="@+id/tv_sip"
-                style="@style/TextSpec.Value"
+                style="@style/Text.Black"
                 tools:text="@string/contoh_sip" />
         </TableRow>
 
@@ -123,17 +98,14 @@
             android:layout_marginBottom="8dp">
 
             <TextView
-                style="@style/TextSpec.Field"
-                android:text="@string/nomorSTR" />
+                style="@style/Text"
+                android:text="@string/str" />
 
             <TextView
                 android:id="@+id/tv_str"
-                style="@style/TextSpec.Value"
-                tools:text="@string/nomor_str"/>
-
+                style="@style/Text.Black"
+                tools:text="@string/contoh_str"/>
         </TableRow>
-
     </TableLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

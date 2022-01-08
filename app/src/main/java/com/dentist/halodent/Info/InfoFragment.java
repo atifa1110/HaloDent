@@ -4,14 +4,20 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -38,7 +44,6 @@ public class InfoFragment extends Fragment {
     private RecyclerView rvTopik;
     private TopikAdapter topikAdapter;
     private List<TopikModel> topikModelList;
-    private TextInputEditText searchText;
     private View progress_bar;
 
     private String topik_id,topik_nama,topik_narasi,topik_photo,topik_sumber,topik_time,topik_tipe;
@@ -54,11 +59,9 @@ public class InfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        setHasOptionsMenu(true);
 
         progress_bar = view.findViewById(R.id.progress_bar);
-        searchText = view.findViewById(R.id.searchView);
-        searchText.setHint("Search Information");
 
         rvTopik = view.findViewById(R.id.rv_info);
         databaseReferenceTopik = FirebaseDatabase.getInstance().getReference().child(NodeNames.TOPIKS);
@@ -68,27 +71,6 @@ public class InfoFragment extends Fragment {
         topikAdapter = new TopikAdapter(getContext(), topikModelList);
         rvTopik.setAdapter(topikAdapter);
 
-        searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.toString().isEmpty()){
-                    rvTopik.setAdapter(topikAdapter);
-                    topikAdapter.notifyDataSetChanged();
-                }else{
-                    searchTopik(s.toString());
-                }
-            }
-        });
 
         readTopikDatabase();
         //progress_bar.setVisibility(View.VISIBLE);
@@ -165,5 +147,35 @@ public class InfoFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+        inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_action_bar, menu);
+        MenuItem info = menu.findItem(R.id.menu_info);
+        info.setVisible(false);
+        MenuItem search = menu.findItem(R.id.menu_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //called when submit text
+                if(!TextUtils.isEmpty(query.trim())){
+                    searchTopik(query);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //called when typing text
+                if(!TextUtils.isEmpty(newText.trim())){
+                    searchTopik(newText);
+                }
+                return false;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }
