@@ -1,5 +1,7 @@
 package com.dentist.halodent.Notification;
 
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -7,12 +9,13 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface Api {
-
     @FormUrlEncoded
     @POST("send")
     Call<ResponseBody> sendNotification(
-            @Field("topic") String topic,
+            @Field("token") String token,
+            @Field("token1") String token1,
             @Field("title") String title,
-            @Field("body") String body
+            @Field("body") String body,
+            @Field("image") String image
     );
 }

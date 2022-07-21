@@ -1,6 +1,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUp.Step4Activity">
@@ -11,72 +12,95 @@
 
     <TextView
         android:id="@+id/tv_step2"
-        style="@style/Text.BoldBlack"
-        android:text="@string/step4"
-        android:layout_below="@id/appbar"/>
+        style="@style/Text.Medium"
+        android:layout_below="@id/appbar"
+        android:text="@string/step4" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_step2"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:max="5"
+        android:progress="4"
+        app:indicatorColor="@color/green" />
 
     <TextView
         android:id="@+id/tv_quest"
         style="@style/Text.Black"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
+        android:layout_below="@+id/progress_bar"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:text="@string/silahkan_centang"
-        android:layout_below="@+id/tv_step2"/>
+        android:layout_marginEnd="20dp"
+        android:text="@string/silahkan_centang" />
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkBox_diabetes"
         style="@style/Checkbox"
+        android:layout_below="@+id/tv_quest"
         android:layout_marginTop="10dp"
-        android:text="@string/diabetes"
-        android:onClick="selectItem"
-        android:layout_below="@+id/tv_quest"/>
+        android:text="@string/diabetes" />
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkBox_jantung"
         style="@style/Checkbox"
-        android:text="@string/hipertensi"
-        android:onClick="selectItem"
-        android:layout_below="@id/checkBox_diabetes"/>
+        android:layout_below="@id/checkBox_diabetes"
+        android:text="@string/jantung" />
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkBox_hipertensi"
         style="@style/Checkbox"
-        android:text="@string/jantung"
-        android:onClick="selectItem"
-        android:layout_below="@id/checkBox_jantung"/>
+        android:layout_below="@id/checkBox_jantung"
+        android:text="@string/hipertensi" />
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkBox_alergi"
         style="@style/Checkbox"
-        android:text="@string/alergi"
-        android:onClick="selectItem"
-        android:layout_below="@id/checkBox_hipertensi" />
+        android:layout_below="@id/checkBox_hipertensi"
+        android:text="@string/alergi" />
 
-    <CheckBox
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_alergi"
+        android:layout_below="@id/checkBox_alergi"
+        android:visibility="gone"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_add"
+        style="@style/TextInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_alergi"
+            style="@style/TextInputEditText.inputText"
+            android:hint="Tulis Alergi anda"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkBox_tidak_ada"
         style="@style/Checkbox"
-        android:text="@string/tidak_ada"
-        android:onClick="selectItem"
-        android:layout_below="@id/checkBox_alergi"/>
+        android:layout_below="@id/til_alergi"
+        android:text="@string/tidak_ada" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_next_4"
-        style="@style/Button.Blue"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="25dp"
-        android:text="@string/next"
-        android:layout_below="@id/checkBox_tidak_ada" />
+        style="@style/Button.ColorBlue"
+        android:layout_below="@id/checkBox_tidak_ada"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/lanjutkan" />
 
     <TextView
         android:id="@+id/hasil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:visibility="gone"
         android:layout_below="@id/btn_next_4"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="hasil"/>
-
+        android:visibility="gone"
+        android:text="hasil"
+        android:textColor="@color/black" />
 </RelativeLayout>

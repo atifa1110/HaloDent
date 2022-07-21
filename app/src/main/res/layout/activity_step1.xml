@@ -13,35 +13,48 @@
 
     <TextView
         android:id="@+id/tv_step1"
-        style="@style/Text.BoldBlack"
+        style="@style/Text.Medium"
         android:layout_below="@id/appbar"
         android:text="@string/step1" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_step1"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:max="5"
+        android:progress="1"
+        app:indicatorColor="@color/green" />
 
     <TextView
         android:id="@+id/tv_quest"
         style="@style/Text.Black"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
+        android:layout_below="@+id/progress_bar"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:text="@string/apakah_anda_pernah"
-        android:layout_below="@+id/tv_step1"/>
+        android:layout_marginEnd="20dp"
+        android:text="@string/apakah_anda_pernah" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_iya"
-        style="@style/Button.Green"
-        android:layout_marginStart="25dp"
+        style="@style/Button.ColorGreen"
+        android:layout_below="@id/tv_quest"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="25dp"
-        android:text="@string/iya"
-        android:layout_below="@id/tv_quest"/>
+        android:layout_marginEnd="20dp"
+        android:text="@string/iya" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_tidak"
-        style="@style/Button.Red"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="25dp"
-        android:text="@string/tidak"
-        android:layout_below="@id/btn_iya"/>
+        style="@style/Button.ColorRed"
+        android:layout_below="@id/btn_iya"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/tidak" />
 
 </RelativeLayout>

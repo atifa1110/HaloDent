@@ -3,7 +3,6 @@ package com.dentist.halodent.Chat;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -23,7 +22,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -40,6 +38,8 @@ import com.dentist.halodent.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -67,11 +67,16 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     private ImageView ivSend,ivAttachment, ivProfile;
     private TextView tvUserName;
     private TextInputEditText etMessage;
-    private LinearLayout llProgress;
+    private LinearLayout llProgress,llSendChat;
+
+    private BottomSheetDialog bottomSheetDialog;
+
+    private TextView tokenlist;
+    private View llSnackbar;
 
     private RecyclerView rv_message;
     private SwipeRefreshLayout srlMessage;
-    private List<MessageModel> messageList;
+    private List<Messages> messageList;
     private MessageAdapter messageAdapter;
 
     private DatabaseReference mRootRef;
@@ -79,7 +84,11 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseUser currentUser;
     private String currentUserId,groupId,groupName,groupPhoto,downloadUrl;
 
-    private DatabaseReference databaseReferenceKonselors,databaseReferenceGroups;
+    List <String> tokens = new ArrayList<>();
+    String msg="";
+    String image="";
+
+    private DatabaseReference databaseReferenceGroups,databaseReferenceToken;
     //listen new message
     private ChildEventListener childEventListener;
 
@@ -114,8 +123,13 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
 
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.bottom_chat_photo);
+
         //inisialisasi semua view
         llProgress = findViewById(R.id.llProgress);
+        llSendChat = findViewById(R.id.llSendChat);
+        llSnackbar = findViewById(R.id.llSnackbar);
         ivSend = findViewById(R.id.ivSend);
         ivAttachment = findViewById(R.id.ivAttachment);
         ivProfile = findViewById(R.id.iv_profile_action);
@@ -123,6 +137,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         //tvUserStatus = findViewById(R.id.tv_userStatus_action);
         etMessage = findViewById(R.id.etMessage);
         srlMessage = findViewById(R.id.srlMessages);
+
+        tokenlist = findViewById(R.id.tokenlist);
 
         //inisialisasi firebase
         mAuth = FirebaseAuth.getInstance();
@@ -143,6 +159,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
         //set database
         databaseReferenceGroups = FirebaseDatabase.getInstance().getReference().child(NodeNames.GROUPS);
+        databaseReferenceToken = FirebaseDatabase.getInstance().getReference().child(NodeNames.TOKENS);
 
         //get data from preference
         groupId = Preference.getKeyGroupId(getApplicationContext());
@@ -167,6 +184,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             public void onRefresh() {
                 currentPage++;
                 loadGroupMessages();
+                session();
             }
         });
 
@@ -184,12 +202,29 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(GroupActivity.this,"Can't send empty message...",Toast.LENGTH_SHORT).show();
                 }else{
                     //send message
-                    sendMessage(message,Constant.MESSAGE_TYPE_TEXT);
+                    sendMessage(groupName,message,Constant.MESSAGE_TYPE_TEXT);
                 }
                 break;
             case R.id.ivAttachment:
                 //pick image from gallery or gallery
-                showImageImportDialog();
+                //showImageImportDialog();
+                showImage();
+                break;
+            case R.id.camera:
+                if(!checkCameraPermission()){
+                    //not granted -- request
+                    requestCameraPermission();
+                }else{
+                    pickCamera();
+                }
+                break;
+            case R.id.gallery:
+                if(!checkStoragePermission()){
+                    //not granted -- request
+                    requestStoragePermission();
+                }else{
+                    pickGallery();
+                }
                 break;
         }
     }
@@ -202,17 +237,11 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     String status = snapshot.child(NodeNames.STATUS).getValue().toString();
 
                     if(status.equals("selesai")){
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GroupActivity.this);
-                        alertDialogBuilder.setMessage("Sesi chat ini sudah berakhir")
-                                .setCancelable(false)
-                                .setNegativeButton("Keluar", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        onBackPressed();
-                                    }
-                                });
-                        AlertDialog alertDialog = alertDialogBuilder.create();
-                        alertDialog.show();
+                        llSnackbar.setVisibility(View.VISIBLE);
+                        llSendChat.setVisibility(View.GONE);
+                    }else{
+                        llSnackbar.setVisibility(View.GONE);
+                        llSendChat.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -224,36 +253,15 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    private void showImageImportDialog(){
-        //option to display
-        String[] Options = {"Camera","Gallery"};
 
-        //show dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pilih Foto")
-                .setItems(Options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //handle click
-                        if(which==0){
-                            //clicked camera
-                            if(!checkCameraPermission()){
-                                //not granted -- request
-                                requestCameraPermission();
-                            }else{
-                                pickCamera();
-                            }
-                        }else{
-                            //clicked gallery
-                            if(!checkStoragePermission()){
-                                //not granted -- request
-                                requestStoragePermission();
-                            }else{
-                                pickGallery();
-                            }
-                        }
-                    }
-                }).show();
+    private void showImage(){
+        MaterialButton camera = bottomSheetDialog.findViewById(R.id.camera);
+        MaterialButton gallery = bottomSheetDialog.findViewById(R.id.gallery);
+
+        camera.setOnClickListener(this);
+        gallery.setOnClickListener(this);
+
+        bottomSheetDialog.show();
     }
 
     private void pickGallery(){
@@ -368,7 +376,9 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
                 if(task.isSuccessful()){
                     //image uri receiver , save in db
-                    sendMessage(url,Constant.MESSAGE_TYPE_IMAGE);
+                    sendMessage(groupName,url,Constant.MESSAGE_TYPE_IMAGE);
+                    finish();
+                    bottomSheetDialog.dismiss();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -379,29 +389,49 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    private void sendMessage(String message, String msgType){
+    private void sendMessage(String title,String message,String msgType){
         //timestamp
         String timestamp = ""+System.currentTimeMillis();
 
-        MessageModel messageModel = new MessageModel(message,currentUser.getUid(),timestamp,msgType);
+        Messages messages = new Messages(message,currentUser.getUid(),timestamp,msgType);
 
         //add to db
         databaseReferenceGroups.child(groupId).child("Messages").child(timestamp)
-                .setValue(messageModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 //message sent
+                databaseReferenceGroups.child(groupId).child(NodeNames.TIME_STAMP).setValue(timestamp);
                 Toast.makeText(GroupActivity.this,"Pesan berhasil terkirim",Toast.LENGTH_SHORT).show();
                 etMessage.setText("");
 
-                String title="";
                 if(msgType.equals(Constant.MESSAGE_TYPE_TEXT)){
-                    title = "New Message";
+                    msg = currentUser.getDisplayName()+" : "+message;
+                    image = " ";
                 }else if(msgType.equals(Constant.MESSAGE_TYPE_IMAGE)){
-                    title = "New Image";
+                    msg = currentUser.getDisplayName()+" : "+"New Image";
+                    image = message;
                 }
 
-                Util.sendNotification(GroupActivity.this,title,message,currentUser.getUid());
+                databaseReferenceGroups.child(groupId).child(NodeNames.PARTICIPANTS).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            String id = ds.child(NodeNames.ID).getValue().toString();
+                            if(!id.equals(currentUser.getUid())){
+                                tokens.add(id);
+                            }
+                        }
+
+                        //Toast.makeText(GroupActivity.this,"Token berhasil teridentifilasi",Toast.LENGTH_SHORT).show();
+                        Util.sendNotification(GroupActivity.this,tokens,title,msg,image,currentUser.getUid());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        //Toast.makeText(GroupActivity.this,"Token gagal teridentifilasi",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -414,7 +444,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
     private void loadGroupMessages(){
         messageList.clear();
-        Query messageQuery = databaseReferenceGroups.child(groupId).child("Messages").limitToLast(currentPage * RECORD_PER_PAGE);
+        Query messageQuery = databaseReferenceGroups.child(groupId).child(Messages.class.getSimpleName()).limitToLast(currentPage * RECORD_PER_PAGE);
 
         if (childEventListener != null)
             messageQuery.removeEventListener(childEventListener);
@@ -422,7 +452,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable  String previousChildName) {
-                MessageModel message = snapshot.getValue(MessageModel.class);
+                Messages message = snapshot.getValue(Messages.class);
                 if (!messageList.contains(message)) {
                     messageList.add(message);
                     messageAdapter.notifyDataSetChanged();

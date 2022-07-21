@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        style="@style/Text.Semibold"
+        style="@style/Text.Medium2"
         android:text="@string/ubah_foto_profil"
         android:padding="8dp"/>
 

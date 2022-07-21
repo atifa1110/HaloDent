@@ -1,6 +1,5 @@
 package com.dentist.halodent.Profile;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -13,18 +12,12 @@ import android.widget.TextView;
 
 import com.dentist.halodent.Model.NodeNames;
 import com.dentist.halodent.Model.Preference;
-import com.dentist.halodent.Model.Question;
 import com.dentist.halodent.R;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.jetbrains.annotations.NotNull;
 
 public class MainQuizActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -112,6 +105,7 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btn_selesai:
                 Intent intent = new Intent(MainQuizActivity.this,ScoreActivity.class);
+                intent.putExtra("score",mScore);
                 startActivity(intent);
                 Preference.setKeyQuizOpen(getApplicationContext(),true);
                 Log.d("Total_Score",String.valueOf(mScore));
@@ -168,22 +162,6 @@ public class MainQuizActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-//    private Integer umur(){
-//        DatabaseReference databaseReferenceUser = FirebaseDatabase.getInstance().getReference().child(NodeNames.USERS).child(currentUser.getUid());
-//        databaseReferenceUser.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-//                int us = Integer.parseInt(snapshot.child(NodeNames.USIA).getValue().toString());
-//                umur = us;
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-//
-//            }
-//        });
-//        return umur;
-//    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -3,29 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@id/FirstFragment">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.dentist.halodent.Home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/FirstFragment"
+        android:name="com.dentist.halodent.FirstFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_first">
 
+        <action
+            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+    </fragment>
     <fragment
-        android:id="@+id/navigation_chat"
-        android:name="com.dentist.halodent.Chat.GroupFragment"
-        android:label="@string/title_chat"
-        tools:layout="@layout/fragment_group" />
+        android:id="@+id/SecondFragment"
+        android:name="com.dentist.halodent.SecondFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_second">
 
-    <fragment
-        android:id="@+id/navigation_info"
-        android:name="com.dentist.halodent.Info.InfoFragment"
-        android:label="@string/title_info"
-        tools:layout="@layout/fragment_info" />
-
-    <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.dentist.halodent.Profile.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        <action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
 </navigation>

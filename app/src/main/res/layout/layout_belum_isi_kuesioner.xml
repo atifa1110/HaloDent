@@ -2,8 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_belum_isi"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
     android:paddingBottom="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -33,7 +34,7 @@
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:fontFamily="@font/opensans_semibold"
+            android:fontFamily="@font/roboto_regular"
             android:text="@string/belum_isi"
             android:textColor="@color/white"
             android:textSize="14sp"
@@ -41,19 +42,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_lets_go"
-            style="@style/Button.Green"
-            android:layout_width="130dp"
-            android:layout_height="30dp"
+            style="@style/Button.ColorGreen"
+            android:layout_width="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/background_btn_green"
-            android:text="@string/lets_go"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:fontFamily="@font/opensans_bold"
+            android:text="@string/isi"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_belum_isi" />

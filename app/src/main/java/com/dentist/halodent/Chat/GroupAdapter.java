@@ -13,9 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.dentist.halodent.Home.Dokters;
+import com.dentist.halodent.Home.Konselors;
 import com.dentist.halodent.Model.NodeNames;
 import com.dentist.halodent.Model.Util;
 import com.dentist.halodent.Model.Preference;
+import com.dentist.halodent.Profile.Pasiens;
 import com.dentist.halodent.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,9 +35,9 @@ import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> {
 
     private Context context;
-    private List<GroupModel> groupList;
+    private List<Groups> groupList;
 
-    public GroupAdapter(Context context, List<GroupModel> groupList) {
+    public GroupAdapter(Context context, List<Groups> groupList) {
         this.context = context;
         this.groupList = groupList;
     }
@@ -49,11 +52,19 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull GroupAdapter.GroupViewHolder holder, int position) {
-        GroupModel groupModel = groupList.get(position);
+        Groups groups = groupList.get(position);
 
-        final String groupId = groupModel.getGroupId();
-        holder.groupName.setText(groupModel.groupTitle);
-        loadLastMessage(groupModel,holder);
+        if(groups.getStatus().equals("selesai")){
+            holder.divider.setVisibility(View.VISIBLE);
+            holder.groupSelesai.setVisibility(View.VISIBLE);
+        }else{
+            holder.divider.setVisibility(View.GONE);
+            holder.groupSelesai.setVisibility(View.GONE);
+        }
+
+        final String groupId = groups.getGroupId();
+        holder.groupName.setText(groups.getGroupTitle());
+        loadLastMessage(groups,holder);
         try{
             Glide.with(context)
                     .load(R.drawable.ic_group).
@@ -69,21 +80,22 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
             public void onClick(View v) {
                 Intent intent = new Intent(context, GroupActivity.class);
                 Preference.setKeyGroupId(context,groupId);
-                Preference.setKeyGroupName(context,groupModel.getGroupTitle());
-                Preference.setKeyGroupPhoto(context,groupModel.getGroupIcon());
+                Preference.setKeyGroupName(context, groups.getGroupTitle());
+                Preference.setKeyGroupPhoto(context, groups.getGroupIcon());
                 context.startActivity(intent);
             }
         });
     }
 
-    private void loadLastMessage(GroupModel groupModel,GroupViewHolder holder){
+    private void loadLastMessage(Groups groups, GroupViewHolder holder){
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         //get last message from group
         DatabaseReference message = FirebaseDatabase.getInstance().getReference().child("Groups");
-        message.child(groupModel.groupId).child("Messages").limitToLast(1).addValueEventListener(new ValueEventListener() {
+        message.child(groups.getGroupId()).child("Messages").limitToLast(1).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 for (DataSnapshot ds :snapshot.getChildren()){
+                    //Messages message = snapshot.getValue(Messages.class);
                     String message = ds.child("message").getValue().toString();
                     String messageFrom = ds.child("messageFrom").getValue().toString();
                     String messageTime = ds.child("messageTime").getValue().toString();
@@ -125,8 +137,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    String nama = snapshot.child(NodeNames.NAME).getValue().toString();
-                    holder.groupSender.setText(nama+": ");
+                    Konselors konselors = snapshot.getValue(Konselors.class);
+                    holder.groupSender.setText(konselors.getNama()+": ");
                 }else{
                     setDokterName(messageFrom,holder);
                 }
@@ -145,8 +157,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         ref.child(messageFrom).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                String nama = snapshot.child(NodeNames.NAME).getValue().toString();
-                holder.groupSender.setText(nama+": ");
+                Dokters dokters = snapshot.getValue(Dokters.class);
+                holder.groupSender.setText(dokters.getNama()+": ");
             }
 
             @Override
@@ -163,11 +175,14 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     public class GroupViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView groupPhoto;
-        private TextView groupName, groupSender, groupLastMessage, groupLastMessageTime;
+        private TextView groupName, groupSender, groupLastMessage, groupLastMessageTime,groupSelesai;
+        private View divider;
 
         public GroupViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
+            divider = itemView.findViewById(R.id.divider);
+            groupSelesai = itemView.findViewById(R.id.tv_selesai);
             groupPhoto = itemView.findViewById(R.id.iv_group_chat);
             groupName = itemView.findViewById(R.id.tv_group_chat);
             groupSender = itemView.findViewById(R.id.tv_sender_message_chat);

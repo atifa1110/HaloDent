@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dentist.halodent.R;
-import com.dentist.halodent.Model.ScreenItem;
 
 import java.util.List;
 
@@ -26,15 +24,14 @@ public class OnBoardingViewPagerAdapter extends RecyclerView.Adapter<OnBoardingV
         this.mListScreen = mListScreen;
     }
 
-    @NonNull
     @Override
-    public OnBoardingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OnBoardingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_onboarding,parent,false);
         return new OnBoardingViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OnBoardingViewPagerAdapter.OnBoardingViewHolder holder, int position) {
+    public void onBindViewHolder(OnBoardingViewPagerAdapter.OnBoardingViewHolder holder, int position) {
 
         holder.introTitle.setText(mListScreen.get(position).getTitle());
         holder.introDesc.setText(mListScreen.get(position).getDescription());
@@ -52,7 +49,7 @@ public class OnBoardingViewPagerAdapter extends RecyclerView.Adapter<OnBoardingV
         private ImageView introImage;
         private TextView introTitle , introDesc;
 
-        public OnBoardingViewHolder(@NonNull View itemView) {
+        public OnBoardingViewHolder(View itemView) {
             super(itemView);
 
             introImage = itemView.findViewById(R.id.intro_img);

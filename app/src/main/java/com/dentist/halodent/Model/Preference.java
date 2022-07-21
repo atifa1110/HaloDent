@@ -238,4 +238,10 @@ public class Preference {
         //editor.remove(KEY_QUIZ_SCORE);
         editor.apply();
     }
+
+    public static void removeButtonClick(Context context){
+        SharedPreferences.Editor editor = getSharedPreference(context).edit();
+        editor.remove(KEY_BUTTON_CLICK);
+        editor.apply();
+    }
 }

@@ -7,27 +7,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    tools:context=".Activity.SplashActivity">
-
-    <TextView
-        android:id="@+id/tv_logo_name"
-        style="@style/Text.BoldWhite"
-        android:layout_marginBottom="50dp"
-        android:textSize="20sp"
-        android:text="@string/app_name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    tools:context=".OnBoarding.SplashActivity">
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_dentalcare" />
+        android:src="@drawable/ic_logo_blue" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

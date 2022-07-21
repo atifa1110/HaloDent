@@ -2,6 +2,7 @@ package com.dentist.halodent.Home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.dentist.halodent.Model.Extras;
-import com.dentist.halodent.Model.KonselorModel;
 import com.dentist.halodent.Model.Preference;
 import com.dentist.halodent.R;
-import com.dentist.halodent.Activity.DetailKonselorActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -25,11 +24,11 @@ import java.util.List;
 public class KonselorAdapter extends RecyclerView.Adapter<KonselorAdapter.KonselorViewHolder> {
 
     private Context context;
-    private List<KonselorModel> konselorList;
+    private List<Konselors> konselorsList;
 
-    public KonselorAdapter(Context context, List<KonselorModel> konselorList) {
+    public KonselorAdapter(Context context, List<Konselors> konselorsList) {
         this.context = context;
-        this.konselorList = konselorList;
+        this.konselorsList = konselorsList;
     }
 
     @NonNull
@@ -40,15 +39,16 @@ public class KonselorAdapter extends RecyclerView.Adapter<KonselorAdapter.Konsel
         return new KonselorViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull @NotNull KonselorAdapter.KonselorViewHolder holder, int position) {
 
-        KonselorModel konselor = konselorList.get(position);
+        Konselors konselors = konselorsList.get(position);
 
-        holder.tvNamaKonselor.setText(konselor.getNama());
-        holder.tvOnline.setText(konselor.getStatus());
+        holder.tvNamaKonselor.setText(konselors.getNama());
+        holder.tvOnline.setText(konselors.getStatus());
 
-        if (konselor.getStatus().equals("Online")){
+        if (konselors.getStatus().equals("Online")){
             holder.ivCircle.setImageDrawable(context.getDrawable(R.drawable.ic_circle_green));
         }else{
             holder.tvOnline.setTextColor(context.getResources().getColor(R.color.grey));
@@ -57,7 +57,7 @@ public class KonselorAdapter extends RecyclerView.Adapter<KonselorAdapter.Konsel
 
         try{
             Glide.with(context)
-                    .load(konselor.getPhoto())
+                    .load(konselors.getPhoto())
                     .placeholder(R.drawable.ic_user)
                     .fitCenter()
                     .into(holder.ivProfileKonselor);
@@ -70,8 +70,8 @@ public class KonselorAdapter extends RecyclerView.Adapter<KonselorAdapter.Konsel
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailKonselorActivity.class);
-                intent.putExtra(Extras.KONSELOR,new KonselorModel(konselor.getId(),konselor.getNama(),konselor.getEmail(),konselor.getPhoto(),konselor.getPonsel(),konselor.getStatus(),konselor.getRole(),konselor.getNim(),konselor.getAngkatan(),konselor.getKelamin()));
-                Preference.setKeyKonselorId(context,konselor.getId());
+                intent.putExtra("konselor",new Konselors(konselors.getId(), konselors.getNama(), konselors.getEmail(), konselors.getPhoto(), konselors.getPonsel(), konselors.getStatus(), konselors.getRole(), konselors.getKelamin(), konselors.getNim(), konselors.getAngkatan()));
+                Preference.setKeyKonselorId(context, konselors.getId());
                 context.startActivity(intent);
             }
         });
@@ -79,7 +79,7 @@ public class KonselorAdapter extends RecyclerView.Adapter<KonselorAdapter.Konsel
 
     @Override
     public int getItemCount() {
-        return konselorList.size();
+        return konselorsList.size();
     }
 
     public class KonselorViewHolder extends RecyclerView.ViewHolder{

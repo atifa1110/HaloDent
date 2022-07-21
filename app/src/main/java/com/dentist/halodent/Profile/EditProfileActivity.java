@@ -20,11 +20,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.dentist.halodent.Model.PasienModel;
 import com.dentist.halodent.Model.Preference;
 import com.dentist.halodent.R;
 import com.dentist.halodent.Model.NodeNames;
@@ -32,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -59,7 +58,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private String id,email,nama,usia,kelamin,photo,alamat,ponsel,status,role;
     private ArrayAdapter<String> jenisAdapter;
 
-    private PasienModel pasien;
+    private Pasiens pasiens;
     private ProgressDialog progress;
     private BottomSheetDialog bottomSheetDialog;
     private Uri localFileUri, serverFileUri;
@@ -81,13 +80,14 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         etAlamat = findViewById(R.id.et_alamat_profile);
         etNomor = findViewById(R.id.et_nomor_profile);
         btn_simpan = findViewById(R.id.btn_simpan);
-        ivProfile = findViewById(R.id.iv_profile_profile);
+        ivProfile =findViewById(R.id.iv_profile_profile);;
 
         //set menu
         setDropDownMenu();
 
         progress = new ProgressDialog(this);
         progress.setMessage("Silahkan Tunggu..");
+        progress.show();
 
         bottomSheetDialog = new BottomSheetDialog(this);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_photo);
@@ -95,7 +95,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         //inisialisasi database
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child(NodeNames.USERS);
+        databaseReference = FirebaseDatabase.getInstance().getReference().child(NodeNames.PASIENS);
         fileStorage = FirebaseStorage.getInstance().getReference();
 
         btn_simpan.setOnClickListener(this);
@@ -105,7 +105,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         if(currentUser!=null) {
             etNama.setText(currentUser.getDisplayName());
             serverFileUri= currentUser.getPhotoUrl();
-            readUserDatabase();
+            getDataUser();
             if(serverFileUri!=null){
                 Glide.with(this)
                         .load(serverFileUri)
@@ -147,8 +147,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void changeImage(){
-        LinearLayout remove = bottomSheetDialog.findViewById(R.id.delete);
-        LinearLayout choose = bottomSheetDialog.findViewById(R.id.choose);
+        MaterialButton remove = bottomSheetDialog.findViewById(R.id.delete);
+        MaterialButton choose = bottomSheetDialog.findViewById(R.id.choose);
 
         remove.setOnClickListener(this);
         choose.setOnClickListener(this);
@@ -201,7 +201,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             public void onComplete(@NonNull @NotNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     String userId = currentUser.getUid();
-                    databaseReference = FirebaseDatabase.getInstance().getReference().child(NodeNames.USERS);
+                    databaseReference = FirebaseDatabase.getInstance().getReference().child(NodeNames.PASIENS);
 
                     databaseReference.child(userId).child(NodeNames.PHOTO).setValue(" ").addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -214,6 +214,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                                 @Override
                                 public void onSuccess(Void unused) {
                                     ivProfile.setImageResource(R.drawable.ic_user);
+                                    finish();
                                     bottomSheetDialog.dismiss();
                                 }
                             });
@@ -224,18 +225,20 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-    private void readUserDatabase(){
-        databaseReference = FirebaseDatabase.getInstance().getReference().child(NodeNames.USERS);
+    private void getDataUser(){
+        //databaseReference = FirebaseDatabase.getInstance().getReference().child(NodeNames.PASIENS);
         databaseReference.child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    etJenisKel.setText(snapshot.child(NodeNames.JENIS_KELAMIN).getValue().toString());
-                    etUsia.setText(snapshot.child(NodeNames.USIA).getValue().toString());
-                    etAlamat.setText(snapshot.child(NodeNames.ALAMAT).getValue().toString());
-                    etNomor.setText(snapshot.child(NodeNames.PHONE_NUMBER).getValue().toString());
+                    progress.dismiss();
+                    Pasiens pasiens = snapshot.getValue(Pasiens.class);
+                    etJenisKel.setText(pasiens.getKelamin());
+                    etUsia.setText(pasiens.getUsia());
+                    etAlamat.setText(pasiens.getAlamat());
+                    etNomor.setText(pasiens.getPonsel());
 
-                    Preference.setKeyUserAge(getApplication(),Integer.parseInt(snapshot.child(NodeNames.USIA).getValue().toString()));
+                    Preference.setKeyUserAge(EditProfileActivity.this,Integer.parseInt(pasiens.getUsia()));
                 }else{
                     Toast.makeText(EditProfileActivity.this,"Data tidak ada",Toast.LENGTH_SHORT).show();
                 }
@@ -284,9 +287,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                                         status = "Online";
                                         role = "Pasien";
 
-                                        pasien = new PasienModel(id,nama,email,photo,ponsel,status,role,usia,kelamin,alamat);
+                                        Preference.setKeyUserAge(EditProfileActivity.this,Integer.valueOf(usia));
+                                        pasiens = new Pasiens(id,nama,email,photo,ponsel,status,role,kelamin,usia,alamat);
 
-                                        databaseReference.child(id).setValue(pasien).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        databaseReference.child(id).setValue(pasiens).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull @NotNull Task<Void> task) {
                                                 progress.dismiss();
@@ -336,9 +340,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                                 Log.d("uri",uri.toString());
                                 photo = uri.toString();
 
-                                pasien = new PasienModel(id,nama,email,photo,ponsel,status,role,usia,kelamin,alamat);
+                                Preference.setKeyUserAge(EditProfileActivity.this,Integer.valueOf(usia));
 
-                                databaseReference.child(id).setValue(pasien).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                pasiens = new Pasiens(id,nama,email,photo,ponsel,status,role,kelamin,usia,alamat);
+
+                                databaseReference.child(id).setValue(pasiens).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                                         if(task.isSuccessful()){
@@ -355,8 +361,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                         });
                     }
 
-                    pasien = new PasienModel(id,nama,email,photo,ponsel,status,role,usia,kelamin,alamat);
-                    databaseReference.child(id).setValue(pasien).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    Preference.setKeyUserAge(EditProfileActivity.this,Integer.valueOf(usia));
+                    pasiens = new Pasiens(id,nama,email,photo,ponsel,status,role,kelamin,usia,alamat);
+                    databaseReference.child(id).setValue(pasiens).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
                             if(task.isSuccessful()){

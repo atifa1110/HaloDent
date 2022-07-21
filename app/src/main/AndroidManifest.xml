@@ -16,16 +16,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HaloDent">
         <activity
+            android:name=".SignIn.MainActivity"
+            android:exported="true"
+            android:label="@string/title_activity_main2" />
+        <activity
+            android:name=".Home.DetailDokterActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SignIn.LupaPasswordSendActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".Profile.ScoreActivity"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Profile.KuesionerActivity"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Profile.MainQuizActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
 
         <service
             android:name=".Notification.ChatMessagesService"
@@ -38,17 +47,16 @@
 
         <activity android:name=".Chat.GroupInfoActivity" />
         <activity
-            android:name=".Activity.DetailTopikActivity"
+            android:name=".Info.DetailTopikActivity"
             android:configChanges="orientation|screenSize" />
-
-        <activity android:name=".Activity.ListKonselorActivity" />
-        <activity android:name=".Chat.GroupActivity" />
+        <activity android:name=".Home.ListKonselorActivity" />
         <activity
-            android:name=".Activity.DetailKonselorActivity"
-            android:theme="@style/AppTheme" />
+            android:name=".Chat.GroupActivity"
+            android:theme="@style/ActionBar" />
+        <activity android:name=".Home.DetailKonselorActivity" />
         <activity android:name=".Profile.EditProfileActivity" />
         <activity
-            android:name=".Activity.LupaPasswordActivity"
+            android:name=".SignIn.LupaPasswordActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".SignUp.Step4Activity"
@@ -66,13 +74,13 @@
             android:name=".SignUp.SignUpActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".Activity.SignInActivity"
+            android:name=".SignIn.SignInActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity android:name=".OnBoarding.OnBoardingActivity" />
         <activity
-            android:name=".Activity.SplashActivity"
-            android:screenOrientation="portrait"
+            android:name=".OnBoarding.SplashActivity"
+            android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -80,7 +88,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.MainActivity" />
     </application>
 
 </manifest>

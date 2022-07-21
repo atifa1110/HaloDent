@@ -10,28 +10,30 @@
 
     <ImageView
         android:id="@+id/intro_img"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         app:srcCompat="@drawable/ic_chat" />
 
     <TextView
         android:id="@+id/intro_title"
         style="@style/Text.BoldWhite"
-        android:text="@string/chat_bersama_dokter"
-        android:textSize="20sp"
+        android:layout_below="@id/intro_img"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="52dp"
         android:gravity="center"
-        android:layout_below="@id/intro_img"/>
+        android:text="@string/chat_bersama_dokter"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/intro_description"
         style="@style/Text.White"
-        android:layout_marginTop="10dp"
         android:layout_below="@id/intro_title"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="@string/konsultasi_deskripsi"
         android:textSize="16sp" />

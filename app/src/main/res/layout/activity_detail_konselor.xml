@@ -1,215 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.DetailKonselorActivity">
+    tools:context=".Home.DetailKonselorActivity">
 
-    <include
-        android:id="@+id/appbar"
-        layout="@layout/custom_action_layout" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_photo_detail_konselor"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_user"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appbar" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_nama_detail_konselor"
-        style="@style/Text.Semibold"
-        android:layout_marginTop="5dp"
-        android:textSize="16sp"
-        android:gravity="center"
-        tools:text="@string/contoh_nama"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_photo_detail_konselor"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_photo_detail_konselor"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_user"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_email_detail_konselor"
-        style="@style/Text"
-        android:gravity="center"
-        tools:text="@string/email_contoh"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_nama_detail_konselor" />
+        <TextView
+            android:id="@+id/tv_nama_detail_konselor"
+            style="@style/Text.Medium"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/iv_photo_detail_konselor"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/contoh_nama" />
 
-    <TextView
-        android:id="@+id/tv_konselor_detail"
-        style="@style/Text.Black"
-        android:layout_marginTop="5dp"
-        android:text="@string/konselor"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_email_detail_konselor" />
+        <TextView
+            android:id="@+id/tv_email_detail_konselor"
+            style="@style/Text"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="start"
+            app:layout_constraintStart_toEndOf="@+id/iv_photo_detail_konselor"
+            app:layout_constraintTop_toBottomOf="@+id/tv_nama_detail_konselor"
+            tools:text="@string/email_contoh" />
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_konselor_detail">
+        <TextView
+            android:id="@+id/tv_konselor_detail"
+            style="@style/Text.Black"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/konselors"
+            app:layout_constraintStart_toEndOf="@+id/iv_photo_detail_konselor"
+            app:layout_constraintTop_toBottomOf="@+id/tv_email_detail_konselor" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/tv_about"
+            style="@style/Text.Medium2"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/about"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_photo_detail_konselor" />
+
+        <View
+            android:id="@+id/divider_about"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_about" />
+
+        <TableLayout
+            android:id="@+id/tab_layout_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider_about">
 
-            <TextView
-                android:id="@+id/tv_about"
-                style="@style/Text.Semibold"
-                android:text="@string/about"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TableLayout
-                android:id="@+id/tab_layout_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_about">
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        style="@style/Text"
-                        android:text="@string/nim" />
-
-                    <TextView
-                        android:id="@+id/tv_nim_konselor"
-                        style="@style/Text.Black"
-                        tools:text="@string/contoh_nim" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        style="@style/Text"
-                        android:text="@string/angkatan" />
-
-                    <TextView
-                        android:id="@+id/tv_angkatan_konselor"
-                        style="@style/Text.Black"
-                        tools:text="@string/contoh_angkatan" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        style="@style/Text"
-                        android:text="@string/jenis_kelamin" />
-
-                    <TextView
-                        android:id="@+id/tv_jenisKel_konselor"
-                        style="@style/Text.Black"
-                        tools:text="@string/contoh_kelamin" />
-
-                </TableRow>
-
-            </TableLayout>
-
-            <TextView
-                android:id="@+id/tv_pengawas"
-                style="@style/Text.Semibold"
-                android:layout_marginTop="15dp"
-                android:text="@string/diawasi_oleh"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tab_layout_detail" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_view_dokter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_pengawas">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="10dp">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/iv_photo_detail_dokter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_user" />
-
-                    <TextView
-                        android:id="@+id/tv_nama_dokter"
-                        style="@style/Text.Semibold"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_toEndOf="@+id/iv_photo_detail_dokter"
-                        tools:text="@string/contoh_dokter" />
-
-                    <TextView
-                        style="@style/Text.Semibold"
-                        android:layout_below="@id/tv_nama_dokter"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_toEndOf="@+id/iv_photo_detail_dokter"
-                        android:text="@string/jenis_dokter"
-                        android:textSize="12sp" />
-
-                </RelativeLayout>
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/tv_jadwal"
-                style="@style/Text.Semibold"
-                android:layout_marginTop="15dp"
-                android:text="@string/jadwal_chat_online"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_dokter" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_jadwal"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:clickable="false"
-                android:textColor="@color/white"
-                app:chipBackgroundColor="@color/blue"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_jadwal"
-                tools:text="@string/contoh_jadwal" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                android:layout_marginBottom="5dp">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_chat"
-        style="@style/Button.Selected"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="@string/chat_sekarang"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+                <TextView
+                    style="@style/Text"
+                    android:layout_width="100dp"
+                    android:text="@string/nim" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tv_nim_konselor"
+                    style="@style/Text.Black"
+                    tools:text="@string/contoh_nim" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    style="@style/Text"
+                    android:layout_width="100dp"
+                    android:text="@string/angkatan"/>
+
+                <TextView
+                    android:id="@+id/tv_angkatan_konselor"
+                    style="@style/Text.Black"
+                    tools:text="@string/contoh_angkatan" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/Text"
+                    android:layout_width="100dp"
+                    android:text="@string/jenis_kelamin" />
+
+                <TextView
+                    android:id="@+id/tv_jenisKel_konselor"
+                    style="@style/Text.Black"
+                    tools:text="@string/contoh_kelamin" />
+            </TableRow>
+
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/tv_pengawas"
+            style="@style/Text.Medium2"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/diawasi_oleh"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tab_layout_detail" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_dokter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            app:cardElevation="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pengawas">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_photo_detail_dokter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_user" />
+
+                <TextView
+                    android:id="@+id/tv_nama_dokter"
+                    style="@style/Text.Black"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/iv_photo_detail_dokter"
+                    android:fontFamily="@font/roboto_medium"
+                    tools:text="@string/contoh_dokter" />
+
+                <TextView
+                    style="@style/Text"
+                    android:layout_below="@id/tv_nama_dokter"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/iv_photo_detail_dokter"
+                    android:text="@string/jenis_dokter"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_jadwal"
+            style="@style/Text.Medium2"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/jadwal_chat_online"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_view_dokter" />
+
+        <TextView
+            android:id="@+id/tv_tidak_jadwal"
+            style="@style/Text.Black"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Jadwal Tidak ada"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_jadwal" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_jadwal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tidak_jadwal"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_chat"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:text="@string/chat_sekarang"
+            android:enabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_jadwal"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

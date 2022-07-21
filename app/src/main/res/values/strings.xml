@@ -11,20 +11,20 @@
     <string name="chat_bersama_dokter">Chat Bersama Konselor</string>
     <string name="caries_risk_assesment">Penilaian Karies Gigi</string>
     <string name="informasi_kesehatan_gigi">Informasi Kesehatan Gigi</string>
-    <string name="konsultasi_deskripsi">Konsultasikan kesehatan anda secara langsung dengan konselor pilihan anda</string>
+    <string name="konsultasi_deskripsi">Konsultasikan kesehatan anda secara langsung dengan konselors pilihan anda</string>
     <string name="caries_deskripsi">Lakukan Pendataan Penilaian Karies Gigi sebagai pencegahan awal adanya karies</string>
     <string name="informasi_deskripsi">Dapatkan informasi terkini seputar dengan kesehatan gigi anda</string>
 
     <!--Step 1-4-->
-    <string name="step1">Step 1 of 4</string>
+    <string name="step1">Step 1 of 5</string>
     <string name="apakah_anda_pernah">Apakah 6 bulan terakhir ini anda pernah ke dokter gigi?</string>
     <string name="iya">Iya</string>
     <string name="tidak">Tidak</string>
-    <string name="step2">Step 2 of 4</string>
+    <string name="step2">Step 2 of 5</string>
     <string name="keluhan">Keluhan apa yang biasanya dialami?</string>
-    <string name="step3">Step 3 of 4</string>
+    <string name="step3">Step 3 of 5</string>
     <string name="pengobatan">Pengobatan yang dilakukan ketika mengalami  keluhan gigi?</string>
-    <string name="step4">Step 4 of 4</string>
+    <string name="step4">Step 4 of 5</string>
     <string name="silahkan_centang">Silahkan centang data di bawah apabila anda  memiliki riwayat penyakit di bawah ini?</string>
     <string name="diabetes">Diabetes</string>
     <string name="jantung">Jantung</string>
@@ -34,6 +34,7 @@
     <string name="silahkan_ketik">Silahkan Ketik</string>
     <string name="isi">isi</string>
     <string name="required">Required</string>
+    <string name="lanjutkan">Lanjutkan</string>
 
     <!--Sign Up-->
     <string name="sign_up_to_halo">Sign Up to Halo Dent</string>
@@ -42,7 +43,7 @@
     <string name="nama">Nama</string>
     <string name="usia">Usia</string>
     <string name="password">Password</string>
-    <string name="password_confirm">Password Confirm</string>
+    <string name="password_confirm">Confirm Password</string>
     <string name="daftar">Daftar</string>
     <string name="sudah_punya_akun">Sudah punya akun? </string>
     <string name="sign_in">Sign In</string>
@@ -54,8 +55,8 @@
     <string name="signIn_lanjut">Sign In untuk melanjutkan</string>
     <string name="lupa_password">Lupa Password?</string>
     <string name="masuk">Masuk</string>
-    <string name="belum_punya_akun">Belum punya akun?</string>
-    <string name="sign_up">Sign Up</string>
+    <string name="belum_punya_akun">Belum punya akun? Daftar disini</string>
+    <string name="daftardisini">Daftar disini</string>
     <string name="masukkan_email_benar">Masukkan email yang benar</string>
     <string name="login_success">Login Successful</string>
     <string name="login_failed">"Login Failed"</string>
@@ -135,7 +136,7 @@
     <string name="sumber_topik">1. Fitani, V. 2019. Tips Melakukan Perawatan Gigi saat Hamil. https: www.alodokter.com/tips-melakukan-perawatan-gigi-saat-hamil.</string>
 
     <!-- Detail Konselor activity -->
-    <string name="konselor">Konselor</string>
+    <string name="konselors">Konselor</string>
     <string name="about">About</string>
     <string name="diawasi_oleh">Diawasi oleh</string>
     <string name="jadwal_chat_online">Jadwal Chat Online</string>
@@ -150,15 +151,15 @@
     <string name="contoh_jadwal">08:00 - 10:00</string>
 
     <!-- Detail Dokter activity -->
-    <string name="sip">Nomor SIP : </string>
-    <string name="str">Nomor STR : </string>
-    <string name="nip">Nomor NIP : </string>
+    <string name="sip">Nomor SIP    </string>
+    <string name="str">Nomor STR    </string>
+    <string name="nip">NIP/NIK</string>
     <string name="contoh_nip">19904242019032020</string>
     <string name="contoh_str">017714 02 01 0341</string>
     <string name="contoh_sip">446.DG/325.1/35.73.302/2019</string>
 
     <!-- Group activity -->
-    <string name="enter_message">Enter Message</string>
+    <string name="enter_message">Kirim Pesan</string>
 
     <!-- Group Info activity -->
     <string name="group_name">Group Name</string>
@@ -175,7 +176,7 @@
 
     <!-- empty chat -->
     <string name="blm_ada_chat">Belum Ada Chat Aktif</string>
-    <string name="konsultasikan_dengan">Konsultasi masalah kesehatan anda\ndengan konselor kami</string>
+    <string name="konsultasikan_dengan">Konsultasi masalah kesehatan anda\ndengan konselors kami</string>
 
     <!-- main quiz -->
     <string name="question">Question 1/9</string>
@@ -192,5 +193,24 @@
     <string name="title_chat">Chat</string>
     <string name="title_info">Information</string>
     <string name="title_profile">Profile</string>
+    <string name="dokter_pengawas">Dokter Pengawas</string>
+    <string name="email_terkirim">Email telah terkirim</string>
+    <string name="email_berhasil">Silahkan cek email anda dan klik \n
+        tautan terima untuk mengatur ulang kata sandi</string>
+    <string name="foto">Foto</string>
+    <string name="video">Video</string>
+    <string name="dokter">Dokter</string>
+    <string name="info_tidak_ada">Berita tidak ada</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="title_activity_contoh">ContohActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>
 

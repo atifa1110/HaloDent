@@ -12,7 +12,8 @@ public class NodeNames {
     public static final String MESSAGES = "Messages";
     public static final String TOKENS = "Tokens";
     public static final String TOPIKS = "Topiks";
-    public static final String USERS = "Users";
+    public static final String USERS = "Pasiens";
+    public static final String PASIENS = "Pasiens";
 
     //nodes user
     public static final String ALAMAT = "alamat";
@@ -23,15 +24,7 @@ public class NodeNames {
     public static final String ONLINE = "status";
     public static final String PHOTO = "photo";
     public static final String USIA = "usia";
-
-    //nodes dokter
-    public static final String NIP = "nip";
-    public static final String STR = "str";
-    public static final String SIP = "sip";
-
-    //nodes konselor
-    public static final String ANGKATAN = "angkatan";
-    public static final String NIM = "nim";
+    public static final String STATUS = "status";
 
     //nodes topik
     public static final String TOPIK_NAME = "judul";
@@ -47,13 +40,6 @@ public class NodeNames {
 
     //nodes token
     public static final String DEVICE_TOKEN = "device_token";
-
-    //nodes message
-    public static final String MESSAGE = "message";
-    public static final String MESSAGE_FROM ="messageFrom" ;
-    public static final String MESSAGE_ID = "messageId";
-    public static final String MESSAGE_TIME ="messageTime" ;
-    public static final String MESSAGE_TYPE ="messageType" ;
 
     //nodes chats
     public static final String LAST_MESSAGE = "last_message";
@@ -71,12 +57,4 @@ public class NodeNames {
     //nodes participant
     public static final String ROLE = "role";
     public static final String ID = "id";
-
-    //nodes jadwal
-    public static final String KONSELOR_ID= "konselor_id";
-    public static final String DOKTER_ID = "dokter_id";
-    public static final String DOKTER_NAMA = "dokter_nama";
-    public static final String WAKTU_MULAI = "mulai";
-    public static final String WAKTU_SELESAI = "selesai";
-    public static final String STATUS = "status";
 }

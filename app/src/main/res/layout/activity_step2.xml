@@ -9,30 +9,40 @@
 
     <include
         android:id="@+id/appbar"
-        layout="@layout/custom_action_layout"/>
+        layout="@layout/custom_action_layout" />
 
     <TextView
         android:id="@+id/tv_step2"
-        style="@style/Text.BoldBlack"
+        style="@style/Text.Medium"
         android:text="@string/step2"
         android:layout_below="@+id/appbar"/>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_step2"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:max="5"
+        android:progress="2"
+        app:indicatorColor="@color/green" />
 
     <TextView
         android:id="@+id/tv_quest"
         style="@style/Text.Black"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_below="@id/progress_bar"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:text="@string/keluhan"
-        android:textColor="@color/black"
-        android:fontFamily="@font/opensans_regular"
-        android:layout_below="@id/tv_step2"/>
+        android:textColor="@color/black" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_isian"
         style="@style/TextInputLayout.clear"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         app:helperText="@string/required"
         app:helperTextTextColor="@color/red"
         android:layout_below="@+id/tv_quest">
@@ -44,12 +54,12 @@
             android:scrollbars="vertical"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_next_2"
-        style="@style/Button.Blue"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="25dp"
-        android:text="@string/next"
-        android:layout_below="@id/til_isian"/>
+        style="@style/Button.ColorBlue"
+        android:layout_below="@id/til_isian"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/lanjutkan" />
 </RelativeLayout>

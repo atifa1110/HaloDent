@@ -8,23 +8,49 @@
     tools:context=".Info.InfoFragment">
 
     <include
-        android:id="@+id/progress_bar"
-        layout="@layout/custom_progress_bar"
-        android:visibility="gone"/>
+        android:id="@+id/search_bar"
+        layout="@layout/layout_search_view" />
 
-    <ScrollView
+    <TextView
+        android:id="@+id/tv_info_tidak"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:visibility="invisible"
+        android:text="@string/info_tidak_ada"
+        android:gravity="center"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </ScrollView>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_bar"
+        android:layout_marginStart="10dp"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_foto"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/foto" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_video"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/video" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/chip_group"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </RelativeLayout>

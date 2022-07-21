@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_search"
         android:drawableEnd="@drawable/ic_baseline_search"
-        android:hint="Search Message"
+        android:hint="Cari Berita.."
         android:padding="8dp"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"

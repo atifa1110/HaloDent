@@ -8,15 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".Profile.EditProfileActivity">
 
-    <include
-        android:id="@+id/progressBar"
-        layout="@layout/custom_progress_bar"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_profile_profile"
         android:layout_width="75dp"
@@ -48,6 +39,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_nama_profile"
             style="@style/TextInputEditText.inputText"
+            android:cursorVisible="true"
             android:hint="@string/nama"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,6 +89,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_alamat_profile"
             style="@style/TextInputEditText.inputTextMulti"
+            android:cursorVisible="true"
             android:hint="@string/alamat" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,13 +106,14 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_nomor_profile"
             style="@style/TextInputEditText.inputPhone"
+            android:cursorVisible="true"
             android:hint="@string/nomer_ponsel"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_simpan"
-        style="@style/Button.Green"
+        style="@style/Button.ColorGreen"
         android:text="@string/simpan"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"

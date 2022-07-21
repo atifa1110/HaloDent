@@ -4,17 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,10 +34,10 @@ import java.util.List;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     private Context context;
-    private List<MessageModel> messageList;
+    private List<Messages> messageList;
     private FirebaseAuth firebaseAuth;
 
-    public MessageAdapter(Context context, List<MessageModel> messageList) {
+    public MessageAdapter(Context context, List<Messages> messageList) {
         this.context = context;
         this.messageList = messageList;
     }
@@ -57,20 +52,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull MessageViewHolder holder, int position) {
-        MessageModel messageModel = messageList.get(position);
+        Messages messages = messageList.get(position);
 
         firebaseAuth = FirebaseAuth.getInstance();
         String currentUserId= firebaseAuth.getCurrentUser().getUid();
-        String fromUserId = messageModel.getMessageFrom();
+        String fromUserId = messages.getMessageFrom();
 
-        SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        String dateTime = sfd.format(new Date(Long.parseLong(messageModel.getMessageTime())));
+        SimpleDateFormat sfd = new SimpleDateFormat("dd MMM yyyy HH:mm");
+        String dateTime = sfd.format(new Date(Long.parseLong(messages.getMessageTime())));
         String [] splitString = dateTime.split(" ");
-        String messageTime = splitString[1];
+        String messageTime = splitString[3];
+        String datemonth = splitString[0]+" "+splitString[1]+" "+splitString[2];
+
+        holder.tvChatTime.setText(datemonth);
 
         //check
         if(fromUserId.equals(currentUserId)){
-            if(messageModel.getMessageType().equals(Constant.MESSAGE_TYPE_TEXT)){
+            if(messages.getMessageType().equals(Constant.MESSAGE_TYPE_TEXT)){
                 holder.card_llSent.setVisibility(View.VISIBLE);
                 holder.tvSentMessageTime.setVisibility(View.VISIBLE);
                 holder.ivSent.setVisibility(View.GONE);
@@ -86,12 +84,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.ivReceived.setVisibility(View.GONE);
             holder.tvImageReceivedTime.setVisibility(View.GONE);
 
-            holder.tvSentMessage.setText(messageModel.getMessage());
+            holder.tvSentMessage.setText(messages.getMessage());
             holder.tvSentMessageTime.setText(messageTime);
             holder.tvImageSentTime.setText(messageTime);
 
             try{
-                Glide.with(context).load(messageModel.getMessage())
+                Glide.with(context).load(messages.getMessage())
                         .placeholder(R.drawable.ic_add_photo)
                         .fitCenter()
                         .into(holder.ivSent);
@@ -100,12 +98,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             }
 
         }else{
-            if(messageModel.getMessageType().equals(Constant.MESSAGE_TYPE_TEXT)){
+            if(messages.getMessageType().equals(Constant.MESSAGE_TYPE_TEXT)){
                 holder.card_llReceived.setVisibility(View.VISIBLE);
                 holder.tvReceivedMessageTime.setVisibility(View.VISIBLE);
                 holder.ivReceived.setVisibility(View.GONE);
                 holder.tvImageReceivedTime.setVisibility(View.GONE);
-                setKonselorName(messageModel,holder);
+                setKonselorName(messages,holder);
             }else{
                 holder.ivReceived.setVisibility(View.VISIBLE);
                 holder.tvImageReceivedTime.setVisibility(View.VISIBLE);
@@ -117,12 +115,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.ivSent.setVisibility(View.GONE);
             holder.tvImageSentTime.setVisibility(View.GONE);
 
-            holder.tvReceivedMessage.setText(messageModel.getMessage());
+            holder.tvReceivedMessage.setText(messages.getMessage());
             holder.tvReceivedMessageTime.setText(messageTime);
             holder.tvImageReceivedTime.setText(messageTime);
 
             try{
-                Glide.with(context).load(messageModel.getMessage())
+                Glide.with(context).load(messages.getMessage())
                         .placeholder(R.drawable.ic_add_photo)
                         .fitCenter()
                         .into(holder.ivReceived);
@@ -133,9 +131,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         //tag is a mechanism to make your views remember something,
         // that could be an object an integer a string or anything you like.
-        holder.clMessage.setTag(R.id.TAG_MESSAGE,messageModel.getMessage());
-        holder.clMessage.setTag(R.id.TAG_MESSAGE_ID,messageModel.getMessageId());
-        holder.clMessage.setTag(R.id.TAG_MESSAGE_TYPE,messageModel.getMessageType());
+        holder.clMessage.setTag(R.id.TAG_MESSAGE, messages.getMessage());
+        holder.clMessage.setTag(R.id.TAG_MESSAGE_ID, messages.getMessageId());
+        holder.clMessage.setTag(R.id.TAG_MESSAGE_TYPE, messages.getMessageType());
 
         holder.clMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,17 +149,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         });
     }
 
-    private void setKonselorName(MessageModel messageModel,MessageViewHolder holder){
+    private void setKonselorName(Messages messages, MessageViewHolder holder){
         //get sender info from uid model
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(NodeNames.KONSELORS);
-        ref.child(messageModel.getMessageFrom()).addValueEventListener(new ValueEventListener() {
+        ref.child(messages.getMessageFrom()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     String nama = snapshot.child(NodeNames.NAME).getValue().toString();
                     holder.tvReceiveName.setText(nama);
                 }else{
-                    setDokterName(messageModel,holder);
+                    setDokterName(messages,holder);
                 }
             }
 
@@ -172,10 +170,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         });
     }
 
-    private void setDokterName(MessageModel messageModel,MessageViewHolder holder){
+    private void setDokterName(Messages messages, MessageViewHolder holder){
         //get sender info from uid model
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(NodeNames.DOKTERS);
-        ref.child(messageModel.getMessageFrom()).addValueEventListener(new ValueEventListener() {
+        ref.child(messages.getMessageFrom()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 String nama = snapshot.child(NodeNames.NAME).getValue().toString();
@@ -189,6 +187,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             }
         });
     }
+
     @Override
     public int getItemCount() {
         return messageList.size();
@@ -199,7 +198,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         private CardView card_llSent , card_llReceived;
         private TextView tvSentMessage, tvSentMessageTime, tvReceivedMessage, tvReceivedMessageTime,tvReceiveName;
         private ImageView ivSent, ivReceived;
-        private TextView tvImageSentTime, tvImageReceivedTime;
+        private TextView tvImageSentTime, tvImageReceivedTime, tvChatTime;
         private ConstraintLayout clMessage;
 
         public MessageViewHolder(@NonNull @NotNull View itemView) {
@@ -221,6 +220,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             ivReceived =itemView.findViewById(R.id.ivReceived);
             tvImageReceivedTime = itemView.findViewById(R.id.tvReceivedImageTime);
+
+            tvChatTime = itemView.findViewById(R.id.tv_chat_time);
         }
     }
 

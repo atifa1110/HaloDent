@@ -10,10 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dentist.halodent.Activity.MainActivity;
 import com.dentist.halodent.Model.NodeNames;
 import com.dentist.halodent.Model.Preference;
 import com.dentist.halodent.R;
+import com.dentist.halodent.SignIn.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,8 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
 
 public class ScoreActivity extends AppCompatActivity {
 
@@ -61,29 +59,32 @@ public class ScoreActivity extends AppCompatActivity {
         score = Preference.getKeyQuizScore(getApplicationContext());
         umur = Preference.getKeyUserAge(getApplicationContext());
 
-        getKariesScore(score);
-        //getSurveyDatabase();
+        getDataKaries();
     }
 
-    private void getSurveyDatabase(){
+    private void getDataKaries(){
         databaseReferenceSurvey.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                int nilai = Integer.parseInt(snapshot.child("score").getValue().toString());
-                score = nilai;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Karies karies = snapshot.getValue(Karies.class);
+                    tv_kategori.setText(karies.getKategori());
+                    tv_nilai.setText(karies.getScore()+"/20");
+                    getKariesScore(karies.getScore());
+                }else{
+                    getKariesScore(score);
+                }
             }
 
             @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
-    private void uploadSurveyDatabase(String kategori, int score){
-        HashMap karies = new HashMap<>();
-        karies.put("kategori",kategori);
-        karies.put("score",score);
 
+    private void uploadSurveyDatabase(String kategori, int score){
+        Karies karies = new Karies(kategori,score);
         databaseReferenceSurvey.setValue(karies).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<Void> task) {
@@ -95,6 +96,7 @@ public class ScoreActivity extends AppCompatActivity {
             }
         });
     }
+
     private void getKariesScore(int score){
         if(umur<6){
             getKariesAnak(score);
@@ -104,7 +106,7 @@ public class ScoreActivity extends AppCompatActivity {
     }
 
     private void getKariesDewasa (int score){
-        tv_nilai.setText(String.valueOf(score)+"/20");
+        tv_nilai.setText(score+"/20");
         if(score>=8 && score<=12){
             tv_kategori.setText(R.string.karies_rendah);
             cara_jaga_karies.setText(R.string.cara_jaga_karies_rendah);
@@ -118,7 +120,7 @@ public class ScoreActivity extends AppCompatActivity {
         uploadSurveyDatabase(tv_kategori.getText().toString(),score);
     }
     private void getKariesAnak(int score){
-        tv_nilai.setText(String.valueOf(score)+"/24");
+        tv_nilai.setText(score+"/24");
         if(score>=10 && score<=13){
             tv_kategori.setText(R.string.karies_rendah);
             cara_jaga_karies.setText(R.string.cara_jaga_karies_rendah);

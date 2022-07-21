@@ -16,13 +16,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dentist.halodent.Model.NodeNames;
 import com.dentist.halodent.R;
-import com.dentist.halodent.Activity.SignInActivity;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.dentist.halodent.SignIn.SignInActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -46,7 +44,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        return view;
     }
 
     @Override
@@ -56,9 +55,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         nama = view.findViewById(R.id.tv_nama_profile_fragment);
         email = view.findViewById(R.id.tv_email_profile_fragment);
         ivProfile = view.findViewById(R.id.iv_profile_profile_fragment);
-        btn_kuesioner = view.findViewById(R.id.btn_kuesioner);
         btn_edit_profile = view.findViewById(R.id.btn_edit_profile);
         btn_keluar = view.findViewById(R.id.btn_keluar);
+        btn_kuesioner = view.findViewById(R.id.btn_kuesioner);
 
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();

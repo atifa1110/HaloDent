@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.dentist.halodent.R;
-import com.dentist.halodent.Activity.SignInActivity;
-import com.dentist.halodent.Model.ScreenItem;
+import com.dentist.halodent.SignIn.SignInActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -26,8 +23,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     private ViewPager2 screenPager;
     private TabLayout tabIndicator;
     private OnBoardingViewPagerAdapter onBoardingViewPagerAdapter;
-    private Button btnNext, btnMulai;
-    private TextView tvSkip;
+    private Button btnNext, btnMulai ,btnSkip;
 
     private Animation btnAnim ;
     private int position = 0 ;
@@ -37,6 +33,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_on_boarding);
 
         if(getSupportActionBar()!=null)
             getSupportActionBar().hide();
@@ -47,7 +44,6 @@ public class OnBoardingActivity extends AppCompatActivity {
             startActivity(mainActivity);
             finish();
         }
-        setContentView(R.layout.activity_on_boarding);
 
         // hide the action bar
         //getSupportActionBar().hide();
@@ -55,14 +51,14 @@ public class OnBoardingActivity extends AppCompatActivity {
         // set view
         screenPager = findViewById(R.id.screen_viewpager);
         tabIndicator = findViewById(R.id.tab_indicator);
-        tvSkip = findViewById(R.id.tv_skip);
         btnNext = findViewById(R.id.btn_next);
         btnMulai = findViewById(R.id.btn_mulai);
+        btnSkip = findViewById(R.id.btn_skip);
 
         // fill list screen
         mList.add(new ScreenItem(getString(R.string.chat_bersama_dokter),getString(R.string.konsultasi_deskripsi),R.drawable.ic_chat));
-        mList.add(new ScreenItem(getString(R.string.caries_risk_assesment),getString(R.string.caries_deskripsi),R.drawable.ic_caries));
-        mList.add(new ScreenItem(getString(R.string.informasi_kesehatan_gigi),getString(R.string.informasi_deskripsi),R.drawable.ic_file));
+        mList.add(new ScreenItem(getString(R.string.caries_risk_assesment),getString(R.string.caries_deskripsi),R.drawable.ic_checklist));
+        mList.add(new ScreenItem(getString(R.string.informasi_kesehatan_gigi),getString(R.string.informasi_deskripsi),R.drawable.ic_news));
 
         // setup viewpager
         onBoardingViewPagerAdapter = new OnBoardingViewPagerAdapter(this,mList);
@@ -73,7 +69,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         //tabIndicator.setupWithViewPager(screenPager);
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabIndicator, screenPager, true, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+            public void onConfigureTab(TabLayout.Tab tab, int position) {
 
             }
         });
@@ -129,9 +125,10 @@ public class OnBoardingActivity extends AppCompatActivity {
         });
 
         // skip button click listener
-        tvSkip.setOnClickListener(new View.OnClickListener() {
+        btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 screenPager.setCurrentItem(mList.size());
             }
         });
@@ -155,7 +152,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     private void loaddLastScreen() {
         btnNext.setVisibility(View.INVISIBLE);
         btnMulai.setVisibility(View.VISIBLE);
-        tvSkip.setVisibility(View.INVISIBLE);
+        btnSkip.setVisibility(View.INVISIBLE);
         tabIndicator.setVisibility(View.INVISIBLE);
         // TODO : ADD an animation the getstarted button
         // setup animation

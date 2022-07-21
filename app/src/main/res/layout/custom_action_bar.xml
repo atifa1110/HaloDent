@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llProfile"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/blue"
     android:gravity="center_vertical"
+    android:minHeight="?attr/actionBarSize"
     android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -24,9 +24,10 @@
 
         <TextView
             android:id="@+id/tv_userName_action"
-            style="@style/Text.SemiboldWhite"
+            style="@style/Text"
             android:singleLine="true"
-            tools:text="User Name"/>
+            android:textColor="@color/black"
+            tools:text="Group"/>
 
     </LinearLayout>
 </LinearLayout>

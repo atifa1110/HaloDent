@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_margin="6dp"
+        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_tanggal_jadwal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:fontFamily="@font/roboto_medium"
+                android:maxLines="2"
+                android:textColor="@color/black"
+                tools:text="Rabu 24 Januari 2021"/>
+
+            <TextView
+                android:id="@+id/tv_jam_jadwal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_marginTop="5dp"
+                tools:text="07.00 - 10.00"/>
+
+            <TextView
+                android:id="@+id/tv_dokter_jadwal"
+                android:textSize="14sp"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_marginTop="5dp"
+                tools:text="Yulia anastasia"
+                android:maxLines="1"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:text="&#8942;"
+            android:textAppearance="?android:textAppearanceLarge" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -2,7 +2,8 @@ package com.dentist.halodent.Chat;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.dentist.halodent.Model.NodeNames;
-import com.dentist.halodent.Model.UserModel;
+import com.dentist.halodent.Home.Dokters;
+import com.dentist.halodent.Home.Konselors;
+import com.dentist.halodent.Profile.Pasiens;
+import com.dentist.halodent.Model.Users;
 import com.dentist.halodent.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,9 +35,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.ParticipantViewHolder> {
 
     private Context context;
-    private List<UserModel> participantList;
+    private List<Users> participantList;
 
-    public ParticipantAdapter(Context context, List<UserModel> participantList) {
+    public ParticipantAdapter(Context context, List<Users> participantList) {
         this.context = context;
         this.participantList = participantList;
     }
@@ -42,40 +46,38 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
     @NotNull
     @Override
     public ParticipantViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_user_list,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_participant_list,parent,false);
         return new ParticipantViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ParticipantViewHolder holder, int position) {
-        UserModel user = participantList.get(position);
+        Users users = participantList.get(position);
 
-        if (user.getRole().equals("Pasien")){
-            setUserName(user,holder);
-        }else if(user.getRole().equals("Konselor")){
-            setKonselorName(user,holder);
-        }else if(user.getRole().equals("Dokter Pengawas")){
-            setDokterName(user,holder);
+        if (users.getRole().equals("Pasien")){
+            setUserName(users,holder);
+        }else if(users.getRole().equals("Konselor")){
+            setKonselorName(users,holder);
+        }else if(users.getRole().equals("Dokter Pengawas")){
+            setDokterName(users,holder);
         }
 
-        holder.imageView.setVisibility(View.GONE);
-        holder.roleParticipant.setText(user.getRole());
+        holder.roleParticipant.setText(users.getRole());
     }
 
-    private void setUserName(UserModel user, ParticipantViewHolder holder){
+    private void setUserName(Users users, ParticipantViewHolder holder){
         //get sender info from uid model
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(NodeNames.USERS);
-        ref.child(user.getId()).addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Pasiens.class.getSimpleName());
+        ref.child(users.getId()).addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                String namaPasien = snapshot.child(NodeNames.NAME).getValue().toString();
-                String userOnline = snapshot.child(NodeNames.ONLINE).getValue().toString();
-                final String photoPasien = snapshot.child(NodeNames.PHOTO).getValue().toString();
-                Log.d(photoPasien,"photo");
-                holder.userName.setText(namaPasien);
-                holder.userOnline.setText(userOnline);
-                holder.userOnline.setTextColor(setColor(userOnline));
-                Glide.with(context).load(photoPasien).placeholder(R.drawable.ic_user)
+                Pasiens pasiens = snapshot.getValue(Pasiens.class);
+                holder.userName.setText(pasiens.getNama());
+                holder.userOnline.setText(pasiens.getStatus());
+                holder.userOnline.setTextColor(setColor(pasiens.getStatus()));
+                holder.imageView.setImageDrawable(setDrawable(pasiens.getStatus()));
+                Glide.with(context).load(pasiens.getPhoto()).error(R.drawable.ic_user).placeholder(R.drawable.ic_user)
                         .into(holder.photoUser);
             }
 
@@ -86,20 +88,24 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
         });
     }
 
-    private void setKonselorName(UserModel user, ParticipantViewHolder holder){
+    private void setKonselorName(Users users, ParticipantViewHolder holder){
         //get sender info from uid model
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(NodeNames.KONSELORS);
-        ref.child(user.getId()).addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Konselors.class.getSimpleName());
+        ref.child(users.getId()).addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                String namaKonselor = snapshot.child(NodeNames.NAME).getValue().toString();
-                String userOnline = snapshot.child(NodeNames.ONLINE).getValue().toString();
-                String photoKonselor = snapshot.child(NodeNames.PHOTO).getValue().toString();
-                holder.userName.setText(namaKonselor);
-                holder.userOnline.setText(userOnline);
-                holder.userOnline.setTextColor(setColor(userOnline));
-                Glide.with(context).load(photoKonselor).placeholder(R.drawable.ic_user)
-                        .into(holder.photoUser);
+                Konselors konselors = snapshot.getValue(Konselors.class);
+                holder.userName.setText(konselors.getNama());
+                holder.userOnline.setText(konselors.getStatus());
+                holder.userOnline.setTextColor(setColor(konselors.getStatus()));
+                holder.imageView.setImageDrawable(setDrawable(konselors.getStatus()));
+                if(konselors.getPhoto()!=null){
+                    Glide.with(context).load(konselors.getPhoto()).error(R.drawable.ic_user).placeholder(R.drawable.ic_user)
+                            .into(holder.photoUser);
+                }else{
+                    holder.imageView.setImageResource(R.drawable.ic_group);
+                }
             }
 
             @Override
@@ -109,20 +115,24 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
         });
     }
 
-    private void setDokterName(UserModel userModel, ParticipantViewHolder holder){
+    private void setDokterName(Users users, ParticipantViewHolder holder){
         //get sender info from uid model
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(NodeNames.DOKTERS);
-        ref.child(userModel.getId()).addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Dokters.class.getSimpleName());
+        ref.child(users.getId()).addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                String namaDokter = snapshot.child(NodeNames.NAME).getValue().toString();
-                String userOnline = snapshot.child(NodeNames.ONLINE).getValue().toString();
-                String photoDokter = snapshot.child(NodeNames.PHOTO).getValue().toString();
-                holder.userName.setText(namaDokter);
-                holder.userOnline.setText(userOnline);
-                holder.userOnline.setTextColor(setColor(userOnline));
-                Glide.with(context).load(photoDokter).placeholder(R.drawable.ic_user)
-                        .into(holder.photoUser);
+                Dokters dokters = snapshot.getValue(Dokters.class);
+                holder.userName.setText(dokters.getNama());
+                holder.userOnline.setText(dokters.getStatus());
+                holder.userOnline.setTextColor(setColor(dokters.getStatus()));
+                holder.imageView.setImageDrawable(setDrawable(dokters.getStatus()));
+                if(dokters.getPhoto()!=null){
+                    Glide.with(context).load(dokters.getPhoto()).error(R.drawable.ic_user).placeholder(R.drawable.ic_user)
+                            .into(holder.photoUser);
+                }else{
+                    holder.imageView.setImageResource(R.drawable.ic_group);
+                }
             }
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
@@ -138,6 +148,16 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
             return Color.parseColor("#7C7C7C");
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public Drawable setDrawable(String online){
+        if (online.equals("Online")){
+            return context.getDrawable(R.drawable.ic_circle_green);
+        }else{
+            return context.getDrawable(R.drawable.ic_circle_gray);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return participantList.size();
@@ -145,8 +165,7 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
 
     public class ParticipantViewHolder extends RecyclerView.ViewHolder{
 
-        private CircleImageView photoUser;
-        private ImageView imageView;
+        private CircleImageView photoUser,imageView;
         private TextView userName,userOnline,roleParticipant;
 
         public ParticipantViewHolder(@NonNull @NotNull View itemView) {
