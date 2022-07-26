@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dentist.halodent.Model.NodeNames;
 import com.dentist.halodent.R;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputEditText;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +72,12 @@ public class InfoFragment extends Fragment implements CompoundButton.OnCheckedCh
 
         //inizialization adapter
         topikList = new ArrayList<>();
-        rvTopik.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
+        linearLayout.setReverseLayout(true);
+        linearLayout.setStackFromEnd(true);
+
+        rvTopik.setLayoutManager(linearLayout);
         topikAdapter = new TopikAdapter(getContext(), topikList);
         rvTopik.setAdapter(topikAdapter);
 

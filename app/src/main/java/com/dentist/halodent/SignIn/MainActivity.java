@@ -45,4 +45,13 @@ public class MainActivity extends AppCompatActivity {
         //when disconnect set status offline
         databaseReferenceUsers.child(NodeNames.ONLINE).onDisconnect().setValue("Offline");
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //when open the app set status online
+        databaseReferenceUsers.child(NodeNames.ONLINE).setValue("Online");
+        //when disconnect set status offline
+        databaseReferenceUsers.child(NodeNames.ONLINE).onDisconnect().setValue("Offline");
+    }
 }

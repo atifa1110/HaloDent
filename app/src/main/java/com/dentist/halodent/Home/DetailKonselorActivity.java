@@ -35,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
@@ -151,13 +152,14 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
         rv_jadwal.setVisibility(View.INVISIBLE);
         cardView.setVisibility(View.GONE);
         tv_pengawas.setVisibility(View.GONE);
-        databaseReferenceJadwal.addValueEventListener(new ValueEventListener() {
+
+        Query query = databaseReferenceJadwal.child(konselors.getId()).orderByChild("tanggal");
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 jadwalsList.clear();
                 progressDialog.dismiss();
-                if(snapshot.hasChild(konselors.getId())) {
-                    for (DataSnapshot ds : snapshot.child(konselors.getId()).getChildren()) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
                         if (snapshot.exists()) {
                             tv_tidak_ada_jadwal.setVisibility(View.GONE);
                             rv_jadwal.setVisibility(View.VISIBLE);
@@ -165,17 +167,16 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
                             tv_pengawas.setVisibility(View.VISIBLE);
 
                             Jadwals jadwals = ds.getValue(Jadwals.class);
+                            setClick(jadwals.getDokter_id(), jadwals.getTanggal(), jadwals.getMulai(), jadwals.getSelesai());
                             jadwalsList.add(jadwals);
-                            setClick(jadwals.getDokter_id(),jadwals.getTanggal(),jadwals.getMulai(),jadwals.getSelesai());
                             jadwalAdapter.notifyDataSetChanged();
+                        }else {
+                            tv_tidak_ada_jadwal.setVisibility(View.VISIBLE);
+                            rv_jadwal.setVisibility(View.GONE);
+                            cardView.setVisibility(View.GONE);
+                            tv_pengawas.setVisibility(View.GONE);
                         }
                     }
-                }else{
-                    tv_tidak_ada_jadwal.setVisibility(View.VISIBLE);
-                    rv_jadwal.setVisibility(View.GONE);
-                    cardView.setVisibility(View.GONE);
-                    tv_pengawas.setVisibility(View.GONE);
-                }
             }
 
             @Override
@@ -187,15 +188,13 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
         });
     }
 
-    private void setClick(String dokterid,String tanggal, String mulai, String selesai){
-        Log.d("jadwal tanggal",tanggal);
-        DateFormat df = new SimpleDateFormat("EEE, d MMMM yyyy, HH:mm");
-        String date = df.format(System.currentTimeMillis());
+    private void setClick(String dokterid, String tanggal, String mulai, String selesai){
+        DateFormat df = new SimpleDateFormat("EEE, dd/MM/yyyy, HH:mm");
+        String date = df.format(new Date());
 
         String [] splitString = date.split(", ");
-        String day = splitString[0]+", "+splitString[1];
+        String dt = splitString[1];
         String time = splitString[2];
-        Log.d("jadwal hari",day);
 
         Date m = null;
         Date s = null;
@@ -211,12 +210,14 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
         long timeSelesai = s.getTime();
         long timeSekarang = n.getTime();
 
-//        Log.d("jadwal sekarang",String.valueOf(timeSekarang));
-//        Log.d("jadwal mulai",String.valueOf(timeMulai));
-//        Log.d("jadwal selesai",String.valueOf(timeSelesai));
-//        Log.d("jadwal dokter",dokterid);
+        Log.d("jadwal tanggal",tanggal);
+        Log.d("jadwal tanggal Sekarang",dt);
+        Log.d("jadwal sekarang",String.valueOf(timeSekarang));
+        Log.d("jadwal mulai",String.valueOf(timeMulai));
+        Log.d("jadwal selesai",String.valueOf(timeSelesai));
+        Log.d("jadwal dokter",dokterid);
 
-        if(tanggal.equals(day)){
+        if(tanggal.equals(dt)){
             cardView.setVisibility(View.VISIBLE);
             tv_pengawas.setVisibility(View.VISIBLE);
             //set name for doctor id

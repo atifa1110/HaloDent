@@ -127,7 +127,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private void getDataTopik(){
         topiksList = new ArrayList<>();
-        rvTopik.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
+        linearLayout.setReverseLayout(true);
+        linearLayout.setStackFromEnd(true);
+
+        rvTopik.setLayoutManager(linearLayout);
         topikAdapter = new TopikAdapter(getContext(), topiksList);
         rvTopik.setAdapter(topikAdapter);
 

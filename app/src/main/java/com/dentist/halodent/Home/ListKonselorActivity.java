@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.dentist.halodent.Model.Constant;
 import com.dentist.halodent.Model.NodeNames;
 import com.dentist.halodent.R;
 import com.google.firebase.database.DataSnapshot;
@@ -47,7 +48,11 @@ public class ListKonselorActivity extends AppCompatActivity {
 
         ////initialization adapter
         konselorsList = new ArrayList<>();
-        rv_all_konselor.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayout = new LinearLayoutManager(ListKonselorActivity.this);
+        linearLayout.setReverseLayout(true);
+        linearLayout.setStackFromEnd(true);
+        rv_all_konselor.setLayoutManager(linearLayout);
+
         konselorAdapter = new KonselorAdapter(this, konselorsList);
         rv_all_konselor.setAdapter(konselorAdapter);
 
@@ -61,7 +66,7 @@ public class ListKonselorActivity extends AppCompatActivity {
     }
 
     private void getDataKonselor(){
-        Query query = databaseReferenceKonselor.orderByPriority();
+        Query query = databaseReferenceKonselor.orderByChild(NodeNames.STATUS);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {

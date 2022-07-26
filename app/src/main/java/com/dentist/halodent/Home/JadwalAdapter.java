@@ -22,6 +22,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class JadwalAdapter extends RecyclerView.Adapter<JadwalAdapter.JadwalViewHolder> {
@@ -43,35 +47,24 @@ public class JadwalAdapter extends RecyclerView.Adapter<JadwalAdapter.JadwalView
 
     @Override
     public void onBindViewHolder(@NonNull JadwalViewHolder holder, int position) {
-        Jadwals jadwalsModel = jadwals.get(position);
+        Jadwals jadwal = jadwals.get(position);
 
-        holder.tanggal.setText(jadwalsModel.getTanggal());
-        holder.jam.setText(jadwalsModel.getMulai()+" - "+ jadwalsModel.getSelesai());
-        setDokterName(jadwalsModel,holder);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
 
-        holder.btn_option.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //creating a popup menu
-                PopupMenu popup = new PopupMenu(context, holder.btn_option);
-                //inflating menu from xml resource
-                popup.inflate(R.menu.menu_jadwal);
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
-                            case R.id.action_detail:
-                                Intent intent = new Intent(context, DetailDokterActivity.class);
-                                intent.putExtra("dokter_id", jadwalsModel.getDokter_id());
-                                context.startActivity(intent);
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                popup.show();
-            }
-        });
+        try {
+            date = sdf.parse(jadwal.getTanggal());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        DateFormat formatter = new SimpleDateFormat("EEE, d MMMM yyyy");
+        String newFormat = formatter.format(date);
+
+        holder.tanggal.setText(newFormat);
+        holder.jam.setText(jadwal.getMulai()+" - "+ jadwal.getSelesai());
+        setDokterName(jadwal,holder);
+
     }
 
     private void setDokterName(Jadwals jadwalsModel, JadwalViewHolder holder){
