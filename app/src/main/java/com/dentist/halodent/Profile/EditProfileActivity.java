@@ -3,11 +3,13 @@ package com.dentist.halodent.Profile;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -23,15 +25,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.dentist.halodent.Model.Preference;
+import com.dentist.halodent.Model.Pasiens;
+import com.dentist.halodent.Utils.Preference;
 import com.dentist.halodent.R;
-import com.dentist.halodent.Model.NodeNames;
+import com.dentist.halodent.Utils.NodeNames;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -51,8 +55,8 @@ import java.util.List;
 
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextInputEditText etNama , etUsia , etAlamat ,etNomor;
-    private AutoCompleteTextView etJenisKel;
+    private TextInputLayout tilNama,tilUsia,tilAlamat,tilNomor, tilJenisKel;
+    private TextInputEditText etNama,etUsia,etAlamat,etNomor,etJenisKel;
     private Button btn_simpan;
     private ImageView ivProfile;
     private String id,email,nama,usia,kelamin,photo,alamat,ponsel,status,role;
@@ -74,6 +78,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         setActionBar();
 
         //inisialisasi view
+        tilNama = findViewById(R.id.til_nama);
+        tilJenisKel = findViewById(R.id.til_jenis_kelamin);
+        tilUsia = findViewById(R.id.til_usia);
+        tilAlamat = findViewById(R.id.til_alamat);
+        tilNomor = findViewById(R.id.til_nomor_ponsel);
         etNama = findViewById(R.id.et_nama_profile);
         etJenisKel = findViewById(R.id.et_jenis_kelamin);
         etUsia = findViewById(R.id.et_usia_profile);
@@ -83,10 +92,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         ivProfile =findViewById(R.id.iv_profile_profile);;
 
         //set menu
-        setDropDownMenu();
-
+        //setDropDownMenu();
         progress = new ProgressDialog(this);
-        progress.setMessage("Silahkan Tunggu..");
+        progress.setMessage("Loading..");
+        progress.setCanceledOnTouchOutside(true);
         progress.show();
 
         bottomSheetDialog = new BottomSheetDialog(this);
@@ -99,6 +108,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         fileStorage = FirebaseStorage.getInstance().getReference();
 
         btn_simpan.setOnClickListener(this);
+        etJenisKel.setOnClickListener(this);
         ivProfile.setOnClickListener(this);
 
         //jika current user tidak kosong maka akan set data ke dalam input text
@@ -107,11 +117,15 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             serverFileUri= currentUser.getPhotoUrl();
             getDataUser();
             if(serverFileUri!=null){
-                Glide.with(this)
-                        .load(serverFileUri)
-                        .placeholder(R.drawable.ic_user)
-                        .error(R.drawable.ic_user)
-                        .into(ivProfile);
+                try{
+                    Glide.with(this)
+                            .load(serverFileUri)
+                            .placeholder(R.drawable.ic_user)
+                            .error(R.drawable.ic_user)
+                            .into(ivProfile);
+                }catch (Exception e){
+                    ivProfile.setImageResource(R.drawable.ic_user);
+                }
             }
         }else{
             etNama.setText("");
@@ -122,10 +136,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_simpan :
-                if(localFileUri!=null){
-                    updateUserProfilePhoto();
-                }else{
-                    updateUserProfile();
+                if(inputValidated()){
+                    if(localFileUri!=null){
+                        updateUserProfilePhoto();
+                    }else{
+                        updateUserProfile();
+                    }
                 }
                 break;
             case R.id.btn_kuesioner:
@@ -141,6 +157,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             case R.id.choose:
                 chooseGallery();
                 break;
+            case R.id.et_jenis_kelamin:
+                setDropDownMenu();
+                break;
             default:
                 break;
         }
@@ -149,10 +168,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private void changeImage(){
         MaterialButton remove = bottomSheetDialog.findViewById(R.id.delete);
         MaterialButton choose = bottomSheetDialog.findViewById(R.id.choose);
-
         remove.setOnClickListener(this);
         choose.setOnClickListener(this);
-
         bottomSheetDialog.show();
     }
 
@@ -181,12 +198,15 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setDropDownMenu(){
-        //set dropdown menu using array and adapter
-        List<String> gender = new ArrayList<String>();
-        gender.add("Perempuan");
-        gender.add("Laki-Laki");
-        jenisAdapter = new ArrayAdapter<>(getApplicationContext(),R.layout.dropdown_menu,gender);
-        etJenisKel.setAdapter(jenisAdapter);
+        String[] gender = getResources().getStringArray(R.array.genders);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setItems(gender, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                etJenisKel.setText(gender[which]);
+            }
+        });
+        builder.show();
     }
 
     private void removePhoto(){
@@ -233,12 +253,24 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 if(snapshot.exists()){
                     progress.dismiss();
                     Pasiens pasiens = snapshot.getValue(Pasiens.class);
-                    etJenisKel.setText(pasiens.getKelamin());
-                    etUsia.setText(pasiens.getUsia());
-                    etAlamat.setText(pasiens.getAlamat());
-                    etNomor.setText(pasiens.getPonsel());
+                    try{
+                        etJenisKel.setText(pasiens.getKelamin());
+                        etUsia.setText(pasiens.getUsia());
+                        etAlamat.setText(pasiens.getAlamat());
+                        etNomor.setText(pasiens.getPonsel());
 
-                    Preference.setKeyUserAge(EditProfileActivity.this,Integer.parseInt(pasiens.getUsia()));
+                        if(pasiens.getUsia()!= null){
+                            Preference.setKeyUserAge(EditProfileActivity.this,Integer.parseInt(pasiens.getUsia()));
+                        }
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        etJenisKel.setText(" ");
+                        etUsia.setText(" ");
+                        etAlamat.setText(" ");
+                        etNomor.setText(" ");
+                    }
+
                 }else{
                     Toast.makeText(EditProfileActivity.this,"Data tidak ada",Toast.LENGTH_SHORT).show();
                 }
@@ -405,5 +437,26 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean inputValidated(){
+        boolean res = true;
+        if (etNama.getText().toString().isEmpty()){
+            res = false;
+            tilNama.setError("Error : Nama Kosong");
+        }else if (etJenisKel.getText().toString().isEmpty() ){
+            res = false;
+            tilJenisKel.setError("Error : Jenis Kelamin Kosong");
+        }else if(etUsia.getText().toString().isEmpty()){
+            res = false;
+            tilUsia.setError("Error : Usia Kosong");
+        }else if(etAlamat.getText().toString().isEmpty()){
+            res = false;
+            tilAlamat.setError("Error : Alamat Kosong");
+        }else if(etNomor.getText().toString().isEmpty()){
+            res = false;
+            tilNomor.setError("Error : Nomor Kosong");
+        }
+        return res;
     }
 }

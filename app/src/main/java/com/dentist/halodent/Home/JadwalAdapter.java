@@ -1,18 +1,17 @@
 package com.dentist.halodent.Home;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dentist.halodent.Model.NodeNames;
+import com.dentist.halodent.Model.Jadwals;
+import com.dentist.halodent.Utils.NodeNames;
 import com.dentist.halodent.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,26 +50,25 @@ public class JadwalAdapter extends RecyclerView.Adapter<JadwalAdapter.JadwalView
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
-
         try {
             date = sdf.parse(jadwal.getTanggal());
+
+            DateFormat formatter = new SimpleDateFormat("EEE, d MMMM yyyy");
+            String newFormat = formatter.format(date);
+
+            holder.tanggal.setText(newFormat);
+            holder.jam.setText(jadwal.getMulai()+" - "+ jadwal.getSelesai());
+            setDokterName(jadwal,holder);
+
         } catch (ParseException e) {
             e.printStackTrace();
+            Toast.makeText(context,"Data Kosong",Toast.LENGTH_SHORT).show();
         }
-
-        DateFormat formatter = new SimpleDateFormat("EEE, d MMMM yyyy");
-        String newFormat = formatter.format(date);
-
-        holder.tanggal.setText(newFormat);
-        holder.jam.setText(jadwal.getMulai()+" - "+ jadwal.getSelesai());
-        setDokterName(jadwal,holder);
-
     }
-
-    private void setDokterName(Jadwals jadwalsModel, JadwalViewHolder holder){
+    private void setDokterName(Jadwals jadwal, JadwalViewHolder holder){
         //get sender info from uid model
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(NodeNames.DOKTERS);
-        ref.child(jadwalsModel.getDokter_id()).addValueEventListener(new ValueEventListener() {
+        ref.child(jadwal.getDokterId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 String nama = snapshot.child(NodeNames.NAME).getValue().toString();

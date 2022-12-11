@@ -1,4 +1,4 @@
-package com.dentist.halodent.Chat;
+package com.dentist.halodent.Group;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -10,12 +10,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
@@ -23,6 +25,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,11 +33,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
-import com.dentist.halodent.Model.Constant;
-import com.dentist.halodent.Model.NodeNames;
-import com.dentist.halodent.Model.Util;
-import com.dentist.halodent.Model.Preference;
+import com.dentist.halodent.Model.Groups;
+import com.dentist.halodent.Model.Messages;
+import com.dentist.halodent.Utils.Constant;
+import com.dentist.halodent.Utils.MemoryData;
+import com.dentist.halodent.Utils.NodeNames;
+import com.dentist.halodent.Utils.Util;
+import com.dentist.halodent.Utils.Preference;
 import com.dentist.halodent.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -51,6 +58,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -64,16 +72,15 @@ import java.util.List;
 
 public class GroupActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static String TAG = "GroupMessage";
     private ImageView ivSend,ivAttachment, ivProfile;
     private TextView tvUserName;
     private TextInputEditText etMessage;
     private LinearLayout llProgress,llSendChat;
+    private View llSnackbar;
+    private Toolbar toolbar;
 
     private BottomSheetDialog bottomSheetDialog;
-
-    private TextView tokenlist;
-    private View llSnackbar;
-
     private RecyclerView rv_message;
     private SwipeRefreshLayout srlMessage;
     private List<Messages> messageList;
@@ -84,7 +91,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseUser currentUser;
     private String currentUserId,groupId,groupName,groupPhoto,downloadUrl;
 
-    List <String> tokens = new ArrayList<>();
+    List <String> to = new ArrayList<>();
     String msg="";
     String image="";
 
@@ -106,19 +113,24 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     private String[] cameraPermission;
     private String[] storagePermission;
     //uri of picked image
-    private Uri image_uri=null;
+    private Uri imageUri=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
-        setActionBar();
+
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //init required permission
         cameraPermission = new String[]{
                 Manifest.permission.CAMERA,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
+
         storagePermission = new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
@@ -134,11 +146,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         ivAttachment = findViewById(R.id.ivAttachment);
         ivProfile = findViewById(R.id.iv_profile_action);
         tvUserName = findViewById(R.id.tv_userName_action);
-        //tvUserStatus = findViewById(R.id.tv_userStatus_action);
         etMessage = findViewById(R.id.etMessage);
         srlMessage = findViewById(R.id.srlMessages);
-
-        tokenlist = findViewById(R.id.tokenlist);
 
         //inisialisasi firebase
         mAuth = FirebaseAuth.getInstance();
@@ -166,28 +175,34 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         groupName = Preference.getKeyGroupName(getApplicationContext());
         groupPhoto = Preference.getKeyGroupPhoto(getApplicationContext());
 
-        tvUserName.setText(groupName);
-        if(groupPhoto!=null){
-            Glide.with(this)
-                    .load(groupPhoto)
-                    .placeholder(R.drawable.ic_group)
-                    .error(R.drawable.ic_group)
-                    .into(ivProfile);
-        }else{
-            ivProfile.setImageResource(R.drawable.ic_group);
-        }
-
-        loadGroupMessages();
-        rv_message.scrollToPosition(messageList.size() - 1);
-        srlMessage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                currentPage++;
-                loadGroupMessages();
-                session();
+        if(groupId!=null) {
+            tvUserName.setText(groupName);
+            if (groupPhoto != null) {
+                Glide.with(this)
+                        .load(groupPhoto)
+                        .placeholder(R.drawable.ic_group)
+                        .error(R.drawable.ic_group)
+                        .into(ivProfile);
+            } else {
+                ivProfile.setImageResource(R.drawable.ic_group);
             }
-        });
 
+            loadGroupMessages();
+            rv_message.scrollToPosition(messageList.size() - 1);
+            srlMessage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    currentPage++;
+                    loadGroupMessages();
+                }
+            });
+            session();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         session();
     }
 
@@ -207,7 +222,6 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.ivAttachment:
                 //pick image from gallery or gallery
-                //showImageImportDialog();
                 showImage();
                 break;
             case R.id.camera:
@@ -230,13 +244,13 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void session(){
-        databaseReferenceGroups.child(groupId).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceGroups.child(groupId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    String status = snapshot.child(NodeNames.STATUS).getValue().toString();
+                    Groups group = snapshot.getValue(Groups.class);
 
-                    if(status.equals("selesai")){
+                    if(group.getStatus().equals("selesai")){
                         llSnackbar.setVisibility(View.VISIBLE);
                         llSendChat.setVisibility(View.GONE);
                     }else{
@@ -247,12 +261,11 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             }
 
             @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
-
 
     private void showImage(){
         MaterialButton camera = bottomSheetDialog.findViewById(R.id.camera);
@@ -276,7 +289,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         contentValues.put(MediaStore.Images.Media.TITLE, "GroupImageTitle");
         contentValues.put(MediaStore.Images.Media.DESCRIPTION, "GroupImageDesc");
 
-        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
+        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent,IMAGE_PICK_CAMERA_CODE);
@@ -303,29 +316,6 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode==IMAGE_PICK_GALLERY_CODE){
-                //got image from gallery
-                image_uri = data.getData();
-                try{
-                    sendImageMessage(image_uri);
-                }catch (IOException e){
-                    Toast.makeText(GroupActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
-                }
-            }else if (requestCode == IMAGE_PICK_CAMERA_CODE){
-                //picked from camera
-                try{
-                    sendImageMessage(image_uri);
-                }catch (IOException e){
-                    Toast.makeText(GroupActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_REQUEST_CODE) {
@@ -345,46 +335,95 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void sendImageMessage(Uri image_uri) throws IOException {
-        //progress dialog
-        ProgressDialog pd = new ProgressDialog(this);
-        pd.setTitle("Silahkan tunggu..");
-        pd.setMessage("Mengirim Gambar...");
-        pd.setCanceledOnTouchOutside(false);
-        pd.show();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode==IMAGE_PICK_GALLERY_CODE){
+                //got image from gallery
+                imageUri = data.getData();
+                try {
+                    uploadFile(imageUri,Constant.MESSAGE_TYPE_IMAGE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if (requestCode == IMAGE_PICK_CAMERA_CODE){
+                //picked from camera
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                uploadBytes(bytes,Constant.MESSAGE_TYPE_IMAGE);
+            }
+        }
+    }
 
+    //upload foto dari
+    private void uploadBytes(ByteArrayOutputStream bytes, String messageType) {
         //set storage file name
         String fileName = "message_images/"+""+System.currentTimeMillis();
-
-        //set image bitmap
-        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,60,outputStream);
-        byte[] data = outputStream.toByteArray(); // convert image to array
-
         //set file in storage reference
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(fileName);
 
-        //upload file
-        storageReference.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                pd.dismiss();
-                Task<Uri> task = taskSnapshot.getStorage().getDownloadUrl();
-                while(!task.isSuccessful());
-                String url = task.getResult().toString();
+        UploadTask uploadTask = storageReference.putBytes(bytes.toByteArray());
+        sendImageMessage(uploadTask,storageReference,messageType);
+    }
 
-                if(task.isSuccessful()){
-                    //image uri receiver , save in db
-                    sendMessage(groupName,url,Constant.MESSAGE_TYPE_IMAGE);
-                    finish();
-                    bottomSheetDialog.dismiss();
+    //upload foto dari gallery
+    private void uploadFile(Uri uri, String messageType) throws IOException {
+        //set storage file name
+        String fileName = "message_images/"+""+System.currentTimeMillis();
+        //set file in storage reference
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(fileName);
+
+        //set image to bitmap
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,60,outputStream);
+        //convert image to array
+        byte[] data = outputStream.toByteArray();
+
+        UploadTask uploadTask = storageReference.putBytes(data);
+        sendImageMessage(uploadTask, storageReference , messageType);
+    }
+
+    private void sendImageMessage(UploadTask task, StorageReference filePath, String messageType) {
+        final View view = getLayoutInflater().inflate(R.layout.file_progress, null);
+        final ProgressBar pbProgress = view.findViewById(R.id.pbProgress);
+        final TextView tvProgress = view.findViewById(R.id.tvFileProgress);
+
+        llProgress.addView(view);
+        tvProgress.setText(getString(R.string.upload_progress, messageType, "0"));
+        task.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                bottomSheetDialog.dismiss();
+                double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                pbProgress.setProgress((int) progress);
+                tvProgress.setText(getString(R.string.upload_progress, messageType, String.valueOf(pbProgress.getProgress())));
+            }
+        });
+
+        task.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                llProgress.removeView(view);
+                if (task.isSuccessful()) {
+                    filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String url = uri.toString();
+                            sendMessage(groupName,url,Constant.MESSAGE_TYPE_IMAGE);
+                        }
+                    });
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        });
+
+        task.addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(@NonNull @NotNull Exception e) {
-                Toast.makeText(GroupActivity.this,"Gagal mengirim",Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Exception e) {
+                llProgress.removeView(view);
+                Toast.makeText(GroupActivity.this,getString(R.string.failed_to_send_message,e.getMessage()),Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -396,13 +435,11 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         Messages messages = new Messages(message,currentUser.getUid(),timestamp,msgType);
 
         //add to db
-        databaseReferenceGroups.child(groupId).child("Messages").child(timestamp)
-                .setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
+        databaseReferenceGroups.child(groupId).child(NodeNames.MESSAGES).child(timestamp).setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 //message sent
                 databaseReferenceGroups.child(groupId).child(NodeNames.TIME_STAMP).setValue(timestamp);
-                Toast.makeText(GroupActivity.this,"Pesan berhasil terkirim",Toast.LENGTH_SHORT).show();
                 etMessage.setText("");
 
                 if(msgType.equals(Constant.MESSAGE_TYPE_TEXT)){
@@ -419,17 +456,16 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             String id = ds.child(NodeNames.ID).getValue().toString();
                             if(!id.equals(currentUser.getUid())){
-                                tokens.add(id);
+                                to.add(id);
                             }
                         }
 
-                        //Toast.makeText(GroupActivity.this,"Token berhasil teridentifilasi",Toast.LENGTH_SHORT).show();
-                        Util.sendNotification(GroupActivity.this,tokens,title,msg,image,currentUser.getUid());
+                        Util.sendNotification(GroupActivity.this,to,title,msg,image,groupId);
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        //Toast.makeText(GroupActivity.this,"Token gagal teridentifilasi",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GroupActivity.this,getString(R.string.id_not_found,error.getMessage()),Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -437,14 +473,14 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onFailure(@NonNull @NotNull Exception e) {
                 //message sent failed
-                Toast.makeText(GroupActivity.this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupActivity.this,getString(R.string.failed_to_send_message,e.getMessage()),Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void loadGroupMessages(){
         messageList.clear();
-        Query messageQuery = databaseReferenceGroups.child(groupId).child(Messages.class.getSimpleName()).limitToLast(currentPage * RECORD_PER_PAGE);
+        Query messageQuery = databaseReferenceGroups.child(groupId).child(NodeNames.MESSAGES).limitToLast(currentPage * RECORD_PER_PAGE);
 
         if (childEventListener != null)
             messageQuery.removeEventListener(childEventListener);
@@ -482,19 +518,6 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             }
         };
         messageQuery.addChildEventListener(childEventListener);
-    }
-
-    private void setActionBar(){
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("");
-            ViewGroup actionBarLayout = (ViewGroup) getLayoutInflater().inflate(R.layout.custom_action_bar, null);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setElevation(0);
-            actionBar.setCustomView(actionBarLayout);
-            actionBar.setDisplayOptions(actionBar.getDisplayOptions() | ActionBar.DISPLAY_SHOW_CUSTOM);
-        }
     }
 
     @Override

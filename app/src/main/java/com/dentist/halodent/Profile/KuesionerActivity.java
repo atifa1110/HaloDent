@@ -9,8 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.dentist.halodent.Model.NodeNames;
-import com.dentist.halodent.Model.Preference;
+import com.dentist.halodent.Utils.NodeNames;
+import com.dentist.halodent.Utils.Preference;
 import com.dentist.halodent.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

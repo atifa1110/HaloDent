@@ -20,10 +20,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dentist.halodent.Info.TopikAdapter;
-import com.dentist.halodent.Info.Topiks;
+import com.dentist.halodent.Model.Konselors;
+import com.dentist.halodent.Model.Topiks;
 import com.dentist.halodent.Profile.KuesionerActivity;
 import com.dentist.halodent.R;
-import com.dentist.halodent.Model.NodeNames;
+import com.dentist.halodent.Utils.NodeNames;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -49,12 +51,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private TextView tvNama;
     private ImageView ivProfile , image;
     private Button btnlihatKonselor,btnLetsgo;
-    private View layoutKuesioner;
+    private View layoutKuesioner,layoutKosong;
 
     private String topik_id,konselor_id;
     private DatabaseReference databaseReferenceKonselor,databaseReferenceTopik;
     private FirebaseUser currentUser;
     private Uri serverFileUri;
+
+    private ShimmerFrameLayout shimmerFrameLayoutInfo,shimmerFrameLayoutKonselor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +73,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         super.onViewCreated(view, savedInstanceState);
 
         layoutKuesioner = view.findViewById(R.id.ll_blm_isi);
+        layoutKosong = view.findViewById(R.id.layout_kosong);
         btnLetsgo = view.findViewById(R.id.btn_lets_go);
         image = view.findViewById(R.id.iv_icon_belum_isi);
         image.bringToFront();
@@ -79,10 +84,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         rvKonselor = view.findViewById(R.id.rv_available_konselor);
         rvTopik = view.findViewById(R.id.rv_topik_hangat);
 
+        shimmerFrameLayoutInfo = view.findViewById(R.id.shimmer_info);
+        shimmerFrameLayoutKonselor = view.findViewById(R.id.shimmer_user);
+
         konselorsList = new ArrayList<>();
         rvKonselor.setLayoutManager(new LinearLayoutManager(getContext()));
         konselorAdapter = new KonselorAdapter(getContext(), konselorsList);
         rvKonselor.setAdapter(konselorAdapter);
+
+        topiksList = new ArrayList<>();
+        LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
+        linearLayout.setReverseLayout(true);
+        linearLayout.setStackFromEnd(true);
+
+        rvTopik.setLayoutManager(linearLayout);
+        topikAdapter = new TopikAdapter(getContext(), topiksList);
+        rvTopik.setAdapter(topikAdapter);
 
         databaseReferenceTopik = FirebaseDatabase.getInstance().getReference().child(NodeNames.TOPIKS);
         databaseReferenceKonselor = FirebaseDatabase.getInstance().getReference().child(NodeNames.KONSELORS);
@@ -91,9 +108,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         btnlihatKonselor.setOnClickListener(this);
         btnLetsgo.setOnClickListener(this);
 
-        setData();
+        layoutKosong.setVisibility(View.VISIBLE);
         getDataKonselor();
         getDataTopik();
+        loadProfile();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadProfile();
     }
 
     @Override
@@ -110,7 +134,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void setData(){
+    private void loadProfile(){
         if(currentUser!=null){
             tvNama.setText(currentUser.getDisplayName());
             serverFileUri= currentUser.getPhotoUrl();
@@ -126,15 +150,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void getDataTopik(){
-        topiksList = new ArrayList<>();
-        LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
-        linearLayout.setReverseLayout(true);
-        linearLayout.setStackFromEnd(true);
-
-        rvTopik.setLayoutManager(linearLayout);
-        topikAdapter = new TopikAdapter(getContext(), topiksList);
-        rvTopik.setAdapter(topikAdapter);
-
+        shimmerFrameLayoutInfo.startShimmer();
         Query query = databaseReferenceTopik.orderByChild(NodeNames.TOPIK_TIME).limitToLast(3);
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -145,11 +161,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         topik_id = ds.getKey();
                         Topiks topiks = ds.getValue(Topiks.class);
                         topiksList.add(topiks);
-
                         databaseReferenceTopik.child(topik_id).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                                 if (snapshot.exists()) {
+                                    shimmerFrameLayoutInfo.stopShimmer();
+                                    shimmerFrameLayoutInfo.setVisibility(View.GONE);
+                                    rvTopik.setVisibility(View.VISIBLE);
                                     topikAdapter.notifyDataSetChanged();
                                 }
                             }
@@ -172,34 +190,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void getDataKonselor(){
+        layoutKosong.setVisibility(View.GONE);
+        shimmerFrameLayoutKonselor.startShimmer();
         Query query = databaseReferenceKonselor.orderByChild(NodeNames.ONLINE).equalTo("Online");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 konselorsList.clear();
-                for (DataSnapshot data : snapshot.getChildren()){
-                    if(data.exists()) {
-                        konselor_id = data.getKey();
-                        Konselors konselors = data.getValue(Konselors.class);
-                        if (konselors.getNama() != null) {
-                            konselorsList.add(konselors);
-
-                            databaseReferenceKonselor.child(konselor_id).addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                                    if(snapshot.exists()){
-                                        konselorAdapter.notifyDataSetChanged();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                                    Toast.makeText(getContext(), getContext().getString( R.string.failed_to_read_data, error.getMessage())
-                                            , Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
+                shimmerFrameLayoutKonselor.stopShimmer();
+                shimmerFrameLayoutKonselor.setVisibility(View.GONE);
+                if(snapshot.exists()){
+                    rvKonselor.setVisibility(View.VISIBLE);
+                    layoutKosong.setVisibility(View.GONE);
+                    for (DataSnapshot ds :snapshot.getChildren()){
+                        Konselors konselors = ds.getValue(Konselors.class);
+                        konselorsList.add(konselors);
+                        konselorAdapter.notifyDataSetChanged();
                     }
+                }else{
+                    rvKonselor.setVisibility(View.GONE);
+                    layoutKosong.setVisibility(View.VISIBLE);
                 }
             }
 

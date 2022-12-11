@@ -3,14 +3,12 @@ package com.dentist.halodent.SignUp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.dentist.halodent.Model.Preference;
+import com.dentist.halodent.Utils.Preference;
 import com.dentist.halodent.R;
 import com.google.android.material.textfield.TextInputEditText;
 

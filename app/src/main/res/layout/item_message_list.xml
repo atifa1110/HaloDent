@@ -3,35 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clMessage"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="5dp"
-    android:background="#F3F3F3">
+    style="@style/Group_message">
 
     <TextView
         android:id="@+id/tv_chat_time"
-        style="@style/Text"
+        style="@style/Text.Chat"
         android:layout_marginTop="10dp"
-        android:text="10 Jun 2021"
         android:paddingStart="8dp"
         android:paddingTop="4dp"
         android:paddingEnd="8dp"
         android:paddingBottom="4dp"
+        android:text="10 Jun 2021"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_llSent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="10dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="5dp"
-        app:cardElevation="1dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
+        style="@style/message_bubble"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_chat_time">
 
@@ -69,7 +58,7 @@
 
     <TextView
         android:id="@+id/tvSentImageTime"
-        style="@style/Text.Black"
+        style="@style/Text.Chat"
         tools:text="@string/time"
         android:textSize="12sp"
         android:layout_marginEnd="3dp"
@@ -78,7 +67,7 @@
 
     <TextView
         android:id="@+id/tvSentMessageTime"
-        style="@style/Text.Black"
+        style="@style/Text.Chat"
         tools:text="@string/time"
         android:textSize="12sp"
         android:layout_marginEnd="3dp"
@@ -87,15 +76,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_llReceived"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="5dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="1dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
+        style="@style/message_bubble"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_llSent">
 
@@ -107,12 +88,11 @@
 
             <TextView
                 android:id="@+id/tvReceivedName"
-                style="@style/Text.Medium2"
+                style="@style/Text.Chat.Name"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                tools:text="@string/message_name"
-                android:textColor="@color/purple_700"/>
+                tools:text="@string/message_name"/>
 
             <TextView
                 android:id="@+id/tvReceivedMessage"
@@ -140,7 +120,7 @@
 
     <TextView
         android:id="@+id/tvReceivedImageTime"
-        style="@style/Text.Black"
+        style="@style/Text.Chat"
         tools:text="@string/time"
         android:textSize="12sp"
         android:layout_marginStart="3dp"
@@ -149,7 +129,7 @@
 
     <TextView
         android:id="@+id/tvReceivedMessageTime"
-        style="@style/Text.Black"
+        style="@style/Text.Chat"
         android:layout_marginStart="3dp"
         tools:text="@string/time"
         android:textSize="12sp"

@@ -1,4 +1,4 @@
-package com.dentist.halodent.Profile;
+package com.dentist.halodent.Model;
 
 import com.dentist.halodent.Model.Users;
 
@@ -9,7 +9,6 @@ public class Pasiens extends Users implements Serializable {
     private String usia,alamat;
 
     public Pasiens(){
-
     }
 
     public Pasiens(String id, String nama, String email, String photo, String ponsel, String status, String role, String kelamin, String usia, String alamat) {

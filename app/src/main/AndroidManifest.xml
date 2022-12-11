@@ -45,14 +45,14 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Chat.GroupInfoActivity" />
+        <activity android:name=".Group.GroupInfoActivity" />
         <activity
             android:name=".Info.DetailTopikActivity"
             android:configChanges="orientation|screenSize" />
         <activity android:name=".Home.ListKonselorActivity" />
         <activity
-            android:name=".Chat.GroupActivity"
-            android:theme="@style/ActionBar" />
+            android:name=".Group.GroupActivity"
+            android:theme="@style/AppTheme" />
         <activity android:name=".Home.DetailKonselorActivity" />
         <activity android:name=".Profile.EditProfileActivity" />
         <activity

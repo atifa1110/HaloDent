@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Home.ListKonselorActivity">
 
-<!--    <include-->
-<!--        android:id="@+id/ll_search_view"-->
-<!--        layout="@layout/layout_search_view"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,11 +17,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <include layout="@layout/shimmer_user_list" />
+                    <include layout="@layout/shimmer_user_list" />
+                    <include layout="@layout/shimmer_user_list" />
+                    <include layout="@layout/shimmer_user_list" />
+                    <include layout="@layout/shimmer_user_list" />
+                    <include layout="@layout/shimmer_user_list" />
+                    <include layout="@layout/shimmer_user_list" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_all_konselor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

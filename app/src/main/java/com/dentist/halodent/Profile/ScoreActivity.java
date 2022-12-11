@@ -10,8 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dentist.halodent.Model.NodeNames;
-import com.dentist.halodent.Model.Preference;
+import com.dentist.halodent.Model.Karies;
+import com.dentist.halodent.Utils.NodeNames;
+import com.dentist.halodent.Utils.Preference;
 import com.dentist.halodent.R;
 import com.dentist.halodent.SignIn.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -68,9 +69,15 @@ public class ScoreActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     Karies karies = snapshot.getValue(Karies.class);
-                    tv_kategori.setText(karies.getKategori());
-                    tv_nilai.setText(karies.getScore()+"/20");
-                    getKariesScore(karies.getScore());
+                    try{
+                        tv_kategori.setText(karies.getKategori());
+                        tv_nilai.setText(karies.getScore()+"/20");
+                        getKariesScore(karies.getScore());
+                    }catch (Exception e){
+                        tv_kategori.setText(" ");
+                        tv_nilai.setText(" ");
+                        getKariesScore(0);
+                    }
                 }else{
                     getKariesScore(score);
                 }

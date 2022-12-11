@@ -14,7 +14,8 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.dentist.halodent.Model.Preference;
+import com.dentist.halodent.Model.Konselors;
+import com.dentist.halodent.Utils.Preference;
 import com.dentist.halodent.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -45,17 +46,17 @@ public class KonselorAdapter extends RecyclerView.Adapter<KonselorAdapter.Konsel
 
         Konselors konselors = konselorsList.get(position);
 
-        holder.tvNamaKonselor.setText(konselors.getNama());
-        holder.tvOnline.setText(konselors.getStatus());
-
-        if (konselors.getStatus().equals("Online")){
-            holder.ivCircle.setImageDrawable(context.getDrawable(R.drawable.ic_circle_green));
-        }else{
-            holder.tvOnline.setTextColor(context.getResources().getColor(R.color.grey));
-            holder.ivCircle.setImageDrawable(context.getDrawable(R.drawable.ic_circle_gray));
-        }
-
         try{
+            holder.tvNamaKonselor.setText(konselors.getNama());
+            holder.tvOnline.setText(konselors.getStatus());
+
+            if (konselors.getStatus().equals("Online")){
+                holder.ivCircle.setImageDrawable(context.getDrawable(R.drawable.ic_circle_green));
+            }else{
+                holder.tvOnline.setTextColor(context.getResources().getColor(R.color.grey));
+                holder.ivCircle.setImageDrawable(context.getDrawable(R.drawable.ic_circle_gray));
+            }
+
             Glide.with(context)
                     .load(konselors.getPhoto())
                     .placeholder(R.drawable.ic_user)

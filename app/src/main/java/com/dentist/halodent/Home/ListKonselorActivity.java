@@ -6,15 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
-import com.dentist.halodent.Model.Constant;
-import com.dentist.halodent.Model.NodeNames;
+import com.dentist.halodent.Model.Konselors;
+import com.dentist.halodent.Utils.NodeNames;
 import com.dentist.halodent.R;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,8 +31,8 @@ public class ListKonselorActivity extends AppCompatActivity {
     private RecyclerView rv_all_konselor;
     private List<Konselors> konselorsList;
     private KonselorAdapter konselorAdapter;
-    private ProgressDialog progressDialog;
     private DatabaseReference databaseReferenceKonselor;
+    private ShimmerFrameLayout shimmerFrameLayoutKonselor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +55,8 @@ public class ListKonselorActivity extends AppCompatActivity {
         konselorAdapter = new KonselorAdapter(this, konselorsList);
         rv_all_konselor.setAdapter(konselorAdapter);
 
-        //initialization dialog
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Silahkan Tunggu..");
-        progressDialog.show();
+        shimmerFrameLayoutKonselor = findViewById(R.id.shimmer_user);
+        shimmerFrameLayoutKonselor.startShimmer();
 
         //read database
         getDataKonselor();
@@ -73,7 +70,9 @@ public class ListKonselorActivity extends AppCompatActivity {
                 konselorsList.clear();
                 for (DataSnapshot data : snapshot.getChildren()){
                     if(data.exists()) {
-                        progressDialog.dismiss();
+                        shimmerFrameLayoutKonselor.stopShimmer();
+                        shimmerFrameLayoutKonselor.setVisibility(View.GONE);
+                        rv_all_konselor.setVisibility(View.VISIBLE);
                         Konselors konselors = data.getValue(Konselors.class);
                         konselorsList.add(konselors);
                         konselorAdapter.notifyDataSetChanged();

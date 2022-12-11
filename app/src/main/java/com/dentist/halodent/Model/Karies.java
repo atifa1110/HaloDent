@@ -1,4 +1,4 @@
-package com.dentist.halodent.Profile;
+package com.dentist.halodent.Model;
 
 import java.io.Serializable;
 

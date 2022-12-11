@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.dentist.halodent.Model.Preference;
+import com.dentist.halodent.Utils.Preference;
 import com.dentist.halodent.R;
 
 public class Step1Activity extends AppCompatActivity implements View.OnClickListener{

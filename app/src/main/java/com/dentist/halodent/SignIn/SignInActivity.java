@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dentist.halodent.Model.Util;
+import com.dentist.halodent.Utils.Util;
 import com.dentist.halodent.R;
 import com.dentist.halodent.SignUp.Step1Activity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -98,23 +98,14 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
                 @Override
                 public void onComplete(@NonNull @NotNull Task<String> task) {
-                    String message = task.getResult();
-                    Util.updateDeviceToken(SignInActivity.this,message);
+                    try{
+                        String message = task.getResult();
+                        Util.updateDeviceToken(SignInActivity.this,message);
+                    }catch (Exception e){
+                        Toast.makeText(SignInActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
-//            FirebaseMessaging.getInstance().subscribeToTopic("messages").addOnCompleteListener(new OnCompleteListener<Void>() {
-//                @Override
-//                public void onComplete(Task<Void> task) {
-//                    String msg = getString(R.string.msg_subscribed);
-//                    if(task.isSuccessful()){
-//                        Util.updateDeviceToken(SignInActivity.this,msg);
-//                    }else{
-//                        msg = getString(R.string.msg_failed_subscribed);
-//                        Util.updateDeviceToken(SignInActivity.this,msg);
-//                    }
-//                }
-//            });
-
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
@@ -124,7 +115,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_masuk:
-                signIn(v);
+                signIn();
                 break;
             case R.id.btn_daftar:
                 signUp();
@@ -145,7 +136,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         startActivity(intent);
     }
 
-    public void signIn(View v){
+    public void signIn(){
         // jika input data sudah benar
         if (inputValidated()) {
             progress.show();
@@ -182,19 +173,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         //jika text email kosong
         if (etEmail.getText().toString().isEmpty()){
             res = false;
-            //jika email kosong
             tilEmail.setError("Error : Email Kosong");
-            //tilEmail.requestFocus();
         }else if(!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString().trim()).matches()){
             res = false;
-            //jika pattern email tidak sesuai dengan text email
             tilEmail.setError("Error : Email salah");
-            //tilEmail.requestFocus();
         }else if (etPassword.getText().toString().isEmpty() || etPassword.length()<6){
             res = false;
-            //jika paswword yang dimasukkan kurang dari 6 dan kosong
             tilPassword.setError("Error : Minimal 6 Karakter");
-            //tilPassword.requestFocus();
         }
         return res;
     }

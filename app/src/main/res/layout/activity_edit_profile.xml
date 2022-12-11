@@ -45,19 +45,20 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_jenis_kelamin"
-        style="@style/TextInputLayout.dropDown"
+        style="@style/TextInputLayout.clear"
         android:layout_marginTop="5dp"
+        app:startIconDrawable="@drawable/ic_sex"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_nama"
-        app:startIconDrawable="@drawable/ic_sex">
+        app:layout_constraintTop_toBottomOf="@+id/til_nama">
 
-        <AutoCompleteTextView
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_jenis_kelamin"
             style="@style/TextInputEditText.inputText"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:hint="@string/jenis_kelamin" />
+            android:clickable="true"
+            android:focusable="false"
+            android:cursorVisible="false"
+            android:hint="@string/jenis_kelamin"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -115,8 +116,8 @@
         android:id="@+id/btn_simpan"
         style="@style/Button.ColorGreen"
         android:text="@string/simpan"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

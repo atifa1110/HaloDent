@@ -1,7 +1,5 @@
 package com.dentist.halodent.SignUp;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -11,11 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dentist.halodent.Model.Preference;
+import com.dentist.halodent.Utils.Preference;
 import com.dentist.halodent.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;

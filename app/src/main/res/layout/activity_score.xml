@@ -87,7 +87,7 @@
 
     <TextView
         android:id="@+id/menjaga_karies"
-        style="@style/Text.White"
+        style="@style/Text.Skor"
         android:layout_marginTop="10dp"
         android:justificationMode="inter_word"
         android:text="@string/menjaga_karies"
@@ -97,8 +97,8 @@
 
     <TextView
         android:id="@+id/cara_jaga"
-        style="@style/Text.White"
-        android:layout_marginTop="10dp"
+        style="@style/Text.Skor"
+        android:layout_marginTop="8dp"
         android:justificationMode="inter_word"
         android:text="@string/cara_jaga_karies_rendah"
         app:layout_constraintEnd_toEndOf="parent"

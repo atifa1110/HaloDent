@@ -12,13 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.dentist.halodent.Model.Util;
+import com.dentist.halodent.Model.Topiks;
+import com.dentist.halodent.Utils.Util;
 import com.dentist.halodent.R;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class TopikAdapter extends RecyclerView.Adapter<TopikAdapter.TopikViewHolder>{
@@ -43,14 +42,14 @@ public class TopikAdapter extends RecyclerView.Adapter<TopikAdapter.TopikViewHol
     public void onBindViewHolder(@NonNull @NotNull TopikViewHolder holder, int position) {
         Topiks topiks = topiksList.get(position);
 
-        holder.topikName.setText(topiks.getJudul());
-
-        String narasi = topiks.getNarasi();
-        narasi = narasi.length()>100?narasi.substring(0,100):narasi;
-
-        holder.topikNarasi.setText(narasi+"...");
-
         try{
+            holder.topikName.setText(topiks.getJudul());
+
+            String narasi = topiks.getNarasi();
+            narasi = narasi.length()>100?narasi.substring(0,100):narasi;
+
+            holder.topikNarasi.setText(narasi+"...");
+
             Glide.with(context)
                     .load(topiks.getPhoto())
                     .placeholder(R.drawable.ic_add_photo)
@@ -61,7 +60,7 @@ public class TopikAdapter extends RecyclerView.Adapter<TopikAdapter.TopikViewHol
             holder.photoName.setImageResource(R.drawable.ic_add_photo);
         }
 
-        holder.time.setText(Util.getTime(topiks.getTimestamp()));
+        holder.time.setText(Util.getDay(topiks.getTimestamp()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

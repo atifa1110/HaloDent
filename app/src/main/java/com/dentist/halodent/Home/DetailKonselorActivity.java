@@ -7,7 +7,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,12 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.dentist.halodent.Chat.GroupActivity;
-import com.dentist.halodent.Chat.Groups;
-import com.dentist.halodent.Model.Preference;
+import com.dentist.halodent.Group.GroupActivity;
+import com.dentist.halodent.Model.Groups;
+import com.dentist.halodent.Model.Dokters;
+import com.dentist.halodent.Model.Jadwals;
+import com.dentist.halodent.Model.Konselors;
+import com.dentist.halodent.Utils.Preference;
 import com.dentist.halodent.Model.Users;
 import com.dentist.halodent.R;
-import com.dentist.halodent.Model.NodeNames;
+import com.dentist.halodent.Utils.NodeNames;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -50,6 +55,7 @@ import java.util.List;
 
 public class DetailKonselorActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private static final String TAG = "DetailActivity";
     private ImageView iv_photo_konselor,iv_photo_dokter;
     private TextView tv_nama,tv_email,tv_nim,tv_angkatan,tv_kelamin,tv_nama_dokter,tv_tidak_ada_jadwal,tv_pengawas;
     private Button btn_chat;
@@ -66,7 +72,7 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
     private ProgressDialog progressDialog;
 
     private String id;
-    private DateFormat dateFormat = new SimpleDateFormat("H:mm");
+    private DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +135,13 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
         cardView.setOnClickListener(this);
 
         //read database
+        tv_tidak_ada_jadwal.setVisibility(View.VISIBLE);
+        getKonselorJadwal();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         getKonselorJadwal();
     }
 
@@ -136,103 +149,115 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_chat:
-                createGroupChat();
-                startActivity(new Intent(DetailKonselorActivity.this, GroupActivity.class));
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setMessage("Apakah anda ingin berkonsultasi?")
+                        .setCancelable(false)
+                        .setPositiveButton("iya", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                createGroupChat();
+                                startActivity(new Intent(DetailKonselorActivity.this, GroupActivity.class));
+                            }
+                        }).setNegativeButton("tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
                 break;
             case R.id.card_view_dokter:
                 Intent intent = new Intent(DetailKonselorActivity.this, DetailDokterActivity.class);
-                intent.putExtra("dokter_id",id);
+                intent.putExtra("dokterId",id);
                 startActivity(intent);
                 break;
         }
     }
 
     private void getKonselorJadwal(){
-        tv_tidak_ada_jadwal.setVisibility(View.VISIBLE);
-        rv_jadwal.setVisibility(View.INVISIBLE);
-        cardView.setVisibility(View.GONE);
-        tv_pengawas.setVisibility(View.GONE);
-
-        Query query = databaseReferenceJadwal.child(konselors.getId()).orderByChild("tanggal");
+        tv_tidak_ada_jadwal.setVisibility(View.GONE);
+        rv_jadwal.setVisibility(View.VISIBLE);
+        Query query = databaseReferenceJadwal.child(konselors.getId()).orderByChild(NodeNames.JADWAL_TANGGAL);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 jadwalsList.clear();
-                progressDialog.dismiss();
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        if (snapshot.exists()) {
-                            tv_tidak_ada_jadwal.setVisibility(View.GONE);
-                            rv_jadwal.setVisibility(View.VISIBLE);
-                            cardView.setVisibility(View.VISIBLE);
-                            tv_pengawas.setVisibility(View.VISIBLE);
-
-                            Jadwals jadwals = ds.getValue(Jadwals.class);
-                            setClick(jadwals.getDokter_id(), jadwals.getTanggal(), jadwals.getMulai(), jadwals.getSelesai());
-                            jadwalsList.add(jadwals);
-                            jadwalAdapter.notifyDataSetChanged();
-                        }else {
-                            tv_tidak_ada_jadwal.setVisibility(View.VISIBLE);
-                            rv_jadwal.setVisibility(View.GONE);
-                            cardView.setVisibility(View.GONE);
-                            tv_pengawas.setVisibility(View.GONE);
-                        }
+                if(snapshot.exists()){
+                    tv_tidak_ada_jadwal.setVisibility(View.GONE);
+                    rv_jadwal.setVisibility(View.VISIBLE);
+                    for (DataSnapshot ds : snapshot.getChildren()){
+                        Jadwals jadwals = ds.getValue(Jadwals.class);
+                        jadwalsList.add(jadwals);
+                        setJadwalAvailable();
+                        jadwalAdapter.notifyDataSetChanged();
                     }
+                }else{
+                    tv_tidak_ada_jadwal.setVisibility(View.VISIBLE);
+                    rv_jadwal.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
                 Toast.makeText(DetailKonselorActivity.this,getString(R.string.failed_to_read_data , error.getMessage()),Toast.LENGTH_SHORT).show();
-                tv_tidak_ada_jadwal.setVisibility(View.VISIBLE);
-                rv_jadwal.setVisibility(View.GONE);
             }
         });
     }
 
-    private void setClick(String dokterid, String tanggal, String mulai, String selesai){
-        DateFormat df = new SimpleDateFormat("EEE, dd/MM/yyyy, HH:mm");
-        String date = df.format(new Date());
+    private void setJadwalAvailable(){
+        for (int i=0; i<jadwalsList.size(); i++){
+            String dokter = jadwalsList.get(i).getDokterId();
+            String tanggal = jadwalsList.get(i).getTanggal();
+            String mulai = jadwalsList.get(i).getMulai();
+            String selesai = jadwalsList.get(i).getSelesai();
 
-        String [] splitString = date.split(", ");
-        String dt = splitString[1];
-        String time = splitString[2];
+            Log.d(TAG,dokter);
+            Log.d(TAG,tanggal);
+            Log.d(TAG,mulai);
+            Log.d(TAG,selesai);
 
-        Date m = null;
-        Date s = null;
-        Date n = null;
-        try {
-            m = dateFormat.parse(mulai);
-            s = dateFormat.parse(selesai);
-            n = dateFormat.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        long timeMulai= m.getTime();
-        long timeSelesai = s.getTime();
-        long timeSekarang = n.getTime();
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
+            String date = df.format(new Date());
 
-        Log.d("jadwal tanggal",tanggal);
-        Log.d("jadwal tanggal Sekarang",dt);
-        Log.d("jadwal sekarang",String.valueOf(timeSekarang));
-        Log.d("jadwal mulai",String.valueOf(timeMulai));
-        Log.d("jadwal selesai",String.valueOf(timeSelesai));
-        Log.d("jadwal dokter",dokterid);
+            String [] splitString = date.split(", ");
+            String dt = splitString[0];
+            String time = splitString[1];
 
-        if(tanggal.equals(dt)){
-            cardView.setVisibility(View.VISIBLE);
-            tv_pengawas.setVisibility(View.VISIBLE);
-            //set name for doctor id
-            getDataDokter(dokterid);
-            //set id into id
-            id = dokterid;
-            if(timeSekarang>=timeMulai && timeSelesai>=timeSekarang){
-                btn_chat.setEnabled(timeSekarang>=timeMulai && timeSelesai>=timeSekarang);
+            Date m = null;
+            Date s = null;
+            Date n = null;
+            try {
+                m = dateFormat.parse(mulai);
+                s = dateFormat.parse(selesai);
+                n = dateFormat.parse(time);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            long timeMulai = m.getTime();
+            long timeSelesai = s.getTime();
+            long timeSekarang = n.getTime();
+
+            if(tanggal.equals(dt)){
+                //set name for doctor id
+                getDataDokter(dokter);
+                //set id into id
+                id = dokter;
+                if(timeSekarang>=timeMulai && timeSelesai>=timeSekarang){
+                    tv_pengawas.setVisibility(View.VISIBLE);
+                    cardView.setVisibility(View.VISIBLE);
+                    btn_chat.setEnabled(timeSekarang>=timeMulai && timeSelesai>=timeSekarang);
+                }else{
+                    tv_pengawas.setVisibility(View.GONE);
+                    cardView.setVisibility(View.GONE);
+                    btn_chat.setEnabled(false);
+                }
             }else{
+                tv_pengawas.setVisibility(View.GONE);
+                cardView.setVisibility(View.GONE);
                 btn_chat.setEnabled(false);
             }
-        }else {
-            cardView.setVisibility(View.GONE);
-            tv_pengawas.setVisibility(View.GONE);
-            btn_chat.setEnabled(false);
         }
     }
 
@@ -242,15 +267,19 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     Dokters dokters = snapshot.getValue(Dokters.class);
-                    Preference.setKeyDokter(getApplicationContext(),id,dokters.getNama(),dokters.getEmail(),dokters.getPhoto(),dokters.getNip(),dokters.getStr(),dokters.getSip());
+                    try{
+                        Preference.setKeyDokter(getApplicationContext(),id,dokters.getNama(),dokters.getEmail(),dokters.getPhoto(),dokters.getNip(),dokters.getStr(),dokters.getSip());
+                        Glide.with(getApplicationContext())
+                                .load(dokters.getPhoto())
+                                .placeholder(R.drawable.ic_user)
+                                .centerCrop()
+                                .into(iv_photo_dokter);
+                        tv_nama_dokter.setText("Drg."+ dokters.getNama());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        Toast.makeText(DetailKonselorActivity.this,"Data Dokter Kosong",Toast.LENGTH_SHORT).show();
+                    }
 
-                    Glide.with(getApplicationContext())
-                            .load(dokters.getPhoto())
-                            .placeholder(R.drawable.ic_user)
-                            .centerCrop()
-                            .into(iv_photo_dokter);
-
-                    tv_nama_dokter.setText("Drg."+ dokters.getNama());
                 }else{
                     Toast.makeText(DetailKonselorActivity.this,"Data not exist",Toast.LENGTH_SHORT).show();
                 }
@@ -285,13 +314,12 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
                 partisipant.put(konselors.getId(),kons);
                 partisipant.put(id,dokter);
 
-                databaseReferenceGroup.child(timestamp).child("Participants").setValue(partisipant).addOnCompleteListener(new OnCompleteListener<Void>() {
+                databaseReferenceGroup.child(timestamp).child(NodeNames.PARTICIPANTS).setValue(partisipant).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(DetailKonselorActivity.this,"Berhasil ditambahkan",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(DetailKonselorActivity.this,"Gagal ditambahkan",Toast.LENGTH_SHORT).show();
+                        if(!task.isSuccessful()){
+                            Toast.makeText(DetailKonselorActivity.this,getString(R.string.failed_to_add_participant,task.getException()),Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     }
                 });
@@ -299,11 +327,11 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull @NotNull Exception e) {
-                Toast.makeText(DetailKonselorActivity.this,"Gagal membuat group",Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailKonselorActivity.this,getString(R.string.failed_to_add_group,e.getMessage()),Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
-
 
     //set action bar
     private void setActionBar(){

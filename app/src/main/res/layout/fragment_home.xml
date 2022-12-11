@@ -65,16 +65,60 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_available_konselor"
+        <LinearLayout
+            android:id="@+id/layout_user"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_avail_konselor" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_avail_konselor"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/layout_kosong"
+                layout="@layout/item_konselor_kosong"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"/>
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <include layout="@layout/shimmer_user_list" />
+                    <include layout="@layout/shimmer_user_list" />
+                    <include layout="@layout/shimmer_user_list" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_available_konselor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_avail_konselor" />
+
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_lihat_semua_konselor"
@@ -84,7 +128,7 @@
             android:layout_marginEnd="15dp"
             android:text="@string/lihat_semua"
             android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/rv_available_konselor"
+            app:layout_constraintBottom_toTopOf="@+id/layout_user"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout" />
 
@@ -95,7 +139,28 @@
             android:text="@string/topik_hangat"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_available_konselor" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_user" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_topik_hangat">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <include layout="@layout/shimmer_topik_hangat" />
+                <include layout="@layout/shimmer_topik_hangat" />
+                <include layout="@layout/shimmer_topik_hangat" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_topik_hangat"
@@ -104,6 +169,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_topik_hangat" />

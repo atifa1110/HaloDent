@@ -13,7 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.dentist.halodent.Model.NodeNames;
+import com.dentist.halodent.Model.Topiks;
+import com.dentist.halodent.Utils.NodeNames;
 import com.dentist.halodent.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

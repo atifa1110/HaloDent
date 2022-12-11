@@ -1,4 +1,4 @@
-package com.dentist.halodent.Home;
+package com.dentist.halodent.Model;
 
 import com.dentist.halodent.Model.Users;
 

@@ -143,6 +143,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/roboto_medium"
             android:text="@string/diawasi_oleh"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tab_layout_detail" />
 
@@ -154,6 +155,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             app:cardElevation="3dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_pengawas">
@@ -220,6 +222,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_tidak_jadwal"/>
 
@@ -229,6 +232,7 @@
             android:layout_width="match_parent"
             android:layout_margin="20dp"
             android:text="@string/chat_sekarang"
+            android:enabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

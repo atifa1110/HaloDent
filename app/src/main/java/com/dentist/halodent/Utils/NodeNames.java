@@ -1,4 +1,4 @@
-package com.dentist.halodent.Model;
+package com.dentist.halodent.Utils;
 
 public class NodeNames {
 
@@ -33,6 +33,11 @@ public class NodeNames {
     public static final String TOPIK_SUMBER = "sumber";
     public static final String TOPIK_TIME = "timestamp";
     public static final String TOPIK_TYPE = "tipe";
+
+    //nodes jadwal
+    public static final String JADWAL_MULAI = "mulai";
+    public static final String JADWAL_SELESAI = "selesai";
+    public static final String JADWAL_TANGGAL = "tanggal";
 
     //nodes survey
     public static final String INTERVIEW = "interview";

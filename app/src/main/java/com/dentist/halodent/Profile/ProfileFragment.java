@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.dentist.halodent.Model.NodeNames;
+import com.dentist.halodent.Utils.NodeNames;
 import com.dentist.halodent.R;
 import com.dentist.halodent.SignIn.SignInActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,29 +59,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         btn_keluar = view.findViewById(R.id.btn_keluar);
         btn_kuesioner = view.findViewById(R.id.btn_kuesioner);
 
+        btn_edit_profile.setOnClickListener(this);
+        btn_kuesioner.setOnClickListener(this);
+        btn_keluar.setOnClickListener(this);
+
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
 
         databaseReferenceUser = FirebaseDatabase.getInstance().getReference().child(NodeNames.USERS).child(currentUser.getUid());
+        loadProfile();
+    }
 
-        if (firebaseAuth != null) {
-            nama.setText(currentUser.getDisplayName());
-            email.setText(currentUser.getEmail());
-            serverFileUri = currentUser.getPhotoUrl();
-            if (serverFileUri != null) {
-                Glide.with(this)
-                        .load(serverFileUri)
-                        .placeholder(R.drawable.ic_user)
-                        .error(R.drawable.ic_user)
-                        .into(ivProfile);
-            } else {
-                ivProfile.setImageResource(R.drawable.ic_user);
-            }
-
-            btn_edit_profile.setOnClickListener(this);
-            btn_kuesioner.setOnClickListener(this);
-            btn_keluar.setOnClickListener(this);
-        }
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadProfile();
     }
 
     @Override
@@ -113,6 +105,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
                 break;
+        }
+    }
+
+    private void loadProfile(){
+        if (firebaseAuth != null) {
+            nama.setText(currentUser.getDisplayName());
+            email.setText(currentUser.getEmail());
+            serverFileUri = currentUser.getPhotoUrl();
+            if (serverFileUri != null) {
+                Glide.with(this)
+                        .load(serverFileUri)
+                        .placeholder(R.drawable.ic_user)
+                        .error(R.drawable.ic_user)
+                        .into(ivProfile);
+            } else {
+                ivProfile.setImageResource(R.drawable.ic_user);
+            }
         }
     }
 

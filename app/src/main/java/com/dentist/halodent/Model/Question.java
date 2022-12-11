@@ -1,4 +1,4 @@
-package com.dentist.halodent.Profile;
+package com.dentist.halodent.Model;
 
 public class Question {
 

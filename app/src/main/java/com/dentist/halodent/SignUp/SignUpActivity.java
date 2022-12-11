@@ -19,12 +19,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dentist.halodent.SignIn.MainActivity;
 import com.dentist.halodent.SignIn.SignInActivity;
-import com.dentist.halodent.Profile.Pasiens;
-import com.dentist.halodent.Model.Preference;
+import com.dentist.halodent.Model.Pasiens;
+import com.dentist.halodent.Utils.Preference;
 import com.dentist.halodent.R;
-import com.dentist.halodent.Model.NodeNames;
+import com.dentist.halodent.Utils.NodeNames;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -116,7 +115,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_daftar:
-                signUp(v);
+                signUp();
                 break;
             case R.id.btn_masuk:
                 Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
@@ -140,7 +139,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     databaseReferenceUser = FirebaseDatabase.getInstance().getReference().child(Pasiens.class.getSimpleName());
                     databaseReferenceSurvey = FirebaseDatabase.getInstance().getReference().child(NodeNames.SURVEY);
 
-                    Pasiens pasiens = new Pasiens(id,etName.getText().toString(),email,"","","","Pasien"," ",etUsia.getText().toString(),"");
+                    Pasiens pasiens = new Pasiens(id,etName.getText().toString(),email,"","","","Pasien","",etUsia.getText().toString(),"");
                     Interviews interviews = new Interviews(step1,step2,step3,step4);
 
                     Preference.setKeyUserAge(SignUpActivity.this,Integer.parseInt(pasiens.getUsia()));
@@ -170,7 +169,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
-    public void signUp(View v){
+    public void signUp(){
         email = etEmail.getText().toString().trim();
         password =etPassword.getText().toString().trim();
 

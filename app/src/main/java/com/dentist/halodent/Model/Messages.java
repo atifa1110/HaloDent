@@ -1,14 +1,22 @@
-package com.dentist.halodent.Chat;
+package com.dentist.halodent.Model;
 
 public class Messages {
 
-    private  String message;
-    private  String messageFrom;
-    private  String messageId;
-    private  String messageTime;
-    private  String messageType;
+    private String messageId;
+    private String message;
+    private String messageFrom;
+    private String messageTime;
+    private String messageType;
 
     public Messages() {
+    }
+
+    public Messages(String messageId,String message, String messageFrom, String messageTime, String messageType) {
+        this.messageId = messageId;
+        this.message = message;
+        this.messageFrom = messageFrom;
+        this.messageTime = messageTime;
+        this.messageType = messageType;
     }
 
     public Messages(String message, String messageFrom, String messageTime, String messageType) {
@@ -18,12 +26,12 @@ public class Messages {
         this.messageType = messageType;
     }
 
-    public Messages(String message, String messageFrom, String messageId, String messageTime, String messageType) {
-        this.message = message;
-        this.messageFrom = messageFrom;
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
         this.messageId = messageId;
-        this.messageTime = messageTime;
-        this.messageType = messageType;
     }
 
     public String getMessage() {
@@ -40,14 +48,6 @@ public class Messages {
 
     public void setMessageFrom(String messageFrom) {
         this.messageFrom = messageFrom;
-    }
-
-    public String getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
     }
 
     public String getMessageTime() {

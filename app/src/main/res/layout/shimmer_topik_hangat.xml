@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,40 +22,47 @@
 
             <TextView
                 android:id="@+id/tv_topik"
-                style="@style/Text.Medium2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:maxLines="2"
-                tools:text="Gigi gigis? cegah dengan ceria"/>
+                android:textColor="@color/black"
+                android:background="@color/shimmer_color"/>
 
             <TextView
                 android:id="@+id/tv_topik_narasi"
-                style="@style/Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/shimmer_color"
                 android:layout_marginTop="5dp"
-                android:maxLines="3"
-                tools:text="Masih banyak mitos yang berkembang di...."/>
+                android:maxLines="3"/>
 
             <RelativeLayout
                 android:layout_marginTop="4dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp"
+                android:layout_weight="2">
 
                 <ImageView
                     android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:src="@drawable/ic_baseline_access_time" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:background="@color/shimmer_color"
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/tv_time_topik"
-                    style="@style/Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="4dp"
                     android:layout_toEndOf="@+id/time"
+                    android:background="@color/shimmer_color"
+                    android:fontFamily="@font/roboto_regular"
                     android:maxLines="1"
-                    tools:text="24 Juli 2021" />
+                    android:textColor="@color/black" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -66,7 +72,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_example"/>
+            android:background="@color/shimmer_color" />
     </LinearLayout>
 
     <View

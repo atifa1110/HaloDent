@@ -16,6 +16,7 @@ public interface Api {
             @Field("token1") String token1,
             @Field("title") String title,
             @Field("body") String body,
-            @Field("image") String image
+            @Field("image") String image,
+            @Field("chatid") String chatid
     );
 }

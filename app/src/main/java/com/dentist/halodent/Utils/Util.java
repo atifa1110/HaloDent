@@ -1,5 +1,6 @@
-package com.dentist.halodent.Model;
+package com.dentist.halodent.Utils;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -7,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.dentist.halodent.Notification.Api;
+import com.dentist.halodent.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,21 +49,18 @@ public class Util {
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
             DatabaseReference databaseReference = rootRef.child(NodeNames.TOKENS).child(currentUser.getUid());
 
-            HashMap<String,String> hashMap = new HashMap<>();
-            hashMap.put(NodeNames.DEVICE_TOKEN,token);
-
-            databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            databaseReference.child(NodeNames.DEVICE_TOKEN).setValue(token).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(!task.isSuccessful()){
-                        Toast.makeText(context,"Gagal menyimpan Token Device",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,context.getString(R.string.failed_get_token,task.getException()),Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
     }
 
-    public static void sendNotification(Context context, List<String> to, String title, String message, String image,String userId){
+    public static void sendNotification(Context context, List<String> to, String title, String message,String image,String groupId){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference databaseReference = rootRef.child(NodeNames.TOKENS);
 
@@ -76,8 +75,6 @@ public class Util {
                     tokens.add(deviceToken);
                     tokens.add(deviceToken1);
 
-                    Log.d("informasi token",tokens.toString());
-
                     String Url = "https://halo-dent.web.app/api/";
 
                     Gson gson = new GsonBuilder()
@@ -90,28 +87,24 @@ public class Util {
                             .build();
 
                     Api api = retrofit.create(Api.class);
-                    Call<ResponseBody> call = api.sendNotification(deviceToken,deviceToken1,title,message,image);
-                    Log.d(TAG,title);
-                    Log.d(TAG,message);
-                    Log.d(TAG,image);
+                    Call<ResponseBody> call = api.sendNotification(deviceToken,deviceToken1,title,message,image,groupId);
 
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                            try{
-//                                Toast.makeText(context.getApplicationContext(), response.body().string(),Toast.LENGTH_SHORT).show();
-//                            }catch (IOException e){
-//                                e.printStackTrace();
-//                            }
+                            if(response.isSuccessful()){
+                                Log.d("Response Body" , "Response Body Success: "+ response.body());
+                            }else{
+                                Log.d("Response Body" , "Response Body Error: "+ response.code());
+                                Toast.makeText(context,context.getString(R.string.failed_to_send_notification,response.errorBody()),Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Toast.makeText(context.getApplicationContext(), t.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,context.getString(R.string.failed_to_send_notification,t.getMessage()),Toast.LENGTH_SHORT).show();
                         }
                     });
-                }else{
-                    Toast.makeText(context,"token tidak ada",Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -155,11 +148,30 @@ public class Util {
         }
     }
 
-    public static String getTime(String time){
-        SimpleDateFormat sfd = new SimpleDateFormat("d MMM yyy HH:mm");
+    public static String getDay(String time){
+        SimpleDateFormat sfd = new SimpleDateFormat("dd MMM yyy HH:mm");
         String dateTime = sfd.format(new Date(Long.parseLong(time)));
         String [] splitString = dateTime.split(" ");
-        String gettime = splitString[0]+" "+splitString[1]+" "+splitString[2];
-        return gettime;
+        String day = splitString[0]+" "+splitString[1]+" "+splitString[2];
+        return day;
+    }
+
+    public static String getTime(String time){
+        SimpleDateFormat sfd = new SimpleDateFormat("dd MMM yyy HH:mm");
+        String dateTime = sfd.format(new Date(Long.parseLong(time)));
+        String [] splitString = dateTime.split(" ");
+        String waktu = splitString[3];
+        return waktu ;
+    }
+
+    public static boolean isAppInForeground(Context context) {
+        List<ActivityManager.RunningTaskInfo> task =
+                ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
+                        .getRunningTasks(1);
+        if (task.isEmpty()) {
+            // app is in background
+            return false;
+        }
+        return task.get(0).topActivity.getPackageName().equalsIgnoreCase(context.getPackageName());
     }
 }

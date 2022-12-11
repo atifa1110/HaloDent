@@ -1,4 +1,4 @@
-package com.dentist.halodent.Info;
+package com.dentist.halodent.Model;
 
 import com.google.firebase.database.Exclude;
 

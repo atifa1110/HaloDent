@@ -1,4 +1,4 @@
-package com.dentist.halodent.Chat;
+package com.dentist.halodent.Group;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.dentist.halodent.Model.NodeNames;
+import com.dentist.halodent.Utils.NodeNames;
 import com.dentist.halodent.Model.Users;
 import com.dentist.halodent.R;
 import com.google.firebase.auth.FirebaseAuth;
