@@ -39,7 +39,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
     private Context context;
     private List<Groups> groupList;
-    private int unread = 0;
 
     public GroupAdapter(Context context, List<Groups> groupList) {
         this.context = context;

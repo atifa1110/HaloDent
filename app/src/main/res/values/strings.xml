@@ -215,6 +215,13 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="title_activity_contoh">ContohActivity</string>
+    <string name="nilai">Nilai :</string>
+    <string name="_20_20">20/20</string>
+    <string name="rendah">Rendah</string>
+    <string name="karies">Karies : </string>
+    <string name="kategori_karies_anda">Kategori Karies Anda :</string>
+    <string name="well_done_selamat">WELL DONE! SELAMAT</string>
+    <string name="tutup">Tutup</string>
 
     <string-array name="genders">
         <item>Laki-Laki</item>

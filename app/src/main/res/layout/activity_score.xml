@@ -1,117 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:padding="20dp"
-    android:layout_gravity="center"
     android:background="@color/blue"
     tools:context=".Profile.ScoreActivity">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/hasil_survey"
-        style="@style/Button.TextButtonWhite"
-        android:layout_marginTop="20dp"
-        android:text="WELL DONE! SELAMAT"
-        android:textSize="18sp"
-        app:icon="@drawable/ic_done"
-        app:iconTint="@color/green"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_thumb"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_thumb_up"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hasil_survey" />
+        android:layout_height="match_parent"
+        android:padding="20dp">
 
-    <TextView
-        android:id="@+id/kategori"
-        style="@style/Text.BoldWhite"
-        android:layout_marginTop="10dp"
-        android:text="Kategori Karies Anda : "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_thumb" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/hasil_survey"
+            style="@style/Button.TextButtonWhite"
+            android:layout_marginTop="20dp"
+            android:text="@string/well_done_selamat"
+            android:textSize="18sp"
+            app:icon="@drawable/ic_done"
+            app:iconTint="@color/green"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    <TableLayout
-        android:id="@+id/tab_layout_kategori"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/kategori">
+        <ImageView
+            android:id="@+id/iv_thumb"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_thumb_up"
+            app:layout_constraintTop_toBottomOf="@+id/hasil_survey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TableRow
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/kategori"
+            style="@style/Text.BoldWhite"
+            android:layout_marginTop="10dp"
+            android:text="@string/kategori_karies_anda"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_thumb"/>
+
+        <TableLayout
+            android:id="@+id/tab_layout_kategori"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/kategori">
 
-            <TextView
-                style="@style/Text.White"
-                android:text="Karies  : "
-                android:textColor="@color/white"/>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp">
 
-            <TextView
-                android:id="@+id/tv_kategori"
-                style="@style/Text.White"
-                android:text="Rendah"
-                android:textColor="@color/white" />
-        </TableRow>
+                <TextView
+                    style="@style/Text.White"
+                    android:text="@string/karies"
+                    android:textColor="@color/white"/>
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+                <TextView
+                    android:id="@+id/tv_kategori"
+                    style="@style/Text.White"
+                    android:text="@string/rendah"
+                    android:textColor="@color/white" />
+            </TableRow>
 
-            <TextView
-                style="@style/Text.White"
-                android:text="Nilai     : "
-                android:textColor="@color/white"/>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp">
 
-            <TextView
-                android:id="@+id/tv_nilai"
-                style="@style/Text.White"
-                android:text="20/20"
-                android:textColor="@color/white"/>
+                <TextView
+                    style="@style/Text.White"
+                    android:text="@string/nilai"
+                    android:textColor="@color/white"/>
 
-        </TableRow>
+                <TextView
+                    android:id="@+id/tv_nilai"
+                    style="@style/Text.White"
+                    android:text="@string/_20_20"
+                    android:textColor="@color/white"/>
 
-    </TableLayout>
+            </TableRow>
 
-    <TextView
-        android:id="@+id/menjaga_karies"
-        style="@style/Text.Skor"
-        android:layout_marginTop="10dp"
-        android:justificationMode="inter_word"
-        android:text="@string/menjaga_karies"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tab_layout_kategori" />
+        </TableLayout>
 
-    <TextView
-        android:id="@+id/cara_jaga"
-        style="@style/Text.Skor"
-        android:layout_marginTop="8dp"
-        android:justificationMode="inter_word"
-        android:text="@string/cara_jaga_karies_rendah"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menjaga_karies" />
+        <TextView
+            android:id="@+id/menjaga_karies"
+            style="@style/Text.Skor"
+            android:layout_marginTop="10dp"
+            android:justificationMode="inter_word"
+            android:text="@string/menjaga_karies"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tab_layout_kategori" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_lanjutkan"
-        style="@style/Button.ColorGreen"
-        android:text="Tutup"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cara_jaga" />
+        <TextView
+            android:id="@+id/cara_jaga"
+            style="@style/Text.Skor"
+            android:layout_marginTop="8dp"
+            android:justificationMode="inter_word"
+            android:text="@string/cara_jaga_karies_rendah"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/menjaga_karies"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_lanjutkan"
+            style="@style/Button.ColorGreen"
+            android:text="@string/tutup"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cara_jaga"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
