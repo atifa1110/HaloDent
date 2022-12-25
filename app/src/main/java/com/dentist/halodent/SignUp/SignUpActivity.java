@@ -136,10 +136,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 if(task.isSuccessful()){
                     String id = firebaseUser.getUid();
                     //inisialisasi database
-                    databaseReferenceUser = FirebaseDatabase.getInstance().getReference().child(Pasiens.class.getSimpleName());
+                    databaseReferenceUser = FirebaseDatabase.getInstance().getReference().child(NodeNames.PASIENS);
                     databaseReferenceSurvey = FirebaseDatabase.getInstance().getReference().child(NodeNames.SURVEY);
 
-                    Pasiens pasiens = new Pasiens(id,etName.getText().toString(),email,"","","","Pasien","",etUsia.getText().toString(),"");
+                    Pasiens pasiens = new Pasiens(id,etName.getText().toString(),email,"","","Online","Pasien","",etUsia.getText().toString(),"");
                     Interviews interviews = new Interviews(step1,step2,step3,step4);
 
                     Preference.setKeyUserAge(SignUpActivity.this,Integer.parseInt(pasiens.getUsia()));

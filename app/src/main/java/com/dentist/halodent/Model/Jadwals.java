@@ -2,7 +2,7 @@ package com.dentist.halodent.Model;
 
 public class Jadwals {
 
-    String konselorId,dokterId,mulai,selesai,tanggal;
+    private String konselorId,dokterId,mulai,selesai,tanggal;
 
     public Jadwals(){
     }

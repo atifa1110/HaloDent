@@ -60,7 +60,7 @@ public class TopikAdapter extends RecyclerView.Adapter<TopikAdapter.TopikViewHol
             holder.photoName.setImageResource(R.drawable.ic_add_photo);
         }
 
-        holder.time.setText(Util.getDay(topiks.getTimestamp()));
+        holder.time.setText(Util.getDay(Long.parseLong(topiks.getTimestamp())));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

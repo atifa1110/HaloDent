@@ -148,17 +148,17 @@ public class Util {
         }
     }
 
-    public static String getDay(String time){
+    public static String getDay(long time){
         SimpleDateFormat sfd = new SimpleDateFormat("dd MMM yyy HH:mm");
-        String dateTime = sfd.format(new Date(Long.parseLong(time)));
+        String dateTime = sfd.format(new Date(time));
         String [] splitString = dateTime.split(" ");
         String day = splitString[0]+" "+splitString[1]+" "+splitString[2];
         return day;
     }
 
-    public static String getTime(String time){
+    public static String getTime(long time){
         SimpleDateFormat sfd = new SimpleDateFormat("dd MMM yyy HH:mm");
-        String dateTime = sfd.format(new Date(Long.parseLong(time)));
+        String dateTime = sfd.format(new Date(time));
         String [] splitString = dateTime.split(" ");
         String waktu = splitString[3];
         return waktu ;

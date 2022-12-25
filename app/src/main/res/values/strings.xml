@@ -222,6 +222,7 @@
     <string name="kategori_karies_anda">Kategori Karies Anda :</string>
     <string name="well_done_selamat">WELL DONE! SELAMAT</string>
     <string name="tutup">Tutup</string>
+    <string name="data_kosong">Data Kosong</string>
 
     <string-array name="genders">
         <item>Laki-Laki</item>

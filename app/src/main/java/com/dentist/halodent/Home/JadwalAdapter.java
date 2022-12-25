@@ -62,9 +62,9 @@ public class JadwalAdapter extends RecyclerView.Adapter<JadwalAdapter.JadwalView
 
         } catch (ParseException e) {
             e.printStackTrace();
-            Toast.makeText(context,"Data Kosong",Toast.LENGTH_SHORT).show();
         }
     }
+
     private void setDokterName(Jadwals jadwal, JadwalViewHolder holder){
         //get sender info from uid model
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(NodeNames.DOKTERS);

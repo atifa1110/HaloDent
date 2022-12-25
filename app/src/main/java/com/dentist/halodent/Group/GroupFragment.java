@@ -17,14 +17,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.dentist.halodent.Model.Groups;
+import com.dentist.halodent.Model.Konselors;
+import com.dentist.halodent.Model.Messages;
 import com.dentist.halodent.Utils.MemoryData;
 import com.dentist.halodent.Utils.NodeNames;
 import com.dentist.halodent.R;
+import com.dentist.halodent.Utils.Util;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +52,8 @@ public class GroupFragment extends Fragment {
     private DatabaseReference databaseReferenceGroups,databaseReferenceKonselors;
     private FirebaseUser currentUser;
     private int unread = 0;
+    private String messageTime = "";
+    private String messageFrom = "";
 
     private Query query;
     private ShimmerFrameLayout shimmerFrameLayoutGroup;
@@ -107,15 +115,21 @@ public class GroupFragment extends Fragment {
                 shimmerFrameLayoutGroup.setVisibility(View.GONE);
                 if(snapshot.exists()) {
                     for (DataSnapshot ds : snapshot.getChildren()) {
-                        Groups groups = ds.getValue(Groups.class);
-                        if (!ds.child(NodeNames.PARTICIPANTS).child(currentUser.getUid()).exists()) {
-                            rvChat.setVisibility(View.GONE);
-                            emptyChat.setVisibility(View.VISIBLE);
-                        } else {
+                        if (ds.child(NodeNames.PARTICIPANTS).child(currentUser.getUid()).child(NodeNames.ID).exists()) {
                             rvChat.setVisibility(View.VISIBLE);
                             emptyChat.setVisibility(View.GONE);
-                            groupList.add(groups);
-                            groupAdapter.notifyDataSetChanged();
+                            try {
+                                Groups groups = ds.getValue(Groups.class);
+                                loadLastMessage(groups);
+                                groupList.add(groups);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+
+                        if(groupList.isEmpty()){
+                            rvChat.setVisibility(View.GONE);
+                            emptyChat.setVisibility(View.VISIBLE);
                         }
                     }
                 }else{
@@ -126,7 +140,34 @@ public class GroupFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(),R.string.tidak_ada,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
+    private void loadLastMessage(Groups groups){
+        //get last message from group
+        databaseReferenceGroups.child(groups.getGroupId()).child(NodeNames.MESSAGES).limitToLast(1).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        Messages messages = ds.getValue(Messages.class);
+                        groups.setLastMessage(messages.getMessage());
+                        groups.setLastMessageTime(messages.getMessageTime());
+                        groups.setMessageFrom(messages.getMessageFrom());
+                    }
+                }else{
+                    groups.setLastMessage("");
+                    groups.setLastMessageTime(null);
+                    groups.setMessageFrom("");
+                }
+                groupAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Toast.makeText(getContext(),R.string.tidak_ada,Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -137,9 +178,8 @@ public class GroupFragment extends Fragment {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 groupList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    String groupId = ds.getKey();
-                    if (ds.child("Participants").child(currentUser.getUid()).exists()) {
-                        if(ds.child("groupTitle").toString().toLowerCase().contains(query.toLowerCase())){
+                    if (ds.child(NodeNames.PARTICIPANTS).child(currentUser.getUid()).exists()) {
+                        if(ds.child(NodeNames.GROUP_TITLE).toString().toLowerCase().contains(query.toLowerCase())){
                             Groups groups = ds.getValue(Groups.class);
                             groupList.add(groups);
                         }

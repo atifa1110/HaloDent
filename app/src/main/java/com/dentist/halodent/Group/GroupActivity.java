@@ -72,7 +72,6 @@ import java.util.List;
 
 public class GroupActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static String TAG = "GroupMessage";
     private ImageView ivSend,ivAttachment, ivProfile;
     private TextView tvUserName;
     private TextInputEditText etMessage;
@@ -89,7 +88,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
     private DatabaseReference mRootRef;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private String currentUserId,groupId,groupName,groupPhoto,downloadUrl;
+    private String groupId,groupName,groupPhoto;
 
     List <String> to = new ArrayList<>();
     String msg="";
@@ -153,7 +152,6 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         mRootRef = FirebaseDatabase.getInstance().getReference();
-        currentUserId = mAuth.getCurrentUser().getUid();
 
         //inisialisasi
         rv_message = findViewById(R.id.rvMessages);
@@ -432,14 +430,14 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         //timestamp
         String timestamp = ""+System.currentTimeMillis();
 
-        Messages messages = new Messages(message,currentUser.getUid(),timestamp,msgType);
+        Messages messages = new Messages(message,currentUser.getUid(),System.currentTimeMillis(),msgType);
 
         //add to db
         databaseReferenceGroups.child(groupId).child(NodeNames.MESSAGES).child(timestamp).setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 //message sent
-                databaseReferenceGroups.child(groupId).child(NodeNames.TIME_STAMP).setValue(timestamp);
+                databaseReferenceGroups.child(groupId).child(NodeNames.TIME_STAMP).setValue(System.currentTimeMillis());
                 etMessage.setText("");
 
                 if(msgType.equals(Constant.MESSAGE_TYPE_TEXT)){
@@ -545,8 +543,4 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 }

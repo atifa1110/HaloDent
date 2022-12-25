@@ -74,7 +74,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_usia_profile"
-            style="@style/TextInputEditText.inputText"
+            style="@style/TextInputEditText.inputNumber"
             android:hint="@string/usia"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,7 +109,6 @@
             style="@style/TextInputEditText.inputPhone"
             android:cursorVisible="true"
             android:hint="@string/nomer_ponsel"/>
-
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton

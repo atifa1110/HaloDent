@@ -23,6 +23,7 @@ import com.dentist.halodent.Utils.NodeNames;
 import com.dentist.halodent.R;
 import com.dentist.halodent.Utils.Util;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,7 +40,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     private Context context;
     private List<Messages> messageList;
-    private FirebaseAuth firebaseAuth;
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     public MessageAdapter(Context context, List<Messages> messageList) {
         this.context = context;
@@ -57,16 +58,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public void onBindViewHolder(@NonNull @NotNull MessageViewHolder holder, int position) {
         Messages messages = messageList.get(position);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        String currentUserId= firebaseAuth.getCurrentUser().getUid();
         String fromUserId = messages.getMessageFrom();
 
         try{
             holder.tvChatTime.setText(Util.getDay(messages.getMessageTime()));
 
             //check
-            if(fromUserId.equals(currentUserId)){
+            if(fromUserId.equals(currentUser.getUid())){
                 if(messages.getMessageType().equals(Constant.MESSAGE_TYPE_TEXT)){
                     holder.card_llSent.setVisibility(View.VISIBLE);
                     holder.tvSentMessageTime.setVisibility(View.VISIBLE);

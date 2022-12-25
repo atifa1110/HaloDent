@@ -2,13 +2,17 @@ package com.dentist.halodent.Model;
 
 public class Groups {
 
-    private String groupId,groupTitle,groupIcon,timestamp,status;
+    private String groupId,groupTitle,groupIcon,status;
+    private Long timestamp;
+
+    private String lastMessage,messageFrom;
+    private Long lastMessageTime;
 
     public Groups(){
 
     }
 
-    public Groups(String groupId, String groupTitle, String groupIcon, String timestamp, String status) {
+    public Groups(String groupId, String groupTitle, String groupIcon, Long timestamp, String status) {
         this.groupId = groupId;
         this.groupTitle = groupTitle;
         this.groupIcon = groupIcon;
@@ -36,6 +40,18 @@ public class Groups {
         return groupIcon;
     }
 
+    public void setGroupIcon(String groupIcon) {
+        this.groupIcon = groupIcon;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -44,15 +60,29 @@ public class Groups {
         this.status = status;
     }
 
-    public void setGroupIcon(String groupIcon) {
-        this.groupIcon = groupIcon;
+    public String getLastMessage() {
+        return lastMessage;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+
+    public Long getLastMessageTime() {
+        return lastMessageTime;
     }
+
+    public void setLastMessageTime(Long lastMessageTime) {
+        this.lastMessageTime = lastMessageTime;
+    }
+
+    public String getMessageFrom() {
+        return messageFrom;
+    }
+
+    public void setMessageFrom(String messageFrom) {
+        this.messageFrom = messageFrom;
+    }
+
 }

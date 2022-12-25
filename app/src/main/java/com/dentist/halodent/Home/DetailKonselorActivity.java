@@ -62,7 +62,6 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
     private CardView cardView;
 
     private DatabaseReference databaseReferenceGroup,databaseReferenceJadwal,databaseReferenceDokter;
-    private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private Konselors konselors;
 
@@ -124,8 +123,7 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
         }
 
         //initialization firebase
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReferenceDokter = FirebaseDatabase.getInstance().getReference().child(NodeNames.DOKTERS);
         databaseReferenceGroup = FirebaseDatabase.getInstance().getReference().child(NodeNames.GROUPS);
         databaseReferenceJadwal = FirebaseDatabase.getInstance().getReference().child(NodeNames.JADWAL);
@@ -187,10 +185,14 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
                     tv_tidak_ada_jadwal.setVisibility(View.GONE);
                     rv_jadwal.setVisibility(View.VISIBLE);
                     for (DataSnapshot ds : snapshot.getChildren()){
-                        Jadwals jadwals = ds.getValue(Jadwals.class);
-                        jadwalsList.add(jadwals);
-                        setJadwalAvailable();
-                        jadwalAdapter.notifyDataSetChanged();
+                        try {
+                            Jadwals jadwals = ds.getValue(Jadwals.class);
+                            jadwalsList.add(jadwals);
+                            setJadwalAvailable();
+                            jadwalAdapter.notifyDataSetChanged();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 }else{
                     tv_tidak_ada_jadwal.setVisibility(View.VISIBLE);
@@ -244,10 +246,11 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
                 getDataDokter(dokter);
                 //set id into id
                 id = dokter;
-                if(timeSekarang>=timeMulai && timeSelesai>=timeSekarang){
+                if (timeSekarang >= timeMulai && timeSelesai >= timeSekarang) {
                     tv_pengawas.setVisibility(View.VISIBLE);
                     cardView.setVisibility(View.VISIBLE);
-                    btn_chat.setEnabled(timeSekarang>=timeMulai && timeSelesai>=timeSekarang);
+                    btn_chat.setEnabled(timeSekarang >= timeMulai && timeSelesai >= timeSekarang);
+                    break;
                 }else{
                     tv_pengawas.setVisibility(View.GONE);
                     cardView.setVisibility(View.GONE);
@@ -277,18 +280,17 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
                         tv_nama_dokter.setText("Drg."+ dokters.getNama());
                     }catch (Exception e){
                         e.printStackTrace();
-                        Toast.makeText(DetailKonselorActivity.this,"Data Dokter Kosong",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailKonselorActivity.this,R.string.data_kosong,Toast.LENGTH_SHORT).show();
                     }
 
                 }else{
-                    Toast.makeText(DetailKonselorActivity.this,"Data not exist",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailKonselorActivity.this,R.string.data_kosong,Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                Toast.makeText(DetailKonselorActivity.this,
-                        getString(R.string.failed_to_update, error.getMessage()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailKonselorActivity.this, getString(R.string.failed_to_update, error.getMessage()), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -296,7 +298,7 @@ public class DetailKonselorActivity extends AppCompatActivity implements View.On
     private void createGroupChat(){
         String timestamp = ""+System.currentTimeMillis();
 
-        Groups group = new Groups(timestamp,"Group","",timestamp,"Berlangsung");
+        Groups group = new Groups(timestamp,"Group","",System.currentTimeMillis(),"Berlangsung");
 
         Preference.setKeyGroupId(getApplicationContext(),group.getGroupId());
         Preference.setKeyGroupName(getApplicationContext(),group.getGroupTitle());

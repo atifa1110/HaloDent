@@ -5,21 +5,13 @@ public class Messages {
     private String messageId;
     private String message;
     private String messageFrom;
-    private String messageTime;
+    private Long messageTime;
     private String messageType;
 
     public Messages() {
     }
 
-    public Messages(String messageId,String message, String messageFrom, String messageTime, String messageType) {
-        this.messageId = messageId;
-        this.message = message;
-        this.messageFrom = messageFrom;
-        this.messageTime = messageTime;
-        this.messageType = messageType;
-    }
-
-    public Messages(String message, String messageFrom, String messageTime, String messageType) {
+    public Messages(String message, String messageFrom, Long messageTime, String messageType) {
         this.message = message;
         this.messageFrom = messageFrom;
         this.messageTime = messageTime;
@@ -50,11 +42,11 @@ public class Messages {
         this.messageFrom = messageFrom;
     }
 
-    public String getMessageTime() {
+    public Long getMessageTime() {
         return messageTime;
     }
 
-    public void setMessageTime(String messageTime) {
+    public void setMessageTime(Long messageTime) {
         this.messageTime = messageTime;
     }
 
