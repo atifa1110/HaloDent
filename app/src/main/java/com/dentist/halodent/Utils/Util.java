@@ -39,8 +39,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Util {
 
-    private static final String TAG = "informasipesan";
-
     public static void updateDeviceToken(Context context, String token) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
@@ -165,8 +163,7 @@ public class Util {
     }
 
     public static boolean isAppInForeground(Context context) {
-        List<ActivityManager.RunningTaskInfo> task =
-                ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
+        List<ActivityManager.RunningTaskInfo> task = ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
                         .getRunningTasks(1);
         if (task.isEmpty()) {
             // app is in background

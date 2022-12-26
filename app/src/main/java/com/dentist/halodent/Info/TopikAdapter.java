@@ -43,12 +43,26 @@ public class TopikAdapter extends RecyclerView.Adapter<TopikAdapter.TopikViewHol
         Topiks topiks = topiksList.get(position);
 
         try{
-            holder.topikName.setText(topiks.getJudul());
+            if(topiks.getJudul().isEmpty()){
+                holder.topikName.setText("");
+            }else {
+                holder.topikName.setText(topiks.getJudul());
+            }
 
-            String narasi = topiks.getNarasi();
-            narasi = narasi.length()>100?narasi.substring(0,100):narasi;
+            String narasi = "";
+            narasi = topiks.getNarasi().length()>100?topiks.getNarasi().substring(0,100):topiks.getNarasi();
 
-            holder.topikNarasi.setText(narasi+"...");
+            if(topiks.getNarasi().isEmpty()){
+                holder.topikNarasi.setText(" ");
+            }else {
+                holder.topikNarasi.setText(narasi + "...");
+            }
+
+            if(topiks.getTimestamp()==null){
+                holder.time.setText("");
+            }else {
+                holder.time.setText(Util.getDay(topiks.getTimestamp()));
+            }
 
             Glide.with(context)
                     .load(topiks.getPhoto())
@@ -57,10 +71,8 @@ public class TopikAdapter extends RecyclerView.Adapter<TopikAdapter.TopikViewHol
                     .into(holder.photoName);
 
         }catch (Exception e){
-            holder.photoName.setImageResource(R.drawable.ic_add_photo);
+            e.printStackTrace();
         }
-
-        holder.time.setText(Util.getDay(Long.parseLong(topiks.getTimestamp())));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -188,6 +188,7 @@ public class InfoFragment extends Fragment implements CompoundButton.OnCheckedCh
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 topikList.clear();
+
                 for (DataSnapshot data : snapshot.getChildren()) {
                     if (data.exists()) {
                         Topiks topiks = data.getValue(Topiks.class);

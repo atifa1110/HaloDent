@@ -38,7 +38,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private FirebaseUser currentUser;
     private Uri serverFileUri;
 
-    private DatabaseReference databaseReferenceUser;
+    private DatabaseReference databaseReferenceUser,databaseReferenceToken;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +66,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
 
+        databaseReferenceToken = FirebaseDatabase.getInstance().getReference().child(NodeNames.TOKENS).child(currentUser.getUid());
         databaseReferenceUser = FirebaseDatabase.getInstance().getReference().child(NodeNames.USERS).child(currentUser.getUid());
         loadProfile();
     }
@@ -128,6 +129,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void logout(){
         final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
+        //databaseReferenceToken.setValue(null);
         databaseReferenceUser.child(NodeNames.ONLINE).setValue("Offline");
         startActivity(new Intent(getActivity(), SignInActivity.class));
         getActivity().finish();

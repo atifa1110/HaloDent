@@ -17,8 +17,7 @@
         android:id="@+id/tv_selamat"
         style="@style/Text.Medium"
         android:layout_below="@id/appbar"
-        android:layout_marginTop="10dp"
-        android:onClick="signUp"
+        android:layout_marginTop="20dp"
         android:text="@string/sign_up_to_halo" />
 
     <TextView
@@ -66,7 +65,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_usia_signup"
-            style="@style/TextInputEditText.inputText"
+            style="@style/TextInputEditText.inputNumber"
             android:hint="@string/usia"/>
 
     </com.google.android.material.textfield.TextInputLayout>

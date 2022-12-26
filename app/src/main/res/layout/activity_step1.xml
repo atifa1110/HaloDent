@@ -9,13 +9,14 @@
 
     <include
         android:id="@+id/appbar"
-        layout="@layout/custom_action_layout"/>
+        layout="@layout/custom_action_layout" />
 
     <TextView
         android:id="@+id/tv_step1"
         style="@style/Text.Medium"
         android:layout_below="@id/appbar"
-        android:text="@string/step1" />
+        android:text="@string/step1"
+        android:layout_marginTop="20dp"/>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"

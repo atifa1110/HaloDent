@@ -14,7 +14,8 @@
         android:id="@+id/tv_step2"
         style="@style/Text.Medium"
         android:layout_below="@id/appbar"
-        android:text="@string/step4" />
+        android:text="@string/step4"
+        android:layout_marginTop="20dp"/>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"

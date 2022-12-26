@@ -238,14 +238,13 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void getDataUser(){
-        //databaseReference = FirebaseDatabase.getInstance().getReference().child(NodeNames.PASIENS);
+        progress.dismiss();
         databaseReference.child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    progress.dismiss();
-                    Pasiens pasiens = snapshot.getValue(Pasiens.class);
                     try{
+                        Pasiens pasiens = snapshot.getValue(Pasiens.class);
                         etJenisKel.setText(pasiens.getKelamin());
                         etUsia.setText(pasiens.getUsia());
                         etAlamat.setText(pasiens.getAlamat());
@@ -257,14 +256,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
                     }catch (Exception e){
                         e.printStackTrace();
-                        etJenisKel.setText(" ");
-                        etUsia.setText(" ");
-                        etAlamat.setText(" ");
-                        etNomor.setText(" ");
                     }
 
                 }else{
-                    Toast.makeText(EditProfileActivity.this,"Data tidak ada",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this,R.string.tidak_ada,Toast.LENGTH_SHORT).show();
                 }
             }
 

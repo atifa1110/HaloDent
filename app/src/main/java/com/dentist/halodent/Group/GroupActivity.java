@@ -250,10 +250,12 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
                     if(group.getStatus().equals("selesai")){
                         llSnackbar.setVisibility(View.VISIBLE);
-                        llSendChat.setVisibility(View.GONE);
+                        etMessage.setEnabled(false);
+                        ivAttachment.setClickable(false);
                     }else{
                         llSnackbar.setVisibility(View.GONE);
-                        llSendChat.setVisibility(View.VISIBLE);
+                        etMessage.setEnabled(true);
+                        ivAttachment.setClickable(true);
                     }
                 }
             }
@@ -492,6 +494,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     messageAdapter.notifyDataSetChanged();
                     rv_message.scrollToPosition(messageList.size() - 1);
                     srlMessage.setRefreshing(false);
+
                 }
             }
 

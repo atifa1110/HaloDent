@@ -1,6 +1,5 @@
 package com.dentist.halodent.Model;
 
-import com.dentist.halodent.Model.Users;
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;

@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.dentist.halodent.Model.Topiks;
 import com.dentist.halodent.Utils.NodeNames;
 import com.dentist.halodent.R;
+import com.dentist.halodent.Utils.Util;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -71,16 +72,11 @@ public class DetailTopikActivity extends AppCompatActivity {
         nar = nar.replaceAll("/n/n","\n\n");
         sum = sum.replaceAll("/n", "\n");
 
-        SimpleDateFormat sfd = new SimpleDateFormat("d MMM yyy HH:mm");
-        String dateTime = sfd.format(new Date(Long.parseLong(topiks.getTimestamp())));
-        String [] splitString = dateTime.split(" ");
-        String topikTime = splitString[0]+" "+splitString[1]+" "+splitString[2];
-
         //set data
         tv_judul.setText(topiks.getJudul());
         tv_narasi.setText(nar);
         tv_sumber.setText(sum);
-        tv_tanggal.setText(topikTime);
+        tv_tanggal.setText(Util.getDay(topiks.getTimestamp()));
 
         if (topiks.getTipe().equals("photo")) {
             if(topiks.getPhoto().equals("")){
