@@ -163,7 +163,8 @@ public class Util {
     }
 
     public static boolean isAppInForeground(Context context) {
-        List<ActivityManager.RunningTaskInfo> task = ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
+        List<ActivityManager.RunningTaskInfo> task =
+                ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
                         .getRunningTasks(1);
         if (task.isEmpty()) {
             // app is in background

@@ -88,13 +88,17 @@ public class GroupInfoActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
                         partisipantList.clear();
                         for (DataSnapshot ds : dataSnapshot.getChildren()){
-                            String userId = ds.getKey();
-                            String timestamp = ds.child(NodeNames.TIME_STAMP).toString();
-                            String role = ds.child(NodeNames.ROLE).getValue().toString();
+                            try {
+                                String userId = ds.getKey();
+                                String timestamp = ds.child(NodeNames.TIME_STAMP).toString();
+                                String role = ds.child(NodeNames.ROLE).getValue().toString();
 
-                            Users participant = new Users(userId,timestamp,role);
-                            partisipantList.add(participant);
-                            participantAdapter.notifyDataSetChanged();
+                                Users participant = new Users(userId, timestamp, role);
+                                partisipantList.add(participant);
+                                participantAdapter.notifyDataSetChanged();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                         participantAdapter.notifyDataSetChanged();
                         //set tv partisipan sebanyak partisipan list

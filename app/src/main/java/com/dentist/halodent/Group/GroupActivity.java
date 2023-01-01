@@ -1,7 +1,6 @@
 package com.dentist.halodent.Group;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,11 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -23,7 +20,6 @@ import android.widget.Toast;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -36,7 +32,6 @@ import com.bumptech.glide.Glide;
 import com.dentist.halodent.Model.Groups;
 import com.dentist.halodent.Model.Messages;
 import com.dentist.halodent.Utils.Constant;
-import com.dentist.halodent.Utils.MemoryData;
 import com.dentist.halodent.Utils.NodeNames;
 import com.dentist.halodent.Utils.Util;
 import com.dentist.halodent.Utils.Preference;
