@@ -1,7 +1,7 @@
 # HaloDent
 
 ### Overview :
-Halo Dent adalah Aplikasi Messanger Koas Mahasiswa dengan pasien yang diawasi oleh dokter pengawas berbasis Java. Dimana aplikasi ini melibatkan 3 user yaitu konselor, dokter, dan pasien.
+Halo Dent adalah Aplikasi Messenger berbasis Java yang menggunakan Firebase sebagai database. Aplikasi ini melibatkan 3 user yaitu koas mahasiswa yang disebut konselor, dokter pengawas dan pasien dimana ketiga user tersebut dapat melakukan konsultasi via chat dalam satu ruangan.
 
 ### Features :
 1. Menampilkan Konselor yang sedang Online
