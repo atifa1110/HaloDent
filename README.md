@@ -71,3 +71,12 @@ Halo Dent adalah Aplikasi Messanger Koas Mahasiswa dengan pasien yang diawasi ol
    
    
 </table><br><br>
+
+### Tools and Tech stack used : 
+1. Java
+2. XML
+3. Firebase Database
+4. Firebase Hosting
+5. Firebase Authentication
+6. Firebase Storage
+7. Shared Preference
