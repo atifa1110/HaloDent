@@ -50,12 +50,24 @@ Halo Dent adalah Aplikasi Messanger Koas Mahasiswa dengan pasien yang diawasi ol
          style="width:200px;height:400px;" </td>
      <td><img src="https://user-images.githubusercontent.com/49097275/255676593-65d82dd8-525a-40a0-a2ab-9c4cc3ef1968.png" alt="Detail Chat"
          style="width:200px;height:400px;" </td>
-    <td><img src="" alt="Group Info"
+    <td><img src="https://user-images.githubusercontent.com/49097275/255679248-5a5de7fa-f4ac-4732-9879-5be85901d870.jpg" alt="Group Info"
          style="width:200px;height:400px;"></td>
    <td><img src="https://user-images.githubusercontent.com/49097275/255677937-dc4dc097-0609-4f61-b416-ec059cafced7.jpg" alt="List Berita"
          style="width:200px;height:400px;"></td>
    <td><img src="https://user-images.githubusercontent.com/49097275/255678024-6c3eb4f1-51d8-4075-8e77-3a2e0d361230.jpg" alt="Detail Berita"
          style="width:200px;height:400px;"></td>
   </tr>
+
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/49097275/255678138-9731736c-e458-48d8-a253-43646a2cb9b1.jpg" alt="Profile"
+         style="width:200px;height:400px;" </td>
+     <td><img src="https://user-images.githubusercontent.com/49097275/255678106-0c13f610-12ab-4e23-95e4-90c64a78dd17.jpg" alt="Edit Profile"
+         style="width:200px;height:400px;" </td>
+   <td><img src="https://user-images.githubusercontent.com/49097275/255678174-b1b9b13a-d72f-4d22-a488-c5d6fa6d7472.jpg" alt="Kuesioner"
+         style="width:200px;height:400px;"></td>
+   <td><img src="https://user-images.githubusercontent.com/49097275/255678547-e8656650-6ef7-4ceb-b5d5-ff3464c2342d.jpg" alt="Hasil Kuesioner"
+         style="width:200px;height:400px;"></td>
+  </tr>
+   
    
 </table><br><br>
