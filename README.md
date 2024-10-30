@@ -1,20 +1,21 @@
-# HaloDent
+# HaloDent 💬
+**A Java-based Dentistry Chat Application for seamless communication among patients, counselors, and supervising doctors**
 
-### Overview :
-Halo Dent adalah Aplikasi Chat Kedokteran Gigi berbasis Java yang menggunakan Firebase sebagai database. Aplikasi melibatkan 3 user yaitu koas mahasiswa yang disebut konselor, dokter pengawas dan pasien dimana ketiga user tersebut dapat melakukan konsultasi via chat dalam satu ruangan. Aplikasi ini dikhususkan untuk user pasien
+## 🌟 Overview
+HaloDent is an innovative chat application designed to facilitate communication between patients and their healthcare providers in the dental field. Built using Java and leveraging Firebase as a database, the app allows three types of counselors, supervising doctors, and patients to consult and interact via chat in a dedicated room.
 
-### Features :
-1. Menampilkan Konselor yang sedang Online
-2. Menampilkan Jadwal Konsultasi
-3. Menampilkan Detail Konselor
-4. Menampilkan Detail Dokter Pengawas
-5. Menampilkan List Berita terkini
-6. Melakukan Kuesioner Karies gigi
-7. Melakukan Login/Logout
-8. Melakukan Edit Profile
-9. Melakukan Group Chat 
-10. Menamilkan Group Info
-11. Menampilkan Notifikasi
+## ✨ Key Features
+- **Display Counselors who are Online**: Easily see which counselors are available for consultations.
+- **Consultation Schedule**: View scheduled appointments for a more organized approach to dental care.
+- **Counselor Details**: Access information about counselors, including their qualifications and specialties.
+- **Supervising Doctor Details**: View details about supervising doctors to understand their roles in consultations.
+- **Latest News**: Stay updated with a list of the latest news related to dental health and practice.
+- **Dental Caries Questionnaire**: Complete a questionnaire to assess dental caries risk.
+- **Login/Logout Functionality**: Secure user authentication for accessing personal and sensitive information.
+- **Edit Profile**: Users can update their profile information easily.
+- **Group Chat**: Engage in group chats for broader discussions and consultations.
+- **Group Info Display**: View information about group members and topics being discussed.
+- **Notifications**: Receive notifications for important updates and messages.
 
 ### Screenshots :
 
@@ -72,11 +73,11 @@ Halo Dent adalah Aplikasi Chat Kedokteran Gigi berbasis Java yang menggunakan Fi
    
 </table><br><br>
 
-### Tools and Tech stack used : 
-1. Java
-2. XML
-3. Firebase Database
-4. Firebase Hosting
-5. Firebase Authentication
-6. Firebase Storage
-7. Shared Preference
+## 🔧 Tools and Tech Stack Used
+- **Java**: Primary programming language for the application.
+- **XML**: For layout design and user interface components.
+- **Firebase Database**: Real-time database for storing user data and messages.
+- **Firebase Hosting**: Hosting for web content and API integration.
+- **Firebase Authentication**: Secure authentication for user login and registration.
+- **Firebase Storage**: Storage for user-uploaded files and images.
+- **Shared Preferences**: For storing user preferences and settings.
