@@ -2,7 +2,7 @@
 **A Java-based Dentistry Chat Application for seamless communication among patients, counselors, and supervising doctors**
 
 ## 🌟 Overview
-HaloDent is an innovative chat application designed to facilitate communication between patients and their healthcare providers in the dental field. Built using Java and leveraging Firebase as a database, the app allows three types of counselors, supervising doctors, and patients to consult and interact via chat in a dedicated room.
+A mobile chat application developed to support the dental internship program at RSGM Brawijaya University during the COVID-19 pandemic. Designed to minimize offline contact, HaloDent facilitates remote consultations between patients and dental interns, supervised by senior doctors. This role-based communication platform was built using Java and Firebase, enabling secure, real-time messaging within dedicated chat rooms.
 
 ## ✨ Key Features
 - **Display Counselors who are Online**: Easily see which counselors are available for consultations.
